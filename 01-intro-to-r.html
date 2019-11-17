@@ -1,0 +1,577 @@
+<!DOCTYPE html><html><head>
+      <title>Basic R </title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/katex.min.css">
+      
+      
+
+      
+      
+      
+      
+      
+      
+
+      <style>
+      /**
+ * prism.js Github theme based on GitHub's theme.
+ * @author Sam Clarke
+ */
+code[class*="language-"],
+pre[class*="language-"] {
+  color: #333;
+  background: none;
+  font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.4;
+
+  -moz-tab-size: 8;
+  -o-tab-size: 8;
+  tab-size: 8;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+/* Code blocks */
+pre[class*="language-"] {
+  padding: .8em;
+  overflow: auto;
+  /* border: 1px solid #ddd; */
+  border-radius: 3px;
+  /* background: #fff; */
+  background: #f5f5f5;
+}
+
+/* Inline code */
+:not(pre) > code[class*="language-"] {
+  padding: .1em;
+  border-radius: .3em;
+  white-space: normal;
+  background: #f5f5f5;
+}
+
+.token.comment,
+.token.blockquote {
+  color: #969896;
+}
+
+.token.cdata {
+  color: #183691;
+}
+
+.token.doctype,
+.token.punctuation,
+.token.variable,
+.token.macro.property {
+  color: #333;
+}
+
+.token.operator,
+.token.important,
+.token.keyword,
+.token.rule,
+.token.builtin {
+  color: #a71d5d;
+}
+
+.token.string,
+.token.url,
+.token.regex,
+.token.attr-value {
+  color: #183691;
+}
+
+.token.property,
+.token.number,
+.token.boolean,
+.token.entity,
+.token.atrule,
+.token.constant,
+.token.symbol,
+.token.command,
+.token.code {
+  color: #0086b3;
+}
+
+.token.tag,
+.token.selector,
+.token.prolog {
+  color: #63a35c;
+}
+
+.token.function,
+.token.namespace,
+.token.pseudo-element,
+.token.class,
+.token.class-name,
+.token.pseudo-class,
+.token.id,
+.token.url-reference .token.variable,
+.token.attr-name {
+  color: #795da3;
+}
+
+.token.entity {
+  cursor: help;
+}
+
+.token.title,
+.token.title .token.punctuation {
+  font-weight: bold;
+  color: #1d3e81;
+}
+
+.token.list {
+  color: #ed6a43;
+}
+
+.token.inserted {
+  background-color: #eaffea;
+  color: #55a532;
+}
+
+.token.deleted {
+  background-color: #ffecec;
+  color: #bd2c00;
+}
+
+.token.bold {
+  font-weight: bold;
+}
+
+.token.italic {
+  font-style: italic;
+}
+
+
+/* JSON */
+.language-json .token.property {
+  color: #183691;
+}
+
+.language-markup .token.tag .token.punctuation {
+  color: #333;
+}
+
+/* CSS */
+code.language-css,
+.language-css .token.function {
+  color: #0086b3;
+}
+
+/* YAML */
+.language-yaml .token.atrule {
+  color: #63a35c;
+}
+
+code.language-yaml {
+  color: #183691;
+}
+
+/* Ruby */
+.language-ruby .token.function {
+  color: #333;
+}
+
+/* Markdown */
+.language-markdown .token.url {
+  color: #795da3;
+}
+
+/* Makefile */
+.language-makefile .token.symbol {
+  color: #795da3;
+}
+
+.language-makefile .token.variable {
+  color: #183691;
+}
+
+.language-makefile .token.builtin {
+  color: #0086b3;
+}
+
+/* Bash */
+.language-bash .token.keyword {
+  color: #0086b3;
+}
+
+/* highlight */
+pre[data-line] {
+  position: relative;
+  padding: 1em 0 1em 3em;
+}
+pre[data-line] .line-highlight-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: transparent;
+  display: block;
+  width: 100%;
+}
+
+pre[data-line] .line-highlight {
+  position: absolute;
+  left: 0;
+  right: 0;
+  padding: inherit 0;
+  margin-top: 1em;
+  background: hsla(24, 20%, 50%,.08);
+  background: linear-gradient(to right, hsla(24, 20%, 50%,.1) 70%, hsla(24, 20%, 50%,0));
+  pointer-events: none;
+  line-height: inherit;
+  white-space: pre;
+}
+
+pre[data-line] .line-highlight:before, 
+pre[data-line] .line-highlight[data-end]:after {
+  content: attr(data-start);
+  position: absolute;
+  top: .4em;
+  left: .6em;
+  min-width: 1em;
+  padding: 0 .5em;
+  background-color: hsla(24, 20%, 50%,.4);
+  color: hsl(24, 20%, 95%);
+  font: bold 65%/1.5 sans-serif;
+  text-align: center;
+  vertical-align: .3em;
+  border-radius: 999px;
+  text-shadow: none;
+  box-shadow: 0 1px white;
+}
+
+pre[data-line] .line-highlight[data-end]:after {
+  content: attr(data-end);
+  top: auto;
+  bottom: .4em;
+}html body{font-family:"Helvetica Neue",Helvetica,"Segoe UI",Arial,freesans,sans-serif;font-size:16px;line-height:1.6;color:#333;background-color:#fff;overflow:initial;box-sizing:border-box;word-wrap:break-word}html body>:first-child{margin-top:0}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{line-height:1.2;margin-top:1em;margin-bottom:16px;color:#000}html body h1{font-size:2.25em;font-weight:300;padding-bottom:.3em}html body h2{font-size:1.75em;font-weight:400;padding-bottom:.3em}html body h3{font-size:1.5em;font-weight:500}html body h4{font-size:1.25em;font-weight:600}html body h5{font-size:1.1em;font-weight:600}html body h6{font-size:1em;font-weight:600}html body h1,html body h2,html body h3,html body h4,html body h5{font-weight:600}html body h5{font-size:1em}html body h6{color:#5c5c5c}html body strong{color:#000}html body del{color:#5c5c5c}html body a:not([href]){color:inherit;text-decoration:none}html body a{color:#08c;text-decoration:none}html body a:hover{color:#00a3f5;text-decoration:none}html body img{max-width:100%}html body>p{margin-top:0;margin-bottom:16px;word-wrap:break-word}html body>ul,html body>ol{margin-bottom:16px}html body ul,html body ol{padding-left:2em}html body ul.no-list,html body ol.no-list{padding:0;list-style-type:none}html body ul ul,html body ul ol,html body ol ol,html body ol ul{margin-top:0;margin-bottom:0}html body li{margin-bottom:0}html body li.task-list-item{list-style:none}html body li>p{margin-top:0;margin-bottom:0}html body .task-list-item-checkbox{margin:0 .2em .25em -1.8em;vertical-align:middle}html body .task-list-item-checkbox:hover{cursor:pointer}html body blockquote{margin:16px 0;font-size:inherit;padding:0 15px;color:#5c5c5c;border-left:4px solid #d6d6d6}html body blockquote>:first-child{margin-top:0}html body blockquote>:last-child{margin-bottom:0}html body hr{height:4px;margin:32px 0;background-color:#d6d6d6;border:0 none}html body table{margin:10px 0 15px 0;border-collapse:collapse;border-spacing:0;display:block;width:100%;overflow:auto;word-break:normal;word-break:keep-all}html body table th{font-weight:bold;color:#000}html body table td,html body table th{border:1px solid #d6d6d6;padding:6px 13px}html body dl{padding:0}html body dl dt{padding:0;margin-top:16px;font-size:1em;font-style:italic;font-weight:bold}html body dl dd{padding:0 16px;margin-bottom:16px}html body code{font-family:Menlo,Monaco,Consolas,'Courier New',monospace;font-size:.85em !important;color:#000;background-color:#f0f0f0;border-radius:3px;padding:.2em 0}html body code::before,html body code::after{letter-spacing:-0.2em;content:"\00a0"}html body pre>code{padding:0;margin:0;font-size:.85em !important;word-break:normal;white-space:pre;background:transparent;border:0}html body .highlight{margin-bottom:16px}html body .highlight pre,html body pre{padding:1em;overflow:auto;font-size:.85em !important;line-height:1.45;border:#d6d6d6;border-radius:3px}html body .highlight pre{margin-bottom:0;word-break:normal}html body pre code,html body pre tt{display:inline;max-width:initial;padding:0;margin:0;overflow:initial;line-height:inherit;word-wrap:normal;background-color:transparent;border:0}html body pre code:before,html body pre tt:before,html body pre code:after,html body pre tt:after{content:normal}html body p,html body blockquote,html body ul,html body ol,html body dl,html body pre{margin-top:0;margin-bottom:16px}html body kbd{color:#000;border:1px solid #d6d6d6;border-bottom:2px solid #c7c7c7;padding:2px 4px;background-color:#f0f0f0;border-radius:3px}@media print{html body{background-color:#fff}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{color:#000;page-break-after:avoid}html body blockquote{color:#5c5c5c}html body pre{page-break-inside:avoid}html body table{display:table}html body img{display:block;max-width:100%;max-height:100%}html body pre,html body code{word-wrap:break-word;white-space:pre}}.markdown-preview{width:100%;height:100%;box-sizing:border-box}.markdown-preview .pagebreak,.markdown-preview .newpage{page-break-before:always}.markdown-preview pre.line-numbers{position:relative;padding-left:3.8em;counter-reset:linenumber}.markdown-preview pre.line-numbers>code{position:relative}.markdown-preview pre.line-numbers .line-numbers-rows{position:absolute;pointer-events:none;top:1em;font-size:100%;left:0;width:3em;letter-spacing:-1px;border-right:1px solid #999;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.markdown-preview pre.line-numbers .line-numbers-rows>span{pointer-events:none;display:block;counter-increment:linenumber}.markdown-preview pre.line-numbers .line-numbers-rows>span:before{content:counter(linenumber);color:#999;display:block;padding-right:.8em;text-align:right}.markdown-preview .mathjax-exps .MathJax_Display{text-align:center !important}.markdown-preview:not([for="preview"]) .code-chunk .btn-group{display:none}.markdown-preview:not([for="preview"]) .code-chunk .status{display:none}.markdown-preview:not([for="preview"]) .code-chunk .output-div{margin-bottom:16px}.scrollbar-style::-webkit-scrollbar{width:8px}.scrollbar-style::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}.scrollbar-style::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,0.66);border:4px solid rgba(150,150,150,0.66);background-clip:content-box}html body[for="html-export"]:not([data-presentation-mode]){position:relative;width:100%;height:100%;top:0;left:0;margin:0;padding:0;overflow:auto}html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{position:relative;top:0}@media screen and (min-width:914px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{padding:2em calc(50% - 457px + 2em)}}@media screen and (max-width:914px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{font-size:14px !important;padding:1em}}@media print{html body[for="html-export"]:not([data-presentation-mode]) #sidebar-toc-btn{display:none}}html body[for="html-export"]:not([data-presentation-mode]) #sidebar-toc-btn{position:fixed;bottom:8px;left:8px;font-size:28px;cursor:pointer;color:inherit;z-index:99;width:32px;text-align:center;opacity:.4}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] #sidebar-toc-btn{opacity:1}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc{position:fixed;top:0;left:0;width:300px;height:100%;padding:32px 0 48px 0;font-size:14px;box-shadow:0 0 4px rgba(150,150,150,0.33);box-sizing:border-box;overflow:auto;background-color:inherit}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar{width:8px}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,0.66);border:4px solid rgba(150,150,150,0.66);background-clip:content-box}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc a{text-decoration:none}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc ul{padding:0 1.6em;margin-top:.8em}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc li{margin-bottom:.8em}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc ul{list-style-type:none}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{left:300px;width:calc(100% -  300px);padding:2em calc(50% - 457px -  150px);margin:0;box-sizing:border-box}@media screen and (max-width:1274px){html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{width:100%}}html body[for="html-export"]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .markdown-preview{left:50%;transform:translateX(-50%)}html body[for="html-export"]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .md-sidebar-toc{display:none}
+/* Please visit the URL below for more information: */
+/*   https://shd101wyy.github.io/markdown-preview-enhanced/#/customize-css */
+
+      </style>
+    </head>
+    <body for="html-export">
+      <div class="mume markdown-preview  ">
+      <h2 class="mume-header" id="creating-objects-in-r">Creating objects in R</h2>
+
+<blockquote>
+<h3>Objects vs. variables</h3>
+<p>What are known as <code>objects</code> in <code>R</code> are known as <code>variables</code> in many other programming languages. Depending on the context, <code>object</code> and <code>variable</code> can have drastically different meanings. However, in this lesson, the two words are used synonymously. For more information see: <a href="https://cran.r-project.org/doc/manuals/r-release/R-lang.html#Objects">https://cran.r-project.org/doc/manuals/r-release/R-lang.html#Objects</a></p>
+</blockquote>
+<p>You can get output from R simply by typing math in the console:</p>
+<pre data-role="codeBlock" data-info="r" class="language-r"><span class="token number">3</span> <span class="token operator">+</span> <span class="token number">5</span>
+</pre><pre data-role="codeBlock" data-info class="language-"><code>[1] 8
+</code></pre><pre data-role="codeBlock" data-info="r" class="language-r"><span class="token number">12</span> <span class="token operator">/</span> <span class="token number">7</span>
+</pre><pre data-role="codeBlock" data-info class="language-"><code>[1] 1.714286
+</code></pre><p>However, to do useful and interesting things, we need to assign <em>values</em> to <em>objects</em>. To create an object, we need to give it a name followed by the assignment operator <code>&lt;-</code>, and the value we want to give it:</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">area_hectares <span class="token operator">&lt;-</span> <span class="token number">1.0</span>
+</pre><p><code>&lt;-</code> is the assignment operator. It assigns values on the right to objects on the left. So, after executing <code>x &lt;- 3</code>, the value of <code>x</code> is <code>3</code>. The arrow can be read as 3 <strong>is assigned the value of</strong> <code>x</code>.  For historical reasons, you can also use <code>=</code> for assignments, but not in every context.<br>
+It is good practice to always use <code>&lt;-</code> for assignments. If you search the Internet for help with R code, you will occasionally see examples using <code>=</code>, but the majority will use <code>&lt;-</code>.&gt;</p>
+<h3 class="mume-header" id="naming-objects">Naming Objects</h3>
+
+<p>Objects can be given any name such as <code>x</code>, <code>current_temperature</code>, or <code>subject_id</code>. You want your object names to be explicit and not too long. They cannot start with a number (<code>2x</code> is not valid, but <code>x2</code> is). <strong>R is case sensitive</strong> (e.g., <code>age</code> is different from <code>Age</code>). There are some names that cannot be used because they are the names of fundamental functions in R (e.g., <code>if</code>, <code>else</code>, <code>for</code>, see <a href="https://stat.ethz.ch/R-manual/R-devel/library/base/html/Reserved.html">here</a> for a complete list). In general, even if it&apos;s allowed, it&apos;s best to not use other function names (e.g., <code>c</code>, <code>T</code>, <code>mean</code>, <code>data</code>, <code>df</code>, <code>weights</code>). If in doubt, check the help to see if the name is already in use. It&apos;s also best to avoid dots (<code>.</code>) within an object name as in <code>my.dataset</code>. There are many functions in R with dots in their names for historical reasons, but because dots have a special meaning in R (for methods) and other programming languages, it&apos;s best to avoid them. It is also recommended to use nouns for object names, and verbs for function names. It&apos;s important to be consistent in the styling of your code (where you put spaces, how you name objects, etc.). Using a consistent coding style makes your code clearer to read for your future self and your collaborators.</p>
+<p>When assigning a value to an object, R does not print anything. You can force R to print the value by using parentheses or by typing the object name:</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">area_hectares <span class="token operator">&lt;-</span> <span class="token number">1.0</span>    <span class="token comment"># doesn&apos;t print anything</span>
+<span class="token punctuation">(</span>area_hectares <span class="token operator">&lt;-</span> <span class="token number">1.0</span><span class="token punctuation">)</span>  <span class="token comment"># putting parenthesis around the call prints the value of `area_hectares`</span>
+</pre><pre data-role="codeBlock" data-info class="language-"><code>[1] 1
+</code></pre><pre data-role="codeBlock" data-info="r" class="language-r">area_hectares         <span class="token comment"># and so does typing the name of the object</span>
+</pre><pre data-role="codeBlock" data-info class="language-"><code>[1] 1
+</code></pre><p>Now that R has <code>area_hectares</code> in memory, we can do arithmetic with it. For instance, we may want to convert this area into acres (area in acres is 2.47 times the area in hectares):</p>
+<pre data-role="codeBlock" data-info="r" class="language-r"><span class="token number">2.47</span> <span class="token operator">*</span> area_hectares
+</pre><pre data-role="codeBlock" data-info class="language-"><code>[1] 2.47
+</code></pre><p>We can also change an object&apos;s value by assigning it a new one:</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">area_hectares <span class="token operator">&lt;-</span> <span class="token number">2.5</span>
+<span class="token number">2.47</span> <span class="token operator">*</span> area_hectares
+</pre><pre data-role="codeBlock" data-info class="language-"><code>[1] 6.175
+</code></pre><p>This means that assigning a value to one object does not change the values of other objects  For example, let&apos;s store the plot&apos;s area in acres in a new object, <code>area_acres</code>:</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">area_acres <span class="token operator">&lt;-</span> <span class="token number">2.47</span> <span class="token operator">*</span> area_hectares
+</pre><p>and then change <code>area_hectares</code> to 50.</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">area_hectares <span class="token operator">&lt;-</span> <span class="token number">50</span>
+</pre><blockquote>
+<h3>Exercise</h3>
+<p>What do you think is the current content of the object <code>area_acres</code>? 123.5 or 6.175?</p>
+</blockquote>
+ <details><summary><b>Solution</b>  - click me</summary>
+<blockquote>
+<blockquote>
+<p>The value of <code>area_acres</code> is still 6.175 because you have not re-run the line <code>area_acres &lt;- 2.47 * area_hectares</code> since changing the value of <code>area_hectares</code>.</p>
+</blockquote>
+</blockquote>
+<pre data-role="codeBlock" data-info="r" class="language-r">area_acres <span class="token operator">&lt;-</span> <span class="token number">2.47</span> <span class="token operator">*</span> area_hectares
+area_acres
+</pre></details>
+<h2 class="mume-header" id="comments">Comments</h2>
+
+<p>All programming languages allow the programmer to include comments in their code. To do this in R we use the <code>#</code> character.<br>
+Anything to the right of the <code>#</code> sign and up to the end of the line is treated as a comment and is ignored by R. You can start lines with comments or include them after any code on the line.</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">area_hectares <span class="token operator">&lt;-</span> <span class="token number">1.0</span>			    <span class="token comment"># land area in hectares</span>
+area_acres <span class="token operator">&lt;-</span> area_hectares <span class="token operator">*</span> <span class="token number">2.47</span>	<span class="token comment"># convert to acres</span>
+area_acres				            <span class="token comment"># print land area in acres.</span>
+</pre><pre data-role="codeBlock" data-info class="language-"><code>[1] 2.47
+</code></pre><p>RStudio makes it easy to comment or uncomment a paragraph: after selecting the lines you  want to comment, press at the same time on your keyboard <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>C</kbd>. If you only want to comment out one line, you can put the cursor at any location of that line (i.e. no need to select the whole line), then press <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>C</kbd>.</p>
+<blockquote>
+<h3>Exercise</h3>
+<p>Create two variables <code>length</code> and <code>width</code> and assign them values.<br>
+Create a third variable <code>area</code> and give it a value based on the current values of <code>length</code> and <code>width</code>.</p>
+<p>Show that changing the values of either <code>length</code> and <code>width</code> does not affect the value of <code>area</code>.</p>
+</blockquote>
+<details><summary><b>Solution</b>  - click me</summary>
+<pre data-role="codeBlock" data-info="r" class="language-r">length <span class="token operator">&lt;-</span> <span class="token number">2.5</span>
+width <span class="token operator">&lt;-</span> <span class="token number">3.2</span>
+area <span class="token operator">&lt;-</span> length <span class="token operator">*</span> width
+area 
+
+<span class="token comment"># change the values of length and width</span>
+length <span class="token operator">&lt;-</span> <span class="token number">7.0</span>
+width <span class="token operator">&lt;-</span> <span class="token number">6.5</span>
+<span class="token comment"># the value of area isn&apos;t changed</span>
+area
+
+</pre></details>
+<h2 class="mume-header" id="functions-and-their-arguments">Functions and their arguments</h2>
+
+<p>Functions are &quot;canned scripts&quot; that automate more complicated sets of commands including operations assignments, etc. Many functions are predefined, or can be made available by importing R <em>packages</em> (more on that later). A function usually gets one or more inputs called <em>arguments</em>. Functions often (but not always) return a <em>value</em>. A typical example would be the function <code>sqrt()</code>. The input (the argument) must be a number, and the return value (in fact, the output) is the square root of that number. Executing a function (&apos;running it&apos;) is called <em>calling</em> the function. An example of a function call is:</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">b <span class="token operator">&lt;-</span> sqrt<span class="token punctuation">(</span>a<span class="token punctuation">)</span>
+</pre><p>Here, the value of <code>a</code> is given to the <code>sqrt()</code> function, the <code>sqrt()</code> function calculates the square root, and returns the value which is then assigned to the object <code>b</code>. This function is very simple, because it takes just one argument.</p>
+<p>The return &apos;value&apos; of a function need not be numerical (like that of <code>sqrt()</code>), and it also does not need to be a single item: it can be a set of things, or even a dataset. We&apos;ll see that when we read data files into R.</p>
+<p>Arguments can be anything, not only numbers or filenames, but also other objects. Exactly what each argument means differs per function, and must be looked up in the documentation (see below). Some functions take arguments which may either be specified by the user, or, if left out, take on a <em>default</em> value: these are called <em>options</em>. Options are typically used to alter the way the function operates, such as whether it ignores &apos;bad values&apos;, or what symbol to use in a plot.  However, if you want something specific, you can specify a value of your choice which will be used instead of the default. Let&apos;s try a function that can take multiple arguments: <code>round()</code>.</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">round<span class="token punctuation">(</span><span class="token number">3.14159</span><span class="token punctuation">)</span>
+</pre><pre data-role="codeBlock" data-info class="language-"><code>[1] 3
+</code></pre><p>Here, we&apos;ve called <code>round()</code> with just one argument, <code>3.14159</code>, and it has returned the value <code>3</code>.  That&apos;s because the default is to round to the nearest whole number. Or more precisely it provides 0 decimal places. If we want more digits we can see how to do that by getting information about the <code>round</code> function.  We can use <code>args(round)</code> or look at the help for this function using <code>?round</code>.</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">args<span class="token punctuation">(</span>round<span class="token punctuation">)</span>
+</pre><pre data-role="codeBlock" data-info="r" class="language-r"><span class="token keyword">function</span> <span class="token punctuation">(</span>x<span class="token punctuation">,</span> digits <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">)</span> 
+<span class="token keyword">NULL</span>
+</pre><pre data-role="codeBlock" data-info="r" class="language-r">?round
+</pre><p>We see that if we want a different number of digits, we can type <code>digits=2</code> or however many we want.</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">round<span class="token punctuation">(</span><span class="token number">3.14159</span><span class="token punctuation">,</span> digits <span class="token operator">=</span> <span class="token number">2</span><span class="token punctuation">)</span>
+</pre><pre data-role="codeBlock" data-info class="language-"><code>[1] 3.14
+</code></pre><p>If you provide the arguments in the exact same order as they are defined you don&apos;t have to name them:</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">round<span class="token punctuation">(</span><span class="token number">3.14159</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span>
+</pre><pre data-role="codeBlock" data-info class="language-"><code>[1] 3.14
+</code></pre><p>And if you do name the arguments, you can switch their order:</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">round<span class="token punctuation">(</span>digits <span class="token operator">=</span> <span class="token number">2</span><span class="token punctuation">,</span> x <span class="token operator">=</span> <span class="token number">3.14159</span><span class="token punctuation">)</span>
+</pre><pre data-role="codeBlock" data-info class="language-"><code>[1] 3.14
+</code></pre><p>It&apos;s good practice to put the non-optional arguments (like the number you&apos;re rounding) first in your function call, and to specify the names of all optional arguments.  If you don&apos;t, someone reading your code might have to look up the definition of a function with unfamiliar arguments to understand what you&apos;re doing.</p>
+<blockquote>
+<h2>Exercise</h2>
+<p>Type in <code>?round</code> at the console and then look at the output in the Help pane.<br>
+What other functions exist that are similar to <code>round</code>?<br>
+How do you use the <code>digits</code> parameter in the round function?</p>
+</blockquote>
+<h2 class="mume-header" id="vectors-and-data-types">Vectors and data types</h2>
+
+<p>A vector is the most common and basic data type in R, and is pretty much the workhorse of R. A vector is composed by a series of values, which can be either numbers or characters. We can assign a series of values to a vector using the <code>c()</code> function. For example we can create a vector of household members for the households we&apos;ve interviewed and assign it to a new object <code>no_membrs</code>:</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">no_membrs <span class="token operator">&lt;-</span> c<span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">7</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">)</span>
+no_membrs
+</pre><pre data-role="codeBlock" data-info class="language-"><code>[1]  3  7 10  6
+</code></pre><p>A vector can also contain characters. For example, we can have a vector of the building material used to construct our interview respondents&apos; walls (<code>respondent_wall_type</code>):</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">respondent_wall_type <span class="token operator">&lt;-</span> c<span class="token punctuation">(</span><span class="token string">&quot;muddaub&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;burntbricks&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;sunbricks&quot;</span><span class="token punctuation">)</span>
+respondent_wall_type
+</pre><pre data-role="codeBlock" data-info class="language-"><code>[1] &quot;muddaub&quot;     &quot;burntbricks&quot; &quot;sunbricks&quot;  
+</code></pre><p>The quotes around &quot;muddaub&quot;, etc. are essential here. Without the quotes R will assume there are objects called <code>muddaub</code>, <code>burntbricks</code> and <code>sunbricks</code>. As these objects don&apos;t exist in R&apos;s memory, there will be an error message.</p>
+<p>There are many functions that allow you to inspect the content of a vector. <code>length()</code> tells you how many elements are in a particular vector:</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">length<span class="token punctuation">(</span>no_membrs<span class="token punctuation">)</span>
+</pre><pre data-role="codeBlock" data-info class="language-"><code>[1] 4
+</code></pre><pre data-role="codeBlock" data-info="r" class="language-r">length<span class="token punctuation">(</span>respondent_wall_type<span class="token punctuation">)</span>
+</pre><pre data-role="codeBlock" data-info class="language-"><code>[1] 3
+</code></pre><p>An important feature of a vector, is that all of the elements are the same type of data. The function <code>class()</code> indicates the class (the type of element) of an object:</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">class<span class="token punctuation">(</span>no_membrs<span class="token punctuation">)</span>
+</pre><pre data-role="codeBlock" data-info class="language-"><code>[1] &quot;numeric&quot;
+</code></pre><pre data-role="codeBlock" data-info="r" class="language-r">class<span class="token punctuation">(</span>respondent_wall_type<span class="token punctuation">)</span>
+</pre><pre data-role="codeBlock" data-info class="language-"><code>[1] &quot;character&quot;
+</code></pre><p>The function <code>str()</code> provides an overview of the structure of an object and its elements. It is a useful function when working with large and complex objects:</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">str<span class="token punctuation">(</span>no_membrs<span class="token punctuation">)</span>
+</pre><pre data-role="codeBlock" data-info class="language-"><code> num [1:4] 3 7 10 6
+</code></pre><pre data-role="codeBlock" data-info="r" class="language-r">str<span class="token punctuation">(</span>respondent_wall_type<span class="token punctuation">)</span>
+</pre><pre data-role="codeBlock" data-info class="language-"><code> chr [1:3] &quot;muddaub&quot; &quot;burntbricks&quot; &quot;sunbricks&quot;
+</code></pre><p>You can use the <code>c()</code> function to add other elements to your vector:</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">possessions <span class="token operator">&lt;-</span> c<span class="token punctuation">(</span><span class="token string">&quot;bicycle&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;radio&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;television&quot;</span><span class="token punctuation">)</span>
+possessions <span class="token operator">&lt;-</span> c<span class="token punctuation">(</span>possessions<span class="token punctuation">,</span> <span class="token string">&quot;mobile_phone&quot;</span><span class="token punctuation">)</span> <span class="token comment"># add to the end of the vector</span>
+possessions <span class="token operator">&lt;-</span> c<span class="token punctuation">(</span><span class="token string">&quot;car&quot;</span><span class="token punctuation">,</span> possessions<span class="token punctuation">)</span> <span class="token comment"># add to the beginning of the vector</span>
+possessions
+</pre><pre data-role="codeBlock" data-info class="language-"><code>[1] &quot;car&quot;          &quot;bicycle&quot;      &quot;radio&quot;        &quot;television&quot;  
+[5] &quot;mobile_phone&quot;
+</code></pre><p>In the first line, we take the original vector <code>possessions</code>, add the value <code>&quot;mobile_phone&quot;</code> to the end of it, and save the result back into <code>possessions</code>. Then we add the value <code>&quot;car&quot;</code> to the beginning, again saving the result back into <code>possessions</code>.</p>
+<p>We can do this over and over again to grow a vector, or assemble a dataset. As we program, this may be useful to add results that we are collecting or calculating.</p>
+<p>An <strong>atomic vector</strong> is the simplest R <strong>data type</strong> and is a linear vector of a single type. Above, we saw 2 of the 6 main <strong>atomic vector</strong> types  that R uses: <code>&quot;character&quot;</code> and <code>&quot;numeric&quot;</code> (or <code>&quot;double&quot;</code>). These are the basic building blocks that all R objects are built from. The other 4 <strong>atomic vector</strong> types are:</p>
+<ul>
+<li><code>&quot;logical&quot;</code> for <code>TRUE</code> and <code>FALSE</code> (the boolean data type)</li>
+<li><code>&quot;integer&quot;</code> for integer numbers (e.g., <code>2L</code>, the <code>L</code> indicates to R that it&apos;s an integer)</li>
+<li><code>&quot;complex&quot;</code> to represent complex numbers with real and imaginary parts (e.g.,<br>
+<code>1 + 4i</code>) and that&apos;s all we&apos;re going to say about them</li>
+<li><code>&quot;raw&quot;</code> for bitstreams that we won&apos;t discuss further</li>
+</ul>
+<p>You can check the type of your vector using the <code>typeof()</code> function and inputting your vector as the argument.</p>
+<p>Vectors are one of the many <strong>data structures</strong> that R uses. Other important ones are lists (<code>list</code>), matrices (<code>matrix</code>), data frames (<code>data.frame</code>), factors (<code>factor</code>) and arrays (<code>array</code>).</p>
+<blockquote>
+<h2>Exercise</h2>
+<p>We have seen that atomic vectors can be of type character, numeric (or double), integer, and logical. But what happens if we try to mix these types in a single vector?</p>
+</blockquote>
+<details><summary><b>Solution</b>  - click me</summary>
+<blockquote>
+<blockquote>
+<p>R implicitly converts them to all be the same type.</p>
+</blockquote>
+</blockquote>
+</details>
+<blockquote>
+<h2>Exercise</h2>
+<p>What will happen in each of these examples? (hint: use <code>class()</code> to check the data type of your objects):</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">num_char <span class="token operator">&lt;-</span> c<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token string">&quot;a&quot;</span><span class="token punctuation">)</span>
+num_logical <span class="token operator">&lt;-</span> c<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token boolean">TRUE</span><span class="token punctuation">)</span>
+char_logical <span class="token operator">&lt;-</span> c<span class="token punctuation">(</span><span class="token string">&quot;a&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;b&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;c&quot;</span><span class="token punctuation">,</span> <span class="token boolean">TRUE</span><span class="token punctuation">)</span>
+tricky <span class="token operator">&lt;-</span> c<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token string">&quot;4&quot;</span><span class="token punctuation">)</span>
+</pre><p>Why do you think it happens?</p>
+</blockquote>
+<details><summary><b>Solution</b>  - click me</summary>
+<blockquote>
+<blockquote>
+<p>Vectors can be of only one data type. R tries to convert (coerce) the content of this vector to find a &quot;common denominator&quot; that doesn&apos;t lose any information.</p>
+</blockquote>
+</blockquote>
+</details>
+<blockquote>
+<h2>Exercise</h2>
+<p>How many values in <code>combined_logical</code> are <code>&quot;TRUE&quot;</code> (as a character) in the<br>
+following example:</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">num_logical <span class="token operator">&lt;-</span> c<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token boolean">TRUE</span><span class="token punctuation">)</span>
+char_logical <span class="token operator">&lt;-</span> c<span class="token punctuation">(</span><span class="token string">&quot;a&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;b&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;c&quot;</span><span class="token punctuation">,</span> <span class="token boolean">TRUE</span><span class="token punctuation">)</span>
+combined_logical <span class="token operator">&lt;-</span> c<span class="token punctuation">(</span>num_logical<span class="token punctuation">,</span> char_logical<span class="token punctuation">)</span>
+</pre></blockquote>
+<details><summary><b>Solution</b>  - click me</summary>
+<blockquote>
+<blockquote>
+<p>Only one. There is no memory of past data types, and the coercion happens the first time the vector is evaluated. Therefore, the <code>TRUE</code> in <code>num_logical</code> gets converted into a <code>1</code> before it gets converted into <code>&quot;1&quot;</code> in <code>combined_logical</code>.</p>
+</blockquote>
+</blockquote>
+</details>
+<br>
+<blockquote>
+<p>You&apos;ve probably noticed that objects of different types get converted into a single, shared type within a vector.  In R, we call converting objects from one class into another class <em>coercion</em>.  These conversions happen according to a hierarchy, whereby some types get preferentially coerced into other types.</p>
+</blockquote>
+<h2 class="mume-header" id="subsetting-vectors">Subsetting vectors</h2>
+
+<p>If we want to extract one or several values from a vector, we must provide one or several indices in square brackets. For instance:</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">respondent_wall_type <span class="token operator">&lt;-</span> c<span class="token punctuation">(</span><span class="token string">&quot;muddaub&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;burntbricks&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;sunbricks&quot;</span><span class="token punctuation">)</span>
+respondent_wall_type<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span>
+</pre><pre data-role="codeBlock" data-info class="language-"><code>[1] &quot;burntbricks&quot;
+</code></pre><pre data-role="codeBlock" data-info="r" class="language-r">respondent_wall_type<span class="token punctuation">[</span>c<span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+</pre><pre data-role="codeBlock" data-info class="language-"><code>[1] &quot;sunbricks&quot;   &quot;burntbricks&quot;
+</code></pre><p>We can also repeat the indices to create an object with more elements than the original one:</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">more_respondent_wall_type <span class="token operator">&lt;-</span> respondent_wall_type<span class="token punctuation">[</span>c<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+more_respondent_wall_type
+</pre><pre data-role="codeBlock" data-info class="language-"><code>[1] &quot;muddaub&quot;     &quot;burntbricks&quot; &quot;sunbricks&quot;   &quot;burntbricks&quot; &quot;muddaub&quot;    
+[6] &quot;sunbricks&quot;  
+</code></pre><p>R indices start at 1. Programming languages like Fortran, MATLAB, Julia, and R start counting at 1, because that&apos;s what human beings typically do. Languages in the C family (including C++, Java, Perl, and Python) count from 0 because that&apos;s simpler for computers to do.</p>
+<h3 class="mume-header" id="conditional-subsetting">Conditional subsetting</h3>
+
+<p>Another way of subsetting is by using a logical vector. <code>TRUE</code> will select the element with the same index, while <code>FALSE</code> will not:</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">no_membrs <span class="token operator">&lt;-</span> c<span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">7</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">)</span>
+no_membrs<span class="token punctuation">[</span>c<span class="token punctuation">(</span><span class="token boolean">TRUE</span><span class="token punctuation">,</span> <span class="token boolean">FALSE</span><span class="token punctuation">,</span> <span class="token boolean">TRUE</span><span class="token punctuation">,</span> <span class="token boolean">TRUE</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+</pre><pre data-role="codeBlock" data-info class="language-"><code>[1]  3 10  6
+</code></pre><p>Typically, these logical vectors are not typed by hand, but are the output of other functions or logical tests. For instance, if you wanted to select only the values above 5:</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">no_membrs <span class="token operator">&gt;</span> <span class="token number">5</span>    <span class="token comment"># will return logicals with TRUE for the indices that meet the condition</span>
+</pre><pre data-role="codeBlock" data-info class="language-"><code>[1] FALSE  TRUE  TRUE  TRUE
+</code></pre><pre data-role="codeBlock" data-info="r" class="language-r"><span class="token comment">## so we can use this to select only the values above 5</span>
+no_membrs<span class="token punctuation">[</span>no_membrs <span class="token operator">&gt;</span> <span class="token number">5</span><span class="token punctuation">]</span>
+</pre><pre data-role="codeBlock" data-info class="language-"><code>[1]  7 10  6
+</code></pre><p>You can combine multiple tests using <code>&amp;</code> (both conditions are true, AND) or <code>|</code> (at least one of the conditions is true, OR):</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">no_membrs<span class="token punctuation">[</span>no_membrs <span class="token operator">&lt;</span> <span class="token number">3</span> <span class="token operator">|</span> no_membrs <span class="token operator">&gt;</span> <span class="token number">5</span><span class="token punctuation">]</span>
+</pre><pre data-role="codeBlock" data-info class="language-"><code>[1]  7 10  6
+</code></pre><pre data-role="codeBlock" data-info="r" class="language-r">no_membrs<span class="token punctuation">[</span>no_membrs <span class="token operator">&gt;=</span> <span class="token number">7</span> <span class="token operator">&amp;</span> no_membrs <span class="token operator">==</span> <span class="token number">3</span><span class="token punctuation">]</span>
+</pre><pre data-role="codeBlock" data-info class="language-"><code>numeric(0)
+</code></pre><p>Here, <code>&lt;</code> stands for &quot;less than&quot;, <code>&gt;</code> for &quot;greater than&quot;, <code>&gt;=</code> for &quot;greater than or equal to&quot;, and <code>==</code> for &quot;equal to&quot;. The double equal sign <code>==</code> is a test for numerical equality between the left and right hand sides, and should not be confused with the single <code>=</code> sign, which performs variable assignment (similar to <code>&lt;-</code>).</p>
+<p>A common task is to search for certain strings in a vector.  One could use the &quot;or&quot; operator <code>|</code> to test for equality to multiple values, but this can quickly become tedious. The function <code>%in%</code> allows you to test if any of the elements of a search vector are found:</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">possessions <span class="token operator">&lt;-</span> c<span class="token punctuation">(</span><span class="token string">&quot;car&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;bicycle&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;radio&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;television&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;mobile_phone&quot;</span><span class="token punctuation">)</span>
+possessions<span class="token punctuation">[</span>possessions <span class="token operator">==</span> <span class="token string">&quot;car&quot;</span> <span class="token operator">|</span> possessions <span class="token operator">==</span> <span class="token string">&quot;bicycle&quot;</span><span class="token punctuation">]</span> <span class="token comment"># returns both car and bicycle</span>
+</pre><pre data-role="codeBlock" data-info class="language-"><code>[1] &quot;car&quot;     &quot;bicycle&quot;
+</code></pre><pre data-role="codeBlock" data-info="r" class="language-r">possessions <span class="token percent-operator operator">%in%</span> c<span class="token punctuation">(</span><span class="token string">&quot;car&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;bicycle&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;motorcycle&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;boat&quot;</span><span class="token punctuation">)</span>
+</pre><pre data-role="codeBlock" data-info class="language-"><code>[1]  TRUE  TRUE FALSE FALSE FALSE
+</code></pre><pre data-role="codeBlock" data-info="r" class="language-r"> possessions<span class="token punctuation">[</span>possessions <span class="token percent-operator operator">%in%</span> c<span class="token punctuation">(</span><span class="token string">&quot;car&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;bicycle&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;motorcycle&quot;</span><span class="token punctuation">,</span>  <span class="token string">&quot;boat&quot;</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+</pre><pre data-role="codeBlock" data-info class="language-"><code>[1] &quot;car&quot;     &quot;bicycle&quot;
+</code></pre><blockquote>
+<p>Notice that although we refer to <code>%in%</code> as a function in the syntax it looks more like an operator.</p>
+</blockquote>
+<h2 class="mume-header" id="missing-data">Missing data</h2>
+
+<p>As R was designed to analyze datasets, it includes the concept of missing data<br>
+(which is uncommon in other programming languages). Missing data are represented<br>
+in vectors as <code>NA</code>.</p>
+<p>When doing operations on numbers, most functions will return <code>NA</code> if the data you are working with include missing values. This feature makes it harder to overlook the cases where you are dealing with missing data. Many functions will allow you to add the argument <code>na.rm=TRUE</code> to calculate the result while ignoring the missing values.</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">rooms <span class="token operator">&lt;-</span> c<span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token keyword">NA</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">)</span>
+mean<span class="token punctuation">(</span>rooms<span class="token punctuation">)</span>
+</pre><pre data-role="codeBlock" data-info class="language-"><code>[1] NA
+</code></pre><pre data-role="codeBlock" data-info="r" class="language-r">max<span class="token punctuation">(</span>rooms<span class="token punctuation">)</span>
+</pre><pre data-role="codeBlock" data-info class="language-"><code>[1] NA
+</code></pre><pre data-role="codeBlock" data-info="r" class="language-r">mean<span class="token punctuation">(</span>rooms<span class="token punctuation">,</span> na.rm <span class="token operator">=</span> <span class="token boolean">TRUE</span><span class="token punctuation">)</span>
+</pre><pre data-role="codeBlock" data-info class="language-"><code>[1] 2
+</code></pre><pre data-role="codeBlock" data-info="r" class="language-r">max<span class="token punctuation">(</span>rooms<span class="token punctuation">,</span> na.rm <span class="token operator">=</span> <span class="token boolean">TRUE</span><span class="token punctuation">)</span>
+</pre><pre data-role="codeBlock" data-info class="language-"><code>[1] 4
+</code></pre><p>If your data include missing values, you may want to become familiar with the functions <code>is.na()</code>, <code>na.omit()</code>, and <code>complete.cases()</code>. See below for examples.</p>
+<pre data-role="codeBlock" data-info="r" class="language-r"><span class="token comment">## Extract those elements which are not missing values.</span>
+rooms<span class="token punctuation">[</span><span class="token operator">!</span>is.na<span class="token punctuation">(</span>rooms<span class="token punctuation">)</span><span class="token punctuation">]</span>
+</pre><pre data-role="codeBlock" data-info class="language-"><code>[1] 2 1 1 4
+</code></pre><p>Notice the use of the  <code>!</code> operator to represent <strong>NOT</strong>.</p>
+<pre data-role="codeBlock" data-info="r" class="language-r"><span class="token comment">## Returns the object with incomplete cases removed. The returned object is an atomic vector of type `&quot;numeric&quot;` (or `&quot;double&quot;`).</span>
+na.omit<span class="token punctuation">(</span>rooms<span class="token punctuation">)</span>
+</pre><pre data-role="codeBlock" data-info class="language-"><code>[1] 2 1 1 4
+attr(,&quot;na.action&quot;)
+[1] 4
+attr(,&quot;class&quot;)
+[1] &quot;omit&quot;
+</code></pre><pre data-role="codeBlock" data-info="r" class="language-r"><span class="token comment">## Extract those elements which are complete cases. The returned object is an atomic vector of type `&quot;numeric&quot;` (or `&quot;double&quot;`).</span>
+rooms<span class="token punctuation">[</span>complete.cases<span class="token punctuation">(</span>rooms<span class="token punctuation">)</span><span class="token punctuation">]</span>
+</pre><pre data-role="codeBlock" data-info class="language-"><code>[1] 2 1 1 4
+</code></pre><p>Recall that you can use the <code>typeof()</code> function to find the type of your atomic vector.</p>
+<p>In both of the last two cases above, it would be more normal to assign the results to a new object for futher processing.</p>
+<blockquote>
+<h3>Exercise</h3>
+<ol>
+<li>
+<p>Using this vector of rooms, create a new vector with the NAs removed.</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">rooms <span class="token operator">&lt;-</span> c<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token keyword">NA</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">8</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token keyword">NA</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span>
+</pre></li>
+<li>
+<p>Use the function <code>median()</code> to calculate the median of the <code>rooms</code> vector.</p>
+</li>
+<li>
+<p>Use R to figure out how many households in the set use more than 2 rooms for sleeping.</p>
+</li>
+</ol>
+</blockquote>
+<details><summary><b>Solution</b>  - click me</summary>
+<pre data-role="codeBlock" data-info="r" class="language-r">rooms <span class="token operator">&lt;-</span> c<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token keyword">NA</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">8</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token keyword">NA</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span>
+rooms_no_na <span class="token operator">&lt;-</span> rooms<span class="token punctuation">[</span><span class="token operator">!</span>is.na<span class="token punctuation">(</span>rooms<span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span class="token comment"># or</span>
+rooms_no_na <span class="token operator">&lt;-</span> na.omit<span class="token punctuation">(</span>rooms<span class="token punctuation">)</span>
+<span class="token comment"># 2.</span>
+median<span class="token punctuation">(</span>rooms<span class="token punctuation">,</span> na.rm <span class="token operator">=</span> <span class="token boolean">TRUE</span><span class="token punctuation">)</span>
+<span class="token comment"># 3.</span>
+rooms_above_2 <span class="token operator">&lt;-</span> rooms_no_na<span class="token punctuation">[</span>rooms_no_na <span class="token operator">&gt;</span> <span class="token number">2</span><span class="token punctuation">]</span>
+length<span class="token punctuation">(</span>rooms_above_2<span class="token punctuation">)</span>
+</pre></details>
+<br>
+
+      </div>
+      
+      
+    
+    
+    
+    
+    
+    
+    
+    
+  
+    </body></html>

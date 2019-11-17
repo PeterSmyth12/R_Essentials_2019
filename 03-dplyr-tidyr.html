@@ -1,0 +1,835 @@
+<!DOCTYPE html><html><head>
+      <title>Data manipulation with dplyr and tidyr</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/katex.min.css">
+      
+      
+
+      
+      
+      
+      
+      
+      
+
+      <style>
+      /**
+ * prism.js Github theme based on GitHub's theme.
+ * @author Sam Clarke
+ */
+code[class*="language-"],
+pre[class*="language-"] {
+  color: #333;
+  background: none;
+  font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.4;
+
+  -moz-tab-size: 8;
+  -o-tab-size: 8;
+  tab-size: 8;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+/* Code blocks */
+pre[class*="language-"] {
+  padding: .8em;
+  overflow: auto;
+  /* border: 1px solid #ddd; */
+  border-radius: 3px;
+  /* background: #fff; */
+  background: #f5f5f5;
+}
+
+/* Inline code */
+:not(pre) > code[class*="language-"] {
+  padding: .1em;
+  border-radius: .3em;
+  white-space: normal;
+  background: #f5f5f5;
+}
+
+.token.comment,
+.token.blockquote {
+  color: #969896;
+}
+
+.token.cdata {
+  color: #183691;
+}
+
+.token.doctype,
+.token.punctuation,
+.token.variable,
+.token.macro.property {
+  color: #333;
+}
+
+.token.operator,
+.token.important,
+.token.keyword,
+.token.rule,
+.token.builtin {
+  color: #a71d5d;
+}
+
+.token.string,
+.token.url,
+.token.regex,
+.token.attr-value {
+  color: #183691;
+}
+
+.token.property,
+.token.number,
+.token.boolean,
+.token.entity,
+.token.atrule,
+.token.constant,
+.token.symbol,
+.token.command,
+.token.code {
+  color: #0086b3;
+}
+
+.token.tag,
+.token.selector,
+.token.prolog {
+  color: #63a35c;
+}
+
+.token.function,
+.token.namespace,
+.token.pseudo-element,
+.token.class,
+.token.class-name,
+.token.pseudo-class,
+.token.id,
+.token.url-reference .token.variable,
+.token.attr-name {
+  color: #795da3;
+}
+
+.token.entity {
+  cursor: help;
+}
+
+.token.title,
+.token.title .token.punctuation {
+  font-weight: bold;
+  color: #1d3e81;
+}
+
+.token.list {
+  color: #ed6a43;
+}
+
+.token.inserted {
+  background-color: #eaffea;
+  color: #55a532;
+}
+
+.token.deleted {
+  background-color: #ffecec;
+  color: #bd2c00;
+}
+
+.token.bold {
+  font-weight: bold;
+}
+
+.token.italic {
+  font-style: italic;
+}
+
+
+/* JSON */
+.language-json .token.property {
+  color: #183691;
+}
+
+.language-markup .token.tag .token.punctuation {
+  color: #333;
+}
+
+/* CSS */
+code.language-css,
+.language-css .token.function {
+  color: #0086b3;
+}
+
+/* YAML */
+.language-yaml .token.atrule {
+  color: #63a35c;
+}
+
+code.language-yaml {
+  color: #183691;
+}
+
+/* Ruby */
+.language-ruby .token.function {
+  color: #333;
+}
+
+/* Markdown */
+.language-markdown .token.url {
+  color: #795da3;
+}
+
+/* Makefile */
+.language-makefile .token.symbol {
+  color: #795da3;
+}
+
+.language-makefile .token.variable {
+  color: #183691;
+}
+
+.language-makefile .token.builtin {
+  color: #0086b3;
+}
+
+/* Bash */
+.language-bash .token.keyword {
+  color: #0086b3;
+}
+
+/* highlight */
+pre[data-line] {
+  position: relative;
+  padding: 1em 0 1em 3em;
+}
+pre[data-line] .line-highlight-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: transparent;
+  display: block;
+  width: 100%;
+}
+
+pre[data-line] .line-highlight {
+  position: absolute;
+  left: 0;
+  right: 0;
+  padding: inherit 0;
+  margin-top: 1em;
+  background: hsla(24, 20%, 50%,.08);
+  background: linear-gradient(to right, hsla(24, 20%, 50%,.1) 70%, hsla(24, 20%, 50%,0));
+  pointer-events: none;
+  line-height: inherit;
+  white-space: pre;
+}
+
+pre[data-line] .line-highlight:before, 
+pre[data-line] .line-highlight[data-end]:after {
+  content: attr(data-start);
+  position: absolute;
+  top: .4em;
+  left: .6em;
+  min-width: 1em;
+  padding: 0 .5em;
+  background-color: hsla(24, 20%, 50%,.4);
+  color: hsl(24, 20%, 95%);
+  font: bold 65%/1.5 sans-serif;
+  text-align: center;
+  vertical-align: .3em;
+  border-radius: 999px;
+  text-shadow: none;
+  box-shadow: 0 1px white;
+}
+
+pre[data-line] .line-highlight[data-end]:after {
+  content: attr(data-end);
+  top: auto;
+  bottom: .4em;
+}html body{font-family:"Helvetica Neue",Helvetica,"Segoe UI",Arial,freesans,sans-serif;font-size:16px;line-height:1.6;color:#333;background-color:#fff;overflow:initial;box-sizing:border-box;word-wrap:break-word}html body>:first-child{margin-top:0}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{line-height:1.2;margin-top:1em;margin-bottom:16px;color:#000}html body h1{font-size:2.25em;font-weight:300;padding-bottom:.3em}html body h2{font-size:1.75em;font-weight:400;padding-bottom:.3em}html body h3{font-size:1.5em;font-weight:500}html body h4{font-size:1.25em;font-weight:600}html body h5{font-size:1.1em;font-weight:600}html body h6{font-size:1em;font-weight:600}html body h1,html body h2,html body h3,html body h4,html body h5{font-weight:600}html body h5{font-size:1em}html body h6{color:#5c5c5c}html body strong{color:#000}html body del{color:#5c5c5c}html body a:not([href]){color:inherit;text-decoration:none}html body a{color:#08c;text-decoration:none}html body a:hover{color:#00a3f5;text-decoration:none}html body img{max-width:100%}html body>p{margin-top:0;margin-bottom:16px;word-wrap:break-word}html body>ul,html body>ol{margin-bottom:16px}html body ul,html body ol{padding-left:2em}html body ul.no-list,html body ol.no-list{padding:0;list-style-type:none}html body ul ul,html body ul ol,html body ol ol,html body ol ul{margin-top:0;margin-bottom:0}html body li{margin-bottom:0}html body li.task-list-item{list-style:none}html body li>p{margin-top:0;margin-bottom:0}html body .task-list-item-checkbox{margin:0 .2em .25em -1.8em;vertical-align:middle}html body .task-list-item-checkbox:hover{cursor:pointer}html body blockquote{margin:16px 0;font-size:inherit;padding:0 15px;color:#5c5c5c;border-left:4px solid #d6d6d6}html body blockquote>:first-child{margin-top:0}html body blockquote>:last-child{margin-bottom:0}html body hr{height:4px;margin:32px 0;background-color:#d6d6d6;border:0 none}html body table{margin:10px 0 15px 0;border-collapse:collapse;border-spacing:0;display:block;width:100%;overflow:auto;word-break:normal;word-break:keep-all}html body table th{font-weight:bold;color:#000}html body table td,html body table th{border:1px solid #d6d6d6;padding:6px 13px}html body dl{padding:0}html body dl dt{padding:0;margin-top:16px;font-size:1em;font-style:italic;font-weight:bold}html body dl dd{padding:0 16px;margin-bottom:16px}html body code{font-family:Menlo,Monaco,Consolas,'Courier New',monospace;font-size:.85em !important;color:#000;background-color:#f0f0f0;border-radius:3px;padding:.2em 0}html body code::before,html body code::after{letter-spacing:-0.2em;content:"\00a0"}html body pre>code{padding:0;margin:0;font-size:.85em !important;word-break:normal;white-space:pre;background:transparent;border:0}html body .highlight{margin-bottom:16px}html body .highlight pre,html body pre{padding:1em;overflow:auto;font-size:.85em !important;line-height:1.45;border:#d6d6d6;border-radius:3px}html body .highlight pre{margin-bottom:0;word-break:normal}html body pre code,html body pre tt{display:inline;max-width:initial;padding:0;margin:0;overflow:initial;line-height:inherit;word-wrap:normal;background-color:transparent;border:0}html body pre code:before,html body pre tt:before,html body pre code:after,html body pre tt:after{content:normal}html body p,html body blockquote,html body ul,html body ol,html body dl,html body pre{margin-top:0;margin-bottom:16px}html body kbd{color:#000;border:1px solid #d6d6d6;border-bottom:2px solid #c7c7c7;padding:2px 4px;background-color:#f0f0f0;border-radius:3px}@media print{html body{background-color:#fff}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{color:#000;page-break-after:avoid}html body blockquote{color:#5c5c5c}html body pre{page-break-inside:avoid}html body table{display:table}html body img{display:block;max-width:100%;max-height:100%}html body pre,html body code{word-wrap:break-word;white-space:pre}}.markdown-preview{width:100%;height:100%;box-sizing:border-box}.markdown-preview .pagebreak,.markdown-preview .newpage{page-break-before:always}.markdown-preview pre.line-numbers{position:relative;padding-left:3.8em;counter-reset:linenumber}.markdown-preview pre.line-numbers>code{position:relative}.markdown-preview pre.line-numbers .line-numbers-rows{position:absolute;pointer-events:none;top:1em;font-size:100%;left:0;width:3em;letter-spacing:-1px;border-right:1px solid #999;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.markdown-preview pre.line-numbers .line-numbers-rows>span{pointer-events:none;display:block;counter-increment:linenumber}.markdown-preview pre.line-numbers .line-numbers-rows>span:before{content:counter(linenumber);color:#999;display:block;padding-right:.8em;text-align:right}.markdown-preview .mathjax-exps .MathJax_Display{text-align:center !important}.markdown-preview:not([for="preview"]) .code-chunk .btn-group{display:none}.markdown-preview:not([for="preview"]) .code-chunk .status{display:none}.markdown-preview:not([for="preview"]) .code-chunk .output-div{margin-bottom:16px}.scrollbar-style::-webkit-scrollbar{width:8px}.scrollbar-style::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}.scrollbar-style::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,0.66);border:4px solid rgba(150,150,150,0.66);background-clip:content-box}html body[for="html-export"]:not([data-presentation-mode]){position:relative;width:100%;height:100%;top:0;left:0;margin:0;padding:0;overflow:auto}html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{position:relative;top:0}@media screen and (min-width:914px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{padding:2em calc(50% - 457px + 2em)}}@media screen and (max-width:914px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{font-size:14px !important;padding:1em}}@media print{html body[for="html-export"]:not([data-presentation-mode]) #sidebar-toc-btn{display:none}}html body[for="html-export"]:not([data-presentation-mode]) #sidebar-toc-btn{position:fixed;bottom:8px;left:8px;font-size:28px;cursor:pointer;color:inherit;z-index:99;width:32px;text-align:center;opacity:.4}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] #sidebar-toc-btn{opacity:1}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc{position:fixed;top:0;left:0;width:300px;height:100%;padding:32px 0 48px 0;font-size:14px;box-shadow:0 0 4px rgba(150,150,150,0.33);box-sizing:border-box;overflow:auto;background-color:inherit}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar{width:8px}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,0.66);border:4px solid rgba(150,150,150,0.66);background-clip:content-box}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc a{text-decoration:none}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc ul{padding:0 1.6em;margin-top:.8em}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc li{margin-bottom:.8em}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc ul{list-style-type:none}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{left:300px;width:calc(100% -  300px);padding:2em calc(50% - 457px -  150px);margin:0;box-sizing:border-box}@media screen and (max-width:1274px){html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{width:100%}}html body[for="html-export"]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .markdown-preview{left:50%;transform:translateX(-50%)}html body[for="html-export"]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .md-sidebar-toc{display:none}
+/* Please visit the URL below for more information: */
+/*   https://shd101wyy.github.io/markdown-preview-enhanced/#/customize-css */
+
+      </style>
+    </head>
+    <body for="html-export">
+      <div class="mume markdown-preview  ">
+      <h1 class="mume-header" id="data-manipulation-using-dplyr-and-tidyr">Data Manipulation using <strong><code>dplyr</code></strong> and <strong><code>tidyr</code></strong></h1>
+
+<p><strong><code>dplyr</code></strong> is a package for making tabular data manipulation easier by using a limited set of functions that can be combined to extract and summarize insights from your data. It pairs nicely with <strong><code>tidyr</code></strong> which enables you to swiftly convert between different data formats (long vs. wide) for plotting and analysis.</p>
+<p>Similarly to <strong><code>readr</code></strong>, <strong><code>dplyr</code></strong> and <strong><code>tidyr</code></strong> are also part of the tidyverse. These packages were loaded in R&apos;s memory when we called <code>library(tidyverse)</code> earlier.</p>
+<h2 class="mume-header" id="what-is-an-r-package">What is an R package?</h2>
+
+<p>An R package is a complete unit for sharing code with others. Each R package contains the code for a set of R functions, the documentation (or description) for each of the functions, as well as a practice dataset to learn the functions on.</p>
+<p>Generally, each R package is built with a specific task in mind. For instance, the package <strong><code>dplyr</code></strong> provides easy tools for the most common data manipulation tasks. It is built to work directly with data frames, with many common tasks optimized by being written in a compiled language (C++) (not all R packages are written in R!).</p>
+<p>The package <strong><code>tidyr</code></strong> addresses the common problem of wanting to reshape your data for plotting and use by different R functions. Sometimes we want data sets where we have one row per measurement. Sometimes we want a data frame where each measurement type has its own column, and rows are instead more aggregated groups. Moving back and forth between these formats is nontrivial, and <strong><code>tidyr</code></strong> gives you tools for this and more sophisticated  data manipulation.</p>
+<p>But there are also packages available for a wide range of tasks including building plots (<strong><code>ggplot2</code></strong>, which we&apos;ll see later), or performing statistical analysis on your data set. Many packages such as these are housed on, and downloadable from, the <strong>C</strong>omprehensive <strong>R</strong> <strong>A</strong>rchive <strong>N</strong>etwork (CRAN) using <code>install.packages</code>. This function makes the package accessible by your R installation with the command <code>library()</code>, as you did with <code>tidyverse</code> earlier.</p>
+<p>To easily access the documentation for a package within R or RStudio, use <code>help(package = &quot;package_name&quot;)</code>.</p>
+<p>To learn more about <strong><code>dplyr</code></strong> and <strong><code>tidyr</code></strong> after the workshop, you may want to check out this <a href="https://github.com/rstudio/cheatsheets/raw/master/data-transformation.pdf">handy data transformation with <strong><code>dplyr</code></strong> cheatsheet</a> and this <a href="https://github.com/rstudio/cheatsheets/raw/master/data-import.pdf">one about <strong><code>tidyr</code></strong></a>.</p>
+<p>A wide variety of such cheatsheets are available from the RStudio Help menu item.</p>
+<h2 class="mume-header" id="learning-dplyr-and-tidyr">Learning <strong><code>dplyr</code></strong> and <strong><code>tidyr</code></strong></h2>
+
+<p>To make sure, everyone will use the same dataset for this lesson, we&apos;ll read again the SAFI dataset that we downloaded earlier.</p>
+<pre data-role="codeBlock" data-info="r" class="language-r"><span class="token comment">## load the tidyverse</span>
+library<span class="token punctuation">(</span>tidyverse<span class="token punctuation">)</span>
+
+interviews <span class="token operator">&lt;-</span> read_csv<span class="token punctuation">(</span><span class="token string">&quot;data/SAFI_clean.csv&quot;</span><span class="token punctuation">,</span> na <span class="token operator">=</span> <span class="token string">&quot;NULL&quot;</span><span class="token punctuation">)</span>
+
+<span class="token comment">## inspect the data</span>
+interviews
+
+<span class="token comment">## preview the data</span>
+<span class="token comment"># View(interviews)</span>
+</pre><p>We&apos;re going to learn some of the most common <strong><code>dplyr</code></strong> functions:</p>
+<ul>
+<li><code>select()</code>: subset columns</li>
+<li><code>filter()</code>: subset rows on conditions</li>
+<li><code>mutate()</code>: create new columns by using information from other columns</li>
+<li><code>group_by()</code> and <code>summarize()</code>: create summary statistics on grouped data</li>
+<li><code>arrange()</code>: sort results</li>
+<li><code>count()</code>: count discrete values</li>
+</ul>
+<h2 class="mume-header" id="selecting-columns-and-filtering-rows">Selecting columns and filtering rows</h2>
+
+<p>To select columns of a<br>
+data frame, we use <code>select()</code>. The first argument to this function is the data frame (<code>interviews</code>), and the subsequent arguments are the columns to show. The underlying data frame content is not affected by this process.</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">select<span class="token punctuation">(</span>interviews<span class="token punctuation">,</span> village<span class="token punctuation">,</span> no_membrs<span class="token punctuation">,</span> years_liv<span class="token punctuation">)</span>
+</pre><p>To choose rows based on a specific criteria, use <code>filter()</code>:</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">filter<span class="token punctuation">(</span>interviews<span class="token punctuation">,</span> village <span class="token operator">==</span> <span class="token string">&quot;God&quot;</span><span class="token punctuation">)</span>
+</pre><pre data-role="codeBlock" data-info class="language-"><code># A tibble: 43 x 14
+   key_ID village interview_date      no_membrs years_liv respondent_wall&#x2026;
+    &lt;dbl&gt; &lt;chr&gt;   &lt;dttm&gt;                  &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt;           
+ 1      1 God     2016-11-17 00:00:00         3         4 muddaub         
+ 2      1 God     2016-11-17 00:00:00         7         9 muddaub         
+ 3      3 God     2016-11-17 00:00:00        10        15 burntbricks     
+ 4      4 God     2016-11-17 00:00:00         7         6 burntbricks     
+ 5      5 God     2016-11-17 00:00:00         7        40 burntbricks     
+ 6      6 God     2016-11-17 00:00:00         3         3 muddaub         
+ 7      7 God     2016-11-17 00:00:00         6        38 muddaub         
+ 8     11 God     2016-11-21 00:00:00         6        20 sunbricks       
+ 9     12 God     2016-11-21 00:00:00         7        20 burntbricks     
+10     13 God     2016-11-21 00:00:00         6         8 burntbricks     
+# &#x2026; with 33 more rows, and 8 more variables: rooms &lt;dbl&gt;,
+#   memb_assoc &lt;chr&gt;, affect_conflicts &lt;chr&gt;, liv_count &lt;dbl&gt;,
+#   items_owned &lt;chr&gt;, no_meals &lt;dbl&gt;, months_lack_food &lt;chr&gt;,
+#   instanceID &lt;chr&gt;
+</code></pre><h2 class="mume-header" id="pipes">Pipes</h2>
+
+<p>What if you want to select and filter at the same time? There are three ways to do this: use intermediate steps, nested functions, or pipes.</p>
+<p>With intermediate steps, you create a temporary data frame and use that as input to the next function, like this:</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">interviews2 <span class="token operator">&lt;-</span> filter<span class="token punctuation">(</span>interviews<span class="token punctuation">,</span> village <span class="token operator">==</span> <span class="token string">&quot;God&quot;</span><span class="token punctuation">)</span>
+interviews_god <span class="token operator">&lt;-</span> select<span class="token punctuation">(</span>interviews2<span class="token punctuation">,</span> no_membrs<span class="token punctuation">,</span> years_liv<span class="token punctuation">)</span>
+</pre><p>This is readable, but can clutter up your workspace with lots of objects that you have to name individually. With multiple steps, that can be hard to keep track of.</p>
+<p>You can also nest functions (i.e. one function inside of another), like this:</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">interviews_god <span class="token operator">&lt;-</span> select<span class="token punctuation">(</span>filter<span class="token punctuation">(</span>interviews<span class="token punctuation">,</span> village <span class="token operator">==</span> <span class="token string">&quot;God&quot;</span><span class="token punctuation">)</span><span class="token punctuation">,</span> no_membrs<span class="token punctuation">,</span> years_liv<span class="token punctuation">)</span>
+</pre><p>This is handy, but can be difficult to read if too many functions are nested, as R evaluates the expression from the inside out (in this case, filtering, then selecting).</p>
+<p>The last option, <em>pipes</em>, are a recent addition to R. Pipes let you take the output of one function and send it directly to the next, which is useful when you need to do many things to the same dataset. Pipes in R look like <code>%&gt;%</code> and are made available via the <strong><code>magrittr</code></strong> package, installed automatically with <strong><code>dplyr</code></strong>.</p>
+<p>If you use RStudio on a PC, you can type the pipe with <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>M</kbd></p>
+<p>If you use a Mac the sequence is  <kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>M</kbd></p>
+<pre data-role="codeBlock" data-info="r" class="language-r">interviews <span class="token percent-operator operator">%&gt;%</span>
+    filter<span class="token punctuation">(</span>village <span class="token operator">==</span> <span class="token string">&quot;God&quot;</span><span class="token punctuation">)</span> <span class="token percent-operator operator">%&gt;%</span>
+    select<span class="token punctuation">(</span>no_membrs<span class="token punctuation">,</span> years_liv<span class="token punctuation">)</span>
+</pre><pre data-role="codeBlock" data-info class="language-"><code># A tibble: 43 x 2
+   no_membrs years_liv
+       &lt;dbl&gt;     &lt;dbl&gt;
+ 1         3         4
+ 2         7         9
+ 3        10        15
+ 4         7         6
+ 5         7        40
+ 6         3         3
+ 7         6        38
+ 8         6        20
+ 9         7        20
+10         6         8
+# &#x2026; with 33 more rows
+</code></pre><p>In the above code, we use the pipe to send the <code>interviews</code> data frame first through <code>filter()</code> to keep rows where <code>village</code> is &quot;God&quot;, then through <code>select()</code> to keep only the <code>no_membrs</code> and <code>years_liv</code> columns. Since <code>%&gt;%</code> takes the object on its left and passes it as the first argument to the function on its right, we don&apos;t need to explicitly include the data frame as an argument to the <code>filter()</code> and <code>select()</code> functions any more.</p>
+<p>Some may find it helpful to read the pipe like the word &quot;then&quot;. For instance, in the above example, we take the data frame <code>interviews</code>, <em>then</em> we <code>filter</code> for rows with <code>village == &quot;God&quot;</code>, <em>then</em> we <code>select</code> columns <code>no_membrs</code> and <code>years_liv</code>. The <strong><code>dplyr</code></strong> functions by themselves are somewhat simple, but by combining them into linear workflows with the pipe, we can accomplish more complex manipulations of data frames.</p>
+<p>If we want to create a new object with this smaller version of the data, we can assign it a new name:</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">interviews_god <span class="token operator">&lt;-</span> interviews <span class="token percent-operator operator">%&gt;%</span>
+    filter<span class="token punctuation">(</span>village <span class="token operator">==</span> <span class="token string">&quot;God&quot;</span><span class="token punctuation">)</span> <span class="token percent-operator operator">%&gt;%</span>
+    select<span class="token punctuation">(</span>no_membrs<span class="token punctuation">,</span> years_liv<span class="token punctuation">)</span>
+
+interviews_god
+</pre><pre data-role="codeBlock" data-info class="language-"><code># A tibble: 43 x 2
+   no_membrs years_liv
+       &lt;dbl&gt;     &lt;dbl&gt;
+ 1         3         4
+ 2         7         9
+ 3        10        15
+ 4         7         6
+ 5         7        40
+ 6         3         3
+ 7         6        38
+ 8         6        20
+ 9         7        20
+10         6         8
+# &#x2026; with 33 more rows
+</code></pre><p>Note that the final data frame (<code>interviews_god</code>) is the leftmost part of this expression.</p>
+<blockquote>
+<h2>Exercise</h2>
+<p>Using pipes, subset the <code>interviews</code> data to include interviews<br>
+where respondents were members of an irrigation association<br>
+(<code>memb_assoc</code>) and retain only the columns <code>affect_conflicts</code>,<br>
+<code>liv_count</code>, and <code>no_meals</code>.</p>
+</blockquote>
+<details><summary><b>Solution</b>  - click me</summary>
+<blockquote>
+<h2>Solution</h2>
+</blockquote>
+<pre data-role="codeBlock" data-info="r" class="language-r">interviews <span class="token percent-operator operator">%&gt;%</span>
+    filter<span class="token punctuation">(</span>memb_assoc <span class="token operator">==</span> <span class="token string">&quot;yes&quot;</span><span class="token punctuation">)</span> <span class="token percent-operator operator">%&gt;%</span>
+    select<span class="token punctuation">(</span>affect_conflicts<span class="token punctuation">,</span> liv_count<span class="token punctuation">,</span> no_meals<span class="token punctuation">)</span>
+</pre><pre data-role="codeBlock" data-info class="language-"><code># A tibble: 33 x 3
+  affect_conflicts liv_count no_meals
+  &lt;chr&gt;                &lt;dbl&gt;    &lt;dbl&gt;
+1 once                     3        2
+2 never                    2        2
+3 never                    2        3
+4 once                     3        2
+5 frequently               1        3
+6 more_once                5        2
+7 more_once                3        2
+8 more_once                2        3
+9 once                     3        3
+10 never                    3        3
+# &#x2026; with 23 more rows
+</code></pre></details>
+<h3 class="mume-header" id="mutate">Mutate</h3>
+
+<p>Frequently you&apos;ll want to create new columns based on the values in existing columns, for example to do unit conversions, or to find the ratio of values in two columns. For this we&apos;ll use <code>mutate()</code>.</p>
+<p>We might be interested in the ratio of number of household members to rooms used for sleeping (i.e. avg number of people per room):</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">interviews <span class="token percent-operator operator">%&gt;%</span>
+    mutate<span class="token punctuation">(</span>people_per_room <span class="token operator">=</span> no_membrs <span class="token operator">/</span> rooms<span class="token punctuation">)</span>
+</pre><pre data-role="codeBlock" data-info class="language-"><code># A tibble: 131 x 15
+   key_ID village interview_date      no_membrs years_liv respondent_wall&#x2026;
+    &lt;dbl&gt; &lt;chr&gt;   &lt;dttm&gt;                  &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt;           
+ 1      1 God     2016-11-17 00:00:00         3         4 muddaub         
+ 2      1 God     2016-11-17 00:00:00         7         9 muddaub         
+ 3      3 God     2016-11-17 00:00:00        10        15 burntbricks     
+ 4      4 God     2016-11-17 00:00:00         7         6 burntbricks     
+ 5      5 God     2016-11-17 00:00:00         7        40 burntbricks     
+ 6      6 God     2016-11-17 00:00:00         3         3 muddaub         
+ 7      7 God     2016-11-17 00:00:00         6        38 muddaub         
+ 8      8 Chirod&#x2026; 2016-11-16 00:00:00        12        70 burntbricks     
+ 9      9 Chirod&#x2026; 2016-11-16 00:00:00         8         6 burntbricks     
+10     10 Chirod&#x2026; 2016-12-16 00:00:00        12        23 burntbricks     
+# &#x2026; with 121 more rows, and 9 more variables: rooms &lt;dbl&gt;,
+#   memb_assoc &lt;chr&gt;, affect_conflicts &lt;chr&gt;, liv_count &lt;dbl&gt;,
+#   items_owned &lt;chr&gt;, no_meals &lt;dbl&gt;, months_lack_food &lt;chr&gt;,
+#   instanceID &lt;chr&gt;, people_per_room &lt;dbl&gt;
+</code></pre><p>We may be interested in investigating whether being a member of an irrigation association had any effect on the ratio of household members to rooms. To look at this relationship, we will first remove data from our dataset where the respondent didn&apos;t answer the question of whether they were a member of an irrigation association. These cases were recorded as &quot;NULL&quot; in the dataset but were  changed to R recognisable <code>NA</code> when we loaded the dataset into the <code>interviews</code> data frame.</p>
+<p>To remove these cases, we could insert a <code>filter()</code> in the chain:</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">interviews <span class="token percent-operator operator">%&gt;%</span>
+    filter<span class="token punctuation">(</span><span class="token operator">!</span>is.na<span class="token punctuation">(</span>memb_assoc<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token percent-operator operator">%&gt;%</span>
+    mutate<span class="token punctuation">(</span>people_per_room <span class="token operator">=</span> no_membrs <span class="token operator">/</span> rooms<span class="token punctuation">)</span>
+</pre><pre data-role="codeBlock" data-info class="language-"><code># A tibble: 92 x 15
+   key_ID village interview_date      no_membrs years_liv respondent_wall&#x2026;
+    &lt;dbl&gt; &lt;chr&gt;   &lt;dttm&gt;                  &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt;           
+ 1      1 God     2016-11-17 00:00:00         7         9 muddaub         
+ 2      7 God     2016-11-17 00:00:00         6        38 muddaub         
+ 3      8 Chirod&#x2026; 2016-11-16 00:00:00        12        70 burntbricks     
+ 4      9 Chirod&#x2026; 2016-11-16 00:00:00         8         6 burntbricks     
+ 5     10 Chirod&#x2026; 2016-12-16 00:00:00        12        23 burntbricks     
+ 6     12 God     2016-11-21 00:00:00         7        20 burntbricks     
+ 7     13 God     2016-11-21 00:00:00         6         8 burntbricks     
+ 8     15 God     2016-11-21 00:00:00         5        30 sunbricks       
+ 9     21 God     2016-11-21 00:00:00         8        20 burntbricks     
+10     24 Ruaca   2016-11-21 00:00:00         6         4 burntbricks     
+# &#x2026; with 82 more rows, and 9 more variables: rooms &lt;dbl&gt;,
+#   memb_assoc &lt;chr&gt;, affect_conflicts &lt;chr&gt;, liv_count &lt;dbl&gt;,
+#   items_owned &lt;chr&gt;, no_meals &lt;dbl&gt;, months_lack_food &lt;chr&gt;,
+#   instanceID &lt;chr&gt;, people_per_room &lt;dbl&gt;
+</code></pre><p>The <code>!</code> symbol negates the result, so we&apos;re asking for every row where <code>memb_assoc</code> <em>is not</em> missing.</p>
+<blockquote>
+<h2>Exercise</h2>
+<p>Create a new data frame from the <code>interviews</code> data that meets the following criteria: contains only the <code>village</code> column and a new column called <code>total_meals</code> containing a value that is equal to the total number of meals served in the household per day on average (<code>no_membrs</code> times <code>no_meals</code>). Only the rows where <code>total_meals</code> is greater than 20 should be shown in the final data frame.</p>
+<p><strong>Hint</strong>: think about how the commands should be ordered to produce this data frame!</p>
+</blockquote>
+<details><summary><b>Solution</b>  - click me</summary>
+<blockquote>
+<h2>Solution</h2>
+</blockquote>
+<pre data-role="codeBlock" data-info="r" class="language-r">interviews_total_meals <span class="token operator">&lt;-</span> interviews <span class="token percent-operator operator">%&gt;%</span>
+    mutate<span class="token punctuation">(</span>total_meals <span class="token operator">=</span> no_membrs <span class="token operator">*</span> no_meals<span class="token punctuation">)</span> <span class="token percent-operator operator">%&gt;%</span>
+    filter<span class="token punctuation">(</span>total_meals <span class="token operator">&gt;</span> <span class="token number">20</span><span class="token punctuation">)</span> <span class="token percent-operator operator">%&gt;%</span>
+    select<span class="token punctuation">(</span>village<span class="token punctuation">,</span> total_meals<span class="token punctuation">)</span>
+</pre></details>
+<h3 class="mume-header" id="split-apply-combine-data-analysis-and-the-summarize-function">Split-apply-combine data analysis and the summarize() function</h3>
+
+<p>Many data analysis tasks can be approached using the <em>split-apply-combine</em> paradigm: split the data into groups, apply some analysis to each group, and then combine the results. <strong><code>dplyr</code></strong> makes this very easy through the use of the <code>group_by()</code> function.</p>
+<h4 class="mume-header" id="the-summarize-function">The <code>summarize()</code> function</h4>
+
+<p><code>group_by()</code> is often used together with <code>summarize()</code>, which collapses each group into a single-row summary of that group.  <code>group_by()</code> takes as arguments the column names that contain the <strong>categorical</strong> variables for which you want to calculate the summary statistics. So to compute the average household size by village:</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">interviews <span class="token percent-operator operator">%&gt;%</span>
+    group_by<span class="token punctuation">(</span>village<span class="token punctuation">)</span> <span class="token percent-operator operator">%&gt;%</span>
+    summarize<span class="token punctuation">(</span>mean_no_membrs <span class="token operator">=</span> mean<span class="token punctuation">(</span>no_membrs<span class="token punctuation">)</span><span class="token punctuation">)</span>
+</pre><pre data-role="codeBlock" data-info class="language-"><code># A tibble: 3 x 2
+  village  mean_no_membrs
+  &lt;chr&gt;             &lt;dbl&gt;
+1 Chirodzo           7.08
+2 God                6.86
+3 Ruaca              7.57
+</code></pre><p>You may also have noticed that the output from these calls doesn&apos;t run off the screen anymore. It&apos;s one of the advantages of <code>tbl_df</code> over data frame.</p>
+<p>You can also group by multiple columns:</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">interviews <span class="token percent-operator operator">%&gt;%</span>
+    group_by<span class="token punctuation">(</span>village<span class="token punctuation">,</span> memb_assoc<span class="token punctuation">)</span> <span class="token percent-operator operator">%&gt;%</span>
+    summarize<span class="token punctuation">(</span>mean_no_membrs <span class="token operator">=</span> mean<span class="token punctuation">(</span>no_membrs<span class="token punctuation">)</span><span class="token punctuation">)</span>
+</pre><pre data-role="codeBlock" data-info class="language-"><code># A tibble: 9 x 3
+# Groups:   village [3]
+  village  memb_assoc mean_no_membrs
+  &lt;chr&gt;    &lt;chr&gt;               &lt;dbl&gt;
+1 Chirodzo &lt;NA&gt;                 5.08
+2 Chirodzo no                   8.06
+3 Chirodzo yes                  7.82
+4 God      &lt;NA&gt;                 6   
+5 God      no                   7.13
+6 God      yes                  8   
+7 Ruaca    &lt;NA&gt;                 6.22
+8 Ruaca    no                   7.18
+9 Ruaca    yes                  9.5 
+</code></pre><p>When grouping both by <code>village</code> and <code>membr_assoc</code>, we see rows in our table for respondents who did not specify whether they were a member of an irrigation association. We can exclude those data from our table using a filter step.</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">interviews <span class="token percent-operator operator">%&gt;%</span>
+    filter<span class="token punctuation">(</span><span class="token operator">!</span>is.na<span class="token punctuation">(</span>memb_assoc<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token percent-operator operator">%&gt;%</span>
+    group_by<span class="token punctuation">(</span>village<span class="token punctuation">,</span> memb_assoc<span class="token punctuation">)</span> <span class="token percent-operator operator">%&gt;%</span>
+    summarize<span class="token punctuation">(</span>mean_no_membrs <span class="token operator">=</span> mean<span class="token punctuation">(</span>no_membrs<span class="token punctuation">)</span><span class="token punctuation">)</span>
+</pre><pre data-role="codeBlock" data-info class="language-"><code># A tibble: 6 x 3
+# Groups:   village [3]
+  village  memb_assoc mean_no_membrs
+  &lt;chr&gt;    &lt;chr&gt;               &lt;dbl&gt;
+1 Chirodzo no                   8.06
+2 Chirodzo yes                  7.82
+3 God      no                   7.13
+4 God      yes                  8   
+5 Ruaca    no                   7.18
+6 Ruaca    yes                  9.5 
+</code></pre><p>Once the data are grouped, you can also summarize multiple variables at the same time (and not necessarily on the same variable). For instance, we could add a column indicating the minimum household size for each village for each group (members of an irrigation association vs not):</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">interviews <span class="token percent-operator operator">%&gt;%</span>
+    filter<span class="token punctuation">(</span><span class="token operator">!</span>is.na<span class="token punctuation">(</span>memb_assoc<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token percent-operator operator">%&gt;%</span>
+    group_by<span class="token punctuation">(</span>village<span class="token punctuation">,</span> memb_assoc<span class="token punctuation">)</span> <span class="token percent-operator operator">%&gt;%</span>
+    summarize<span class="token punctuation">(</span>mean_no_membrs <span class="token operator">=</span> mean<span class="token punctuation">(</span>no_membrs<span class="token punctuation">)</span><span class="token punctuation">,</span>
+              min_membrs <span class="token operator">=</span> min<span class="token punctuation">(</span>no_membrs<span class="token punctuation">)</span><span class="token punctuation">)</span>
+</pre><pre data-role="codeBlock" data-info class="language-"><code># A tibble: 6 x 4
+# Groups:   village [3]
+  village  memb_assoc mean_no_membrs min_membrs
+  &lt;chr&gt;    &lt;chr&gt;               &lt;dbl&gt;      &lt;dbl&gt;
+1 Chirodzo no                   8.06          4
+2 Chirodzo yes                  7.82          2
+3 God      no                   7.13          3
+4 God      yes                  8             5
+5 Ruaca    no                   7.18          2
+6 Ruaca    yes                  9.5           5
+</code></pre><p>It is sometimes useful to rearrange the result of a query to inspect the values. For instance, we can sort on <code>min_membrs</code> to put the group with the smallest household first:</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">interviews <span class="token percent-operator operator">%&gt;%</span>
+    filter<span class="token punctuation">(</span><span class="token operator">!</span>is.na<span class="token punctuation">(</span>memb_assoc<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token percent-operator operator">%&gt;%</span>
+    group_by<span class="token punctuation">(</span>village<span class="token punctuation">,</span> memb_assoc<span class="token punctuation">)</span> <span class="token percent-operator operator">%&gt;%</span>
+    summarize<span class="token punctuation">(</span>mean_no_membrs <span class="token operator">=</span> mean<span class="token punctuation">(</span>no_membrs<span class="token punctuation">)</span><span class="token punctuation">,</span> min_membrs <span class="token operator">=</span> min<span class="token punctuation">(</span>no_membrs<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token percent-operator operator">%&gt;%</span>
+    arrange<span class="token punctuation">(</span>min_membrs<span class="token punctuation">)</span>
+</pre><pre data-role="codeBlock" data-info class="language-"><code># A tibble: 6 x 4
+# Groups:   village [3]
+  village  memb_assoc mean_no_membrs min_membrs
+  &lt;chr&gt;    &lt;chr&gt;               &lt;dbl&gt;      &lt;dbl&gt;
+1 Chirodzo yes                  7.82          2
+2 Ruaca    no                   7.18          2
+3 God      no                   7.13          3
+4 Chirodzo no                   8.06          4
+5 God      yes                  8             5
+6 Ruaca    yes                  9.5           5
+</code></pre><p>To sort in descending order, we need to add the <code>desc()</code> function. If we want to sort the results by decreasing order of minimum household size:</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">interviews <span class="token percent-operator operator">%&gt;%</span>
+    filter<span class="token punctuation">(</span><span class="token operator">!</span>is.na<span class="token punctuation">(</span>memb_assoc<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token percent-operator operator">%&gt;%</span>
+    group_by<span class="token punctuation">(</span>village<span class="token punctuation">,</span> memb_assoc<span class="token punctuation">)</span> <span class="token percent-operator operator">%&gt;%</span>
+    summarize<span class="token punctuation">(</span>mean_no_membrs <span class="token operator">=</span> mean<span class="token punctuation">(</span>no_membrs<span class="token punctuation">)</span><span class="token punctuation">,</span>
+              min_membrs <span class="token operator">=</span> min<span class="token punctuation">(</span>no_membrs<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token percent-operator operator">%&gt;%</span>
+    arrange<span class="token punctuation">(</span>desc<span class="token punctuation">(</span>min_membrs<span class="token punctuation">)</span><span class="token punctuation">)</span>
+</pre><pre data-role="codeBlock" data-info class="language-"><code># A tibble: 6 x 4
+# Groups:   village [3]
+  village  memb_assoc mean_no_membrs min_membrs
+  &lt;chr&gt;    &lt;chr&gt;               &lt;dbl&gt;      &lt;dbl&gt;
+1 God      yes                  8             5
+2 Ruaca    yes                  9.5           5
+3 Chirodzo no                   8.06          4
+4 God      no                   7.13          3
+5 Chirodzo yes                  7.82          2
+6 Ruaca    no                   7.18          2
+</code></pre><h4 class="mume-header" id="counting">Counting</h4>
+
+<p>When working with data, we often want to know the number of observations found for each factor or combination of factors. For this task, <strong><code>dplyr</code></strong> provides <code>count()</code>. For example, if we wanted to count the number of rows of data for each village, we would do:</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">interviews <span class="token percent-operator operator">%&gt;%</span>
+    count<span class="token punctuation">(</span>village<span class="token punctuation">)</span>
+</pre><pre data-role="codeBlock" data-info class="language-"><code># A tibble: 3 x 2
+  village      n
+  &lt;chr&gt;    &lt;int&gt;
+1 Chirodzo    39
+2 God         43
+3 Ruaca       49
+</code></pre><p>For convenience, <code>count()</code> provides the <code>sort</code> argument to get results in decrea:</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">interviews <span class="token percent-operator operator">%&gt;%</span>
+    count<span class="token punctuation">(</span>village<span class="token punctuation">,</span> sort <span class="token operator">=</span> <span class="token boolean">TRUE</span><span class="token punctuation">)</span>
+</pre><pre data-role="codeBlock" data-info class="language-"><code># A tibble: 3 x 2
+  village      n
+  &lt;chr&gt;    &lt;int&gt;
+1 Ruaca       49
+2 God         43
+3 Chirodzo    39
+</code></pre><blockquote>
+<h2>Exercise</h2>
+<ol>
+<li>How many households in the survey have an average of two meals per day? Three meals per day? Are there any other numbers of meals represented?</li>
+</ol>
+</blockquote>
+<details><summary><b>Solution</b>  - click me</summary>
+<blockquote>
+<h2>Solution</h2>
+</blockquote>
+<pre data-role="codeBlock" data-info="r" class="language-r">interviews <span class="token percent-operator operator">%&gt;%</span>
+    count<span class="token punctuation">(</span>no_meals<span class="token punctuation">)</span>
+</pre><pre data-role="codeBlock" data-info class="language-"><code>A tibble: 2 x 2
+
+   no_meals     n
+     &lt;dbl&gt; &lt;int&gt;
+ 1        2    52
+ 2        3    79
+</code></pre></details>
+<blockquote>
+<ol start="2">
+<li>Use <code>group_by()</code> and <code>summarize()</code> to find the mean, min, and max number of household members for each village. Also add the number of observations (hint: see <code>?n</code>).</li>
+</ol>
+</blockquote>
+<details><summary><b>Solution</b>  - click me</summary>
+<blockquote>
+<h2>Solution</h2>
+</blockquote>
+<pre data-role="codeBlock" data-info="r" class="language-r">interviews <span class="token percent-operator operator">%&gt;%</span>
+  group_by<span class="token punctuation">(</span>village<span class="token punctuation">)</span> <span class="token percent-operator operator">%&gt;%</span>
+   summarize<span class="token punctuation">(</span>
+       mean_no_membrs <span class="token operator">=</span> mean<span class="token punctuation">(</span>no_membrs<span class="token punctuation">)</span><span class="token punctuation">,</span>
+      min_no_membrs <span class="token operator">=</span> min<span class="token punctuation">(</span>no_membrs<span class="token punctuation">)</span><span class="token punctuation">,</span>
+       max_no_membrs <span class="token operator">=</span> max<span class="token punctuation">(</span>no_membrs<span class="token punctuation">)</span><span class="token punctuation">,</span>
+       n <span class="token operator">=</span> n<span class="token punctuation">(</span><span class="token punctuation">)</span>
+   <span class="token punctuation">)</span>
+</pre><pre data-role="codeBlock" data-info class="language-"><code># A tibble: 3 x 5
+  village  mean_no_membrs min_no_membrs max_no_membrs     n
+   &lt;chr&gt;             &lt;dbl&gt;         &lt;dbl&gt;         &lt;dbl&gt; &lt;int&gt;
+ 1 Chirodzo           7.08             2            12    39
+ 2 God                6.86             3            15    43
+ 3 Ruaca              7.57             2            19    49
+</code></pre></details>
+<blockquote>
+<ol start="3">
+<li>What was the largest household interviewed in each month?</li>
+</ol>
+</blockquote>
+<details><summary><b>Solution</b>  - click me</summary>
+<blockquote>
+<h2>Solution</h2>
+</blockquote>
+<pre data-role="codeBlock" data-info="r" class="language-r"><span class="token comment"># if not already included, add month, year, and day columns</span>
+library<span class="token punctuation">(</span>lubridate<span class="token punctuation">)</span> <span class="token comment"># load lubridate if not already loaded</span>
+</pre><pre data-role="codeBlock" data-info class="language-"><code>Attaching package: &apos;lubridate&apos;
+
+The following object is masked from &apos;package:base&apos;:
+
+   date
+</code></pre><pre data-role="codeBlock" data-info="r" class="language-r">interviews <span class="token percent-operator operator">%&gt;%</span>
+    mutate<span class="token punctuation">(</span>month <span class="token operator">=</span> month<span class="token punctuation">(</span>interview_date<span class="token punctuation">)</span><span class="token punctuation">,</span>
+            day <span class="token operator">=</span> day<span class="token punctuation">(</span>interview_date<span class="token punctuation">)</span><span class="token punctuation">,</span>
+            year <span class="token operator">=</span> year<span class="token punctuation">(</span>interview_date<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token percent-operator operator">%&gt;%</span>
+    group_by<span class="token punctuation">(</span>year<span class="token punctuation">,</span> month<span class="token punctuation">)</span> <span class="token percent-operator operator">%&gt;%</span>
+    summarize<span class="token punctuation">(</span>max_no_membrs <span class="token operator">=</span> max<span class="token punctuation">(</span>no_membrs<span class="token punctuation">)</span><span class="token punctuation">)</span>
+</pre><pre data-role="codeBlock" data-info class="language-"><code># A tibble: 5 x 3
+# Groups:   year [2]
+   year month max_no_membrs
+  &lt;dbl&gt; &lt;dbl&gt;         &lt;dbl&gt;
+1  2016    11            19
+   2016    12            12
+3  2017     4            17
+4  2017     5            15
+5  2017     6            15
+</code></pre></details>
+<h2 class="mume-header" id="reshaping-with-gather-and-spread">Reshaping with gather and spread</h2>
+
+<p><code>gather</code> and <code>spread</code> are the r tidyverse functions which refer to the commonly used terms &apos;long format&apos; and &apos;wide format&apos;.</p>
+<p>Apart from the need to clean data and deal with missing data in our datasets, there is sometimes the need to re-format the data in order to make it easier to process.</p>
+<p>A particular case arises with categorical data. A column in a table which contains categorical data will typically have a limited (and known) set of possible values. With each row of the table containing typically one of these values in that column. For summarising the data by these categorical values, this layout can be convenient.</p>
+<p>In our interviews data frame (or SAFI_Clean dataset) the column &apos;months_lack_food&apos; is recorded like this</p>
+<img src="./fig/mlf_as_is.jpg" alt="As recorded">
+<p>(Shown with the Key_ID field included for reference)</p>
+<p>This is really neither long not wide format, as there as the respondents were allowed to choose more than one value, all of which were recorded in the same &apos;cell&apos;, but it is real data!</p>
+<p>It partially meets the criteria of &apos;tidy&apos; data in that there is only one row of data for each observation.</p>
+<p>The &apos;long&apos; version of this would look like this:</p>
+<img src="./fig/mlf_long.jpg" alt="Long version">
+<p>And the &apos;wide&apos; version like this:</p>
+<img src="./fig/mlf_wide.jpg" alt="Wide version">
+<p>In <code>interviews</code>, each row contains the values of variables associated with each record (the unit), values such as the number of household members or posessions associated with each record. What if instead of comparing records, we wanted to look at differences in households grouped by different types of housing construction materials?</p>
+<p>We&apos;d need to create a new table where each row (the unit) is comprised of values of variables associated with each housing material (e.g. for <code>respondent_wall_type</code>). In practical terms this means the values of the wall construction materials in <code>respondent_wall_type</code> would become the names of column variables and the cells would contain <code>TRUE</code> or <code>FALSE</code>, or 1 and 0.</p>
+<p>Having created a new table, we can now explore the relationship within and between household types - for example we could compare the ratio of household members to sleeping rooms grouped by type of construction material. The key point here is that we are still following a tidy data structure, but we have <strong>reshaped</strong> the data according to the observations of interest.</p>
+<p>The opposite transformation would be to transform column names into values of a variable.</p>
+<p>We can do both these of transformations with two <code>tidyr</code> functions, <code>spread()</code> and <code>gather()</code>.</p>
+<h4 class="mume-header" id="spreading">Spreading</h4>
+
+<p><code>spread()</code> takes three principal arguments:</p>
+<ol>
+<li>the data</li>
+<li>the <em>key</em> column variable whose values will become new column names.</li>
+<li>the <em>value</em> column variable whose values will fill the new column variables.</li>
+</ol>
+<p>Further arguments include <code>fill</code> which, if set, fills in missing values with the value provided.</p>
+<p>Let&apos;s use <code>spread()</code> to transform interviews to create new columns for each type of wall construction material. We use the pipe as before too. Because both the <code>key</code> and <code>value</code> parameters must come from column values, we will create a dummy column (we&apos;ll name it <code>wall_type_logical</code>) to hold the value <code>TRUE</code>, which we will then place into the appropriate column that corresponds to the wall construction material for that respondent. When using <code>mutate()</code> if you give a single value, it will be used for all observations in the dataset. We will use <code>fill = FALSE</code> in <code>spread()</code> to fill the rest of the new columns for that row with <code>FALSE</code>.</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">interviews_spread <span class="token operator">&lt;-</span> interviews <span class="token percent-operator operator">%&gt;%</span>
+    mutate<span class="token punctuation">(</span>wall_type_logical <span class="token operator">=</span> <span class="token boolean">TRUE</span><span class="token punctuation">)</span> <span class="token percent-operator operator">%&gt;%</span>
+    spread<span class="token punctuation">(</span>key <span class="token operator">=</span> respondent_wall_type<span class="token punctuation">,</span> value <span class="token operator">=</span> wall_type_logical<span class="token punctuation">,</span> fill <span class="token operator">=</span> <span class="token boolean">FALSE</span><span class="token punctuation">)</span>
+</pre><p>View the <code>interviews_spread</code> data frame and notice that there is no longer a column titled <code>respondent_wall_type</code>. This is because there is a default parameter in <code>spread()</code> that drops the original column.</p>
+<h2 class="mume-header" id="gathering">Gathering</h2>
+
+<p>The opposing situation could occur if we had been provided with data in the form of <code>interviews_spread</code>, where the building materials are column names, but we wish to treat them as values of a <code>respondent_wall_type</code> variable instead.</p>
+<p>In this situation we are gathering the column names and turning them into a pair of new variables. One variable represents the column names as values, and the other variable contains the values previously associated with the column names. We will do this in two steps to make this process a bit clearer.</p>
+<p><code>gather()</code> takes four principal arguments:</p>
+<ol>
+<li>the data</li>
+<li>the <em>key</em> column variable we wish to create from column names.</li>
+<li>the <em>value</em> column variable we wish to create and fill with values associated with the key.</li>
+<li>the names of the columns we use to fill the key variable (or to drop).</li>
+</ol>
+<p>To recreate our original data frame, we will use the following:</p>
+<ol>
+<li>the data - <code>interviews_spread</code></li>
+<li>the <em>key</em> column will be &quot;respondent_wall_type&quot; (as a character string). This is the name of the new column we want to create.</li>
+<li>the <em>value</em> column will be <code>wall_type_logical</code>. This will be either <code>TRUE</code> or <code>FALSE</code>.</li>
+<li>the names of the columns we will use to fill the key variable are <code>burntbricks:sunbricks</code> (the column named &quot;burntbricks&quot; up to and including the column named &quot;sunbricks&quot; as they are ordered in the data frame).</li>
+</ol>
+<pre data-role="codeBlock" data-info="r" class="language-r">interviews_gather <span class="token operator">&lt;-</span> interviews_spread <span class="token percent-operator operator">%&gt;%</span>
+    gather<span class="token punctuation">(</span>key <span class="token operator">=</span> respondent_wall_type<span class="token punctuation">,</span> value <span class="token operator">=</span> <span class="token string">&quot;wall_type_logical&quot;</span><span class="token punctuation">,</span>
+           burntbricks<span class="token operator">:</span>sunbricks<span class="token punctuation">)</span>
+</pre><p>This creates a data frame with 524 rows (4 rows per interview respondent). The four rows for each respondent differ only in the value of the &quot;respondent_wall_type&quot; and &quot;dummy&quot; columns. View the data to see what this looks like.</p>
+<p>Only one row for each interview respondent is informative - we know that if the house walls are made of &quot;sunbrick&quot; they aren&apos;t made of any other the other materials. Therefore, we can get filter our dataset to only keep values where <code>wall_type_logical</code> is <code>TRUE</code>. Because, <code>wall_type_logical</code> is already either <code>TRUE</code> or <code>FALSE</code>, when passing the column name to <code>filter()</code>, it will automatically already only keep rows where this column has the value <code>TRUE</code>. We can then remove the <code>wall_type_logical</code> column. We do all of these steps together in the next chunk of code:</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">interviews_gather <span class="token operator">&lt;-</span> interviews_spread <span class="token percent-operator operator">%&gt;%</span>
+    gather<span class="token punctuation">(</span>key <span class="token operator">=</span> <span class="token string">&quot;respondent_wall_type&quot;</span><span class="token punctuation">,</span> value <span class="token operator">=</span> <span class="token string">&quot;wall_type_logical&quot;</span><span class="token punctuation">,</span>
+           burntbricks<span class="token operator">:</span>sunbricks<span class="token punctuation">)</span> <span class="token percent-operator operator">%&gt;%</span>
+    filter<span class="token punctuation">(</span>wall_type_logical<span class="token punctuation">)</span> <span class="token percent-operator operator">%&gt;%</span>
+    select<span class="token punctuation">(</span><span class="token operator">-</span>wall_type_logical<span class="token punctuation">)</span>
+</pre><p>View both <code>interviews_gather</code> and <code>interviews_spread</code> and compare their structure. Notice that the rows have been reordered in <code>interviews_gather</code> such that all of the respondents with a particular wall type are grouped together.</p>
+<h2 class="mume-header" id="applying-spread-to-clean-our-data">Applying <code>spread()</code> to clean our data</h2>
+
+<p>Now that we&apos;ve learned about <code>gather()</code> and <code>spread()</code> we&apos;re going to put these functions to use to fix a problem with the way that our data is structured. In this dataset, we have several columns which contain multiple pieces of information. For example, the <code>items_owned</code> column contains information about whether our respondents owned a fridge, a television, etc. To make this data easier to analyze, we will split this column and create a new column for each item. Each cell in that column will either be <code>TRUE</code> or <code>FALSE</code> and will indicate whether that interview respondent owned that item.</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">interviews_items_owned <span class="token operator">&lt;-</span> interviews <span class="token percent-operator operator">%&gt;%</span>
+    separate_rows<span class="token punctuation">(</span>items_owned<span class="token punctuation">,</span> sep<span class="token operator">=</span><span class="token string">&quot;;&quot;</span><span class="token punctuation">)</span> <span class="token percent-operator operator">%&gt;%</span>
+    mutate<span class="token punctuation">(</span>items_owned_logical <span class="token operator">=</span> <span class="token boolean">TRUE</span><span class="token punctuation">)</span> <span class="token percent-operator operator">%&gt;%</span>
+    spread<span class="token punctuation">(</span>key <span class="token operator">=</span> items_owned<span class="token punctuation">,</span> value <span class="token operator">=</span> items_owned_logical<span class="token punctuation">,</span> fill <span class="token operator">=</span> <span class="token boolean">FALSE</span><span class="token punctuation">)</span>
+
+nrow<span class="token punctuation">(</span>interviews_items_owned<span class="token punctuation">)</span>
+</pre><pre data-role="codeBlock" data-info class="language-"><code>[1] 131
+</code></pre><p>There are a couple of new concepts in this code chunk. Let&apos;s walk through it line by line. First we create a new object (<code>interviews_items_owned</code>) based on the <code>interviews</code> dataframe.</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">interviews_items_owned <span class="token operator">&lt;-</span> interviews <span class="token percent-operator operator">%&gt;%</span>
+</pre><p>Then we use the new function <code>separate_rows()</code> to split the column <code>items_owned</code> based on the presence of semi-colons (<code>;</code>). This creates a long format version of the dataset. In this long format version, there are 631 rows (one row for each unique item for each respondent).</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">separate_rows<span class="token punctuation">(</span>items_owned<span class="token punctuation">,</span> sep<span class="token operator">=</span><span class="token string">&quot;;&quot;</span><span class="token punctuation">)</span> <span class="token percent-operator operator">%&gt;%</span>
+</pre><p>Next we use the <code>mutate()</code> function to create the &apos;items_owned_logical&apos; column and set all of the values to <code>TRUE</code>.</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">    mutate<span class="token punctuation">(</span>items_owned_logical <span class="token operator">=</span> <span class="token boolean">TRUE</span><span class="token punctuation">)</span> <span class="token percent-operator operator">%&gt;%</span>
+</pre><p>Lastly, we use <code>spread()</code> to switch from long format to wide format. This creates a new column for each of the unique values in the <code>split_items</code> column and fills those columns with <code>TRUE</code> or <code>FALSE</code>.</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">    spread<span class="token punctuation">(</span>key <span class="token operator">=</span> items_owned<span class="token punctuation">,</span> value <span class="token operator">=</span> items_owned_logical<span class="token punctuation">,</span> fill <span class="token operator">=</span> <span class="token boolean">FALSE</span><span class="token punctuation">)</span>
+</pre><p>View the <code>interviews_items_owned</code> data frame. It should have <code>r nrow(interviews)</code> rows (the same number of rows you had originally), but extra columns for each item.</p>
+<p>You may notice that the last column in called <code>\</code><na>`<code>. This is because the respondents did not own any of the items that was in the interviewer&apos;s list. We can use the</code>rename()` function to change this name to something more meaningful:</na></p>
+<pre data-role="codeBlock" data-info="r" class="language-r">interviews_items_owned <span class="token operator">&lt;-</span> interviews_items_owned <span class="token percent-operator operator">%&gt;%</span>
+    rename<span class="token punctuation">(</span>no_listed_items <span class="token operator">=</span> `<span class="token operator">&lt;</span><span class="token keyword">NA</span><span class="token operator">&gt;</span>`<span class="token punctuation">)</span>
+</pre><p>This format of the data allows us to do interesting things, like make a table showing the number of respondents in each village who owned a particular item:</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">interviews_items_owned <span class="token percent-operator operator">%&gt;%</span>
+    filter<span class="token punctuation">(</span>bicycle<span class="token punctuation">)</span> <span class="token percent-operator operator">%&gt;%</span>
+    group_by<span class="token punctuation">(</span>village<span class="token punctuation">)</span> <span class="token percent-operator operator">%&gt;%</span>
+    count<span class="token punctuation">(</span>bicycle<span class="token punctuation">)</span>
+</pre><pre data-role="codeBlock" data-info class="language-"><code># A tibble: 3 x 3
+# Groups:   village [3]
+  village  bicycle     n
+  &lt;chr&gt;    &lt;lgl&gt;   &lt;int&gt;
+1 Chirodzo TRUE       17
+2 God      TRUE       23
+3 Ruaca    TRUE       20
+</code></pre><p>Or calculate the average number of items from the list owned by respondents in each village:</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">interviews_items_owned <span class="token percent-operator operator">%&gt;%</span>
+    mutate<span class="token punctuation">(</span>number_items <span class="token operator">=</span> rowSums<span class="token punctuation">(</span>select<span class="token punctuation">(</span>.<span class="token punctuation">,</span> bicycle<span class="token operator">:</span>television<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token percent-operator operator">%&gt;%</span>
+    group_by<span class="token punctuation">(</span>village<span class="token punctuation">)</span> <span class="token percent-operator operator">%&gt;%</span>
+    summarize<span class="token punctuation">(</span>mean_items <span class="token operator">=</span> mean<span class="token punctuation">(</span>number_items<span class="token punctuation">)</span><span class="token punctuation">)</span>
+</pre><pre data-role="codeBlock" data-info class="language-"><code># A tibble: 3 x 2
+  village  mean_items
+  &lt;chr&gt;         &lt;dbl&gt;
+1 Chirodzo       4.54
+2 God            3.98
+3 Ruaca          5.57
+</code></pre><blockquote>
+<h2>Exercise</h2>
+<ol>
+<li>Create a new data frame (named <code>interviews_months_lack_food</code>) that has one column for each month and records <code>TRUE</code> or <code>FALSE</code> for whether each interview respondent was lacking food in that month.</li>
+</ol>
+</blockquote>
+<details><summary><b>Solution</b>  - click me</summary>
+<blockquote>
+<h2>Solution</h2>
+</blockquote>
+<pre data-role="codeBlock" data-info="r" class="language-r">interviews_months_lack_food <span class="token operator">&lt;-</span> interviews <span class="token percent-operator operator">%&gt;%</span>
+  separate_rows<span class="token punctuation">(</span>months_lack_food<span class="token punctuation">,</span> sep<span class="token operator">=</span><span class="token string">&quot;;&quot;</span><span class="token punctuation">)</span> <span class="token percent-operator operator">%&gt;%</span>
+  mutate<span class="token punctuation">(</span>months_lack_food_logical  <span class="token operator">=</span> <span class="token boolean">TRUE</span><span class="token punctuation">)</span> <span class="token percent-operator operator">%&gt;%</span>
+  spread<span class="token punctuation">(</span>key <span class="token operator">=</span> months_lack_food<span class="token punctuation">,</span> value <span class="token operator">=</span> months_lack_food_logical<span class="token punctuation">,</span> fill <span class="token operator">=</span> <span class="token boolean">FALSE</span><span class="token punctuation">)</span>
+</pre></details>
+<blockquote>
+<ol start="2">
+<li>How many months (on average) were respondents without food if they did belong to an irrigation association? What about if they didn&apos;t?</li>
+</ol>
+</blockquote>
+<details><summary><b>Solution</b>  - click me</summary>
+<blockquote>
+<h2>Solution</h2>
+</blockquote>
+<pre data-role="codeBlock" data-info="r" class="language-r">interviews_months_lack_food <span class="token percent-operator operator">%&gt;%</span>
+   mutate<span class="token punctuation">(</span>number_months <span class="token operator">=</span> rowSums<span class="token punctuation">(</span>select<span class="token punctuation">(</span>.<span class="token punctuation">,</span> Apr<span class="token operator">:</span>Sept<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token percent-operator operator">%&gt;%</span>
+   group_by<span class="token punctuation">(</span>memb_assoc<span class="token punctuation">)</span> <span class="token percent-operator operator">%&gt;%</span>
+   summarize<span class="token punctuation">(</span>mean_months <span class="token operator">=</span> mean<span class="token punctuation">(</span>number_months<span class="token punctuation">)</span><span class="token punctuation">)</span>
+</pre><pre data-role="codeBlock" data-info class="language-"><code># A tibble: 3 x 2
+  memb_assoc mean_months
+  &lt;chr&gt;            &lt;dbl&gt;
+ 1 &lt;NA&gt;              2.95
+ 2 no                2.31
+ 3 yes               2.64
+</code></pre></details>
+<h2 class="mume-header" id="exporting-data">Exporting data</h2>
+
+<p>Now that you have learned how to use <strong><code>dplyr</code></strong> to extract information from or summarize your raw data, you may want to export these new data sets to share them with your collaborators or for archival.</p>
+<p>Similar to the <code>read_csv()</code> function used for reading CSV files into R, there is a <code>write_csv()</code> function that generates CSV files from data frames.</p>
+<p>Before using <code>write_csv()</code>, we are going to create a new folder, <code>data_output</code>, in our working directory that will store this generated dataset. We don&apos;t want to write generated datasets in the same directory as our raw data. It&apos;s good practice to keep them separate. The <code>data</code> folder should only contain the raw, unaltered data, and should be left alone to make sure we don&apos;t delete or modify it. In contrast, our script will generate the contents of the <code>data_output</code> directory, so even if the files it contains are deleted, we can always re-generate them.</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">dir.create<span class="token punctuation">(</span><span class="token string">&quot;data_output&quot;</span><span class="token punctuation">)</span>
+</pre><p>In preparation for our next lesson on plotting, we are going to create a version of the dataset where each of the columns includes only one data value. To do this, we will use spread to expand the <code>months_lack_food</code> and <code>items_owned</code> columns. We will also create a couple of summary columns.</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">interviews_plotting <span class="token operator">&lt;-</span> interviews <span class="token percent-operator operator">%&gt;%</span>
+    <span class="token comment">## spread data by items_owned</span>
+    separate_rows<span class="token punctuation">(</span>items_owned<span class="token punctuation">,</span> sep<span class="token operator">=</span><span class="token string">&quot;;&quot;</span><span class="token punctuation">)</span> <span class="token percent-operator operator">%&gt;%</span>
+    mutate<span class="token punctuation">(</span>items_owned_logical <span class="token operator">=</span> <span class="token boolean">TRUE</span><span class="token punctuation">)</span> <span class="token percent-operator operator">%&gt;%</span>
+    spread<span class="token punctuation">(</span>key <span class="token operator">=</span> items_owned<span class="token punctuation">,</span> value <span class="token operator">=</span> items_owned_logical<span class="token punctuation">,</span> fill <span class="token operator">=</span> <span class="token boolean">FALSE</span><span class="token punctuation">)</span> <span class="token percent-operator operator">%&gt;%</span>
+    rename<span class="token punctuation">(</span>no_listed_items <span class="token operator">=</span> `<span class="token operator">&lt;</span><span class="token keyword">NA</span><span class="token operator">&gt;</span>`<span class="token punctuation">)</span> <span class="token percent-operator operator">%&gt;%</span>
+    <span class="token comment">## spread data by months_lack_food</span>
+    separate_rows<span class="token punctuation">(</span>months_lack_food<span class="token punctuation">,</span> sep<span class="token operator">=</span><span class="token string">&quot;;&quot;</span><span class="token punctuation">)</span> <span class="token percent-operator operator">%&gt;%</span>
+    mutate<span class="token punctuation">(</span>months_lack_food_logical <span class="token operator">=</span> <span class="token boolean">TRUE</span><span class="token punctuation">)</span> <span class="token percent-operator operator">%&gt;%</span>
+    spread<span class="token punctuation">(</span>key <span class="token operator">=</span> months_lack_food<span class="token punctuation">,</span> value <span class="token operator">=</span> months_lack_food_logical<span class="token punctuation">,</span> fill <span class="token operator">=</span> <span class="token boolean">FALSE</span><span class="token punctuation">)</span> <span class="token percent-operator operator">%&gt;%</span>
+    <span class="token comment">## add some summary columns</span>
+    mutate<span class="token punctuation">(</span>number_months_lack_food <span class="token operator">=</span> rowSums<span class="token punctuation">(</span>select<span class="token punctuation">(</span>.<span class="token punctuation">,</span> Apr<span class="token operator">:</span>Sept<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token percent-operator operator">%&gt;%</span>
+    mutate<span class="token punctuation">(</span>number_items <span class="token operator">=</span> rowSums<span class="token punctuation">(</span>select<span class="token punctuation">(</span>.<span class="token punctuation">,</span> bicycle<span class="token operator">:</span>television<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+</pre><p>Now we can save this data frame to our <code>data_output</code> directory.</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">write_csv<span class="token punctuation">(</span>interviews_plotting<span class="token punctuation">,</span> path <span class="token operator">=</span> <span class="token string">&quot;data_output/interviews_plotting.csv&quot;</span><span class="token punctuation">)</span>
+</pre>
+      </div>
+      
+      
+    
+    
+    
+    
+    
+    
+    
+    
+  
+    </body></html>

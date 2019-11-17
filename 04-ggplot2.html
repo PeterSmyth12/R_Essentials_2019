@@ -1,0 +1,612 @@
+<!DOCTYPE html><html><head>
+      <title>Using ggplot</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/katex.min.css">
+      
+      
+
+      
+      
+      
+      
+      
+      
+
+      <style>
+      /**
+ * prism.js Github theme based on GitHub's theme.
+ * @author Sam Clarke
+ */
+code[class*="language-"],
+pre[class*="language-"] {
+  color: #333;
+  background: none;
+  font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.4;
+
+  -moz-tab-size: 8;
+  -o-tab-size: 8;
+  tab-size: 8;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+/* Code blocks */
+pre[class*="language-"] {
+  padding: .8em;
+  overflow: auto;
+  /* border: 1px solid #ddd; */
+  border-radius: 3px;
+  /* background: #fff; */
+  background: #f5f5f5;
+}
+
+/* Inline code */
+:not(pre) > code[class*="language-"] {
+  padding: .1em;
+  border-radius: .3em;
+  white-space: normal;
+  background: #f5f5f5;
+}
+
+.token.comment,
+.token.blockquote {
+  color: #969896;
+}
+
+.token.cdata {
+  color: #183691;
+}
+
+.token.doctype,
+.token.punctuation,
+.token.variable,
+.token.macro.property {
+  color: #333;
+}
+
+.token.operator,
+.token.important,
+.token.keyword,
+.token.rule,
+.token.builtin {
+  color: #a71d5d;
+}
+
+.token.string,
+.token.url,
+.token.regex,
+.token.attr-value {
+  color: #183691;
+}
+
+.token.property,
+.token.number,
+.token.boolean,
+.token.entity,
+.token.atrule,
+.token.constant,
+.token.symbol,
+.token.command,
+.token.code {
+  color: #0086b3;
+}
+
+.token.tag,
+.token.selector,
+.token.prolog {
+  color: #63a35c;
+}
+
+.token.function,
+.token.namespace,
+.token.pseudo-element,
+.token.class,
+.token.class-name,
+.token.pseudo-class,
+.token.id,
+.token.url-reference .token.variable,
+.token.attr-name {
+  color: #795da3;
+}
+
+.token.entity {
+  cursor: help;
+}
+
+.token.title,
+.token.title .token.punctuation {
+  font-weight: bold;
+  color: #1d3e81;
+}
+
+.token.list {
+  color: #ed6a43;
+}
+
+.token.inserted {
+  background-color: #eaffea;
+  color: #55a532;
+}
+
+.token.deleted {
+  background-color: #ffecec;
+  color: #bd2c00;
+}
+
+.token.bold {
+  font-weight: bold;
+}
+
+.token.italic {
+  font-style: italic;
+}
+
+
+/* JSON */
+.language-json .token.property {
+  color: #183691;
+}
+
+.language-markup .token.tag .token.punctuation {
+  color: #333;
+}
+
+/* CSS */
+code.language-css,
+.language-css .token.function {
+  color: #0086b3;
+}
+
+/* YAML */
+.language-yaml .token.atrule {
+  color: #63a35c;
+}
+
+code.language-yaml {
+  color: #183691;
+}
+
+/* Ruby */
+.language-ruby .token.function {
+  color: #333;
+}
+
+/* Markdown */
+.language-markdown .token.url {
+  color: #795da3;
+}
+
+/* Makefile */
+.language-makefile .token.symbol {
+  color: #795da3;
+}
+
+.language-makefile .token.variable {
+  color: #183691;
+}
+
+.language-makefile .token.builtin {
+  color: #0086b3;
+}
+
+/* Bash */
+.language-bash .token.keyword {
+  color: #0086b3;
+}
+
+/* highlight */
+pre[data-line] {
+  position: relative;
+  padding: 1em 0 1em 3em;
+}
+pre[data-line] .line-highlight-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: transparent;
+  display: block;
+  width: 100%;
+}
+
+pre[data-line] .line-highlight {
+  position: absolute;
+  left: 0;
+  right: 0;
+  padding: inherit 0;
+  margin-top: 1em;
+  background: hsla(24, 20%, 50%,.08);
+  background: linear-gradient(to right, hsla(24, 20%, 50%,.1) 70%, hsla(24, 20%, 50%,0));
+  pointer-events: none;
+  line-height: inherit;
+  white-space: pre;
+}
+
+pre[data-line] .line-highlight:before, 
+pre[data-line] .line-highlight[data-end]:after {
+  content: attr(data-start);
+  position: absolute;
+  top: .4em;
+  left: .6em;
+  min-width: 1em;
+  padding: 0 .5em;
+  background-color: hsla(24, 20%, 50%,.4);
+  color: hsl(24, 20%, 95%);
+  font: bold 65%/1.5 sans-serif;
+  text-align: center;
+  vertical-align: .3em;
+  border-radius: 999px;
+  text-shadow: none;
+  box-shadow: 0 1px white;
+}
+
+pre[data-line] .line-highlight[data-end]:after {
+  content: attr(data-end);
+  top: auto;
+  bottom: .4em;
+}html body{font-family:"Helvetica Neue",Helvetica,"Segoe UI",Arial,freesans,sans-serif;font-size:16px;line-height:1.6;color:#333;background-color:#fff;overflow:initial;box-sizing:border-box;word-wrap:break-word}html body>:first-child{margin-top:0}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{line-height:1.2;margin-top:1em;margin-bottom:16px;color:#000}html body h1{font-size:2.25em;font-weight:300;padding-bottom:.3em}html body h2{font-size:1.75em;font-weight:400;padding-bottom:.3em}html body h3{font-size:1.5em;font-weight:500}html body h4{font-size:1.25em;font-weight:600}html body h5{font-size:1.1em;font-weight:600}html body h6{font-size:1em;font-weight:600}html body h1,html body h2,html body h3,html body h4,html body h5{font-weight:600}html body h5{font-size:1em}html body h6{color:#5c5c5c}html body strong{color:#000}html body del{color:#5c5c5c}html body a:not([href]){color:inherit;text-decoration:none}html body a{color:#08c;text-decoration:none}html body a:hover{color:#00a3f5;text-decoration:none}html body img{max-width:100%}html body>p{margin-top:0;margin-bottom:16px;word-wrap:break-word}html body>ul,html body>ol{margin-bottom:16px}html body ul,html body ol{padding-left:2em}html body ul.no-list,html body ol.no-list{padding:0;list-style-type:none}html body ul ul,html body ul ol,html body ol ol,html body ol ul{margin-top:0;margin-bottom:0}html body li{margin-bottom:0}html body li.task-list-item{list-style:none}html body li>p{margin-top:0;margin-bottom:0}html body .task-list-item-checkbox{margin:0 .2em .25em -1.8em;vertical-align:middle}html body .task-list-item-checkbox:hover{cursor:pointer}html body blockquote{margin:16px 0;font-size:inherit;padding:0 15px;color:#5c5c5c;border-left:4px solid #d6d6d6}html body blockquote>:first-child{margin-top:0}html body blockquote>:last-child{margin-bottom:0}html body hr{height:4px;margin:32px 0;background-color:#d6d6d6;border:0 none}html body table{margin:10px 0 15px 0;border-collapse:collapse;border-spacing:0;display:block;width:100%;overflow:auto;word-break:normal;word-break:keep-all}html body table th{font-weight:bold;color:#000}html body table td,html body table th{border:1px solid #d6d6d6;padding:6px 13px}html body dl{padding:0}html body dl dt{padding:0;margin-top:16px;font-size:1em;font-style:italic;font-weight:bold}html body dl dd{padding:0 16px;margin-bottom:16px}html body code{font-family:Menlo,Monaco,Consolas,'Courier New',monospace;font-size:.85em !important;color:#000;background-color:#f0f0f0;border-radius:3px;padding:.2em 0}html body code::before,html body code::after{letter-spacing:-0.2em;content:"\00a0"}html body pre>code{padding:0;margin:0;font-size:.85em !important;word-break:normal;white-space:pre;background:transparent;border:0}html body .highlight{margin-bottom:16px}html body .highlight pre,html body pre{padding:1em;overflow:auto;font-size:.85em !important;line-height:1.45;border:#d6d6d6;border-radius:3px}html body .highlight pre{margin-bottom:0;word-break:normal}html body pre code,html body pre tt{display:inline;max-width:initial;padding:0;margin:0;overflow:initial;line-height:inherit;word-wrap:normal;background-color:transparent;border:0}html body pre code:before,html body pre tt:before,html body pre code:after,html body pre tt:after{content:normal}html body p,html body blockquote,html body ul,html body ol,html body dl,html body pre{margin-top:0;margin-bottom:16px}html body kbd{color:#000;border:1px solid #d6d6d6;border-bottom:2px solid #c7c7c7;padding:2px 4px;background-color:#f0f0f0;border-radius:3px}@media print{html body{background-color:#fff}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{color:#000;page-break-after:avoid}html body blockquote{color:#5c5c5c}html body pre{page-break-inside:avoid}html body table{display:table}html body img{display:block;max-width:100%;max-height:100%}html body pre,html body code{word-wrap:break-word;white-space:pre}}.markdown-preview{width:100%;height:100%;box-sizing:border-box}.markdown-preview .pagebreak,.markdown-preview .newpage{page-break-before:always}.markdown-preview pre.line-numbers{position:relative;padding-left:3.8em;counter-reset:linenumber}.markdown-preview pre.line-numbers>code{position:relative}.markdown-preview pre.line-numbers .line-numbers-rows{position:absolute;pointer-events:none;top:1em;font-size:100%;left:0;width:3em;letter-spacing:-1px;border-right:1px solid #999;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.markdown-preview pre.line-numbers .line-numbers-rows>span{pointer-events:none;display:block;counter-increment:linenumber}.markdown-preview pre.line-numbers .line-numbers-rows>span:before{content:counter(linenumber);color:#999;display:block;padding-right:.8em;text-align:right}.markdown-preview .mathjax-exps .MathJax_Display{text-align:center !important}.markdown-preview:not([for="preview"]) .code-chunk .btn-group{display:none}.markdown-preview:not([for="preview"]) .code-chunk .status{display:none}.markdown-preview:not([for="preview"]) .code-chunk .output-div{margin-bottom:16px}.scrollbar-style::-webkit-scrollbar{width:8px}.scrollbar-style::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}.scrollbar-style::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,0.66);border:4px solid rgba(150,150,150,0.66);background-clip:content-box}html body[for="html-export"]:not([data-presentation-mode]){position:relative;width:100%;height:100%;top:0;left:0;margin:0;padding:0;overflow:auto}html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{position:relative;top:0}@media screen and (min-width:914px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{padding:2em calc(50% - 457px + 2em)}}@media screen and (max-width:914px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{font-size:14px !important;padding:1em}}@media print{html body[for="html-export"]:not([data-presentation-mode]) #sidebar-toc-btn{display:none}}html body[for="html-export"]:not([data-presentation-mode]) #sidebar-toc-btn{position:fixed;bottom:8px;left:8px;font-size:28px;cursor:pointer;color:inherit;z-index:99;width:32px;text-align:center;opacity:.4}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] #sidebar-toc-btn{opacity:1}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc{position:fixed;top:0;left:0;width:300px;height:100%;padding:32px 0 48px 0;font-size:14px;box-shadow:0 0 4px rgba(150,150,150,0.33);box-sizing:border-box;overflow:auto;background-color:inherit}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar{width:8px}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,0.66);border:4px solid rgba(150,150,150,0.66);background-clip:content-box}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc a{text-decoration:none}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc ul{padding:0 1.6em;margin-top:.8em}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc li{margin-bottom:.8em}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc ul{list-style-type:none}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{left:300px;width:calc(100% -  300px);padding:2em calc(50% - 457px -  150px);margin:0;box-sizing:border-box}@media screen and (max-width:1274px){html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{width:100%}}html body[for="html-export"]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .markdown-preview{left:50%;transform:translateX(-50%)}html body[for="html-export"]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .md-sidebar-toc{display:none}
+/* Please visit the URL below for more information: */
+/*   https://shd101wyy.github.io/markdown-preview-enhanced/#/customize-css */
+
+      </style>
+    </head>
+    <body for="html-export">
+      <div class="mume markdown-preview  ">
+      <h1 class="mume-header" id="using-ggplot2-for-visualisations">Using ggplot2 for Visualisations</h1>
+
+<p>We start by loading the required package. <strong><code>ggplot2</code></strong> is also included in the <strong><code>tidyverse</code></strong> package.</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">library<span class="token punctuation">(</span>tidyverse<span class="token punctuation">)</span>
+</pre><p>If not still in the workspace, load the data we saved in the previous lesson.</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">interviews_plotting <span class="token operator">&lt;-</span> read_csv<span class="token punctuation">(</span><span class="token string">&quot;data_output/interviews_plotting.csv&quot;</span><span class="token punctuation">)</span>
+</pre><pre data-role="codeBlock" data-info class="language-"><code>Parsed with column specification:
+cols(
+  .default = col_logical(),
+  key_ID = col_integer(),
+  village = col_character(),
+  interview_date = col_datetime(format = &quot;&quot;),
+  no_membrs = col_integer(),
+  years_liv = col_integer(),
+  respondent_wall_type = col_character(),
+  rooms = col_integer(),
+  memb_assoc = col_character(),
+  affect_conflicts = col_character(),
+  liv_count = col_integer(),
+  items_owned = col_character(),
+  no_meals = col_integer(),
+  months_lack_food = col_character(),
+  instanceID = col_character(),
+  number_months_lack_food = col_integer(),
+  number_items = col_integer()
+)
+
+See spec(...) for full column specifications.
+</code></pre><h2 class="mume-header" id="plotting-with-ggplot2">Plotting with <strong><code>ggplot2</code></strong></h2>
+
+<p><strong><code>ggplot2</code></strong> is a plotting package that makes it simple to create complex plots from data stored in a data frame. It provides a programmatic interface for specifying what variables to plot, how they are displayed, and general visual properties. Therefore, we only need minimal changes if the underlying data changes or if we decide to change from a bar plot to a scatterplot. This helps in creating publication quality plots with minimal amounts of adjustments and tweaking.</p>
+<p><strong><code>ggplot2</code></strong> functions like data in the &apos;long&apos; format, i.e., a column for every dimension, and a row for every observation. Well-structured data will save you lots of time when making figures with <strong><code>ggplot2</code></strong></p>
+<p>ggplot graphics are built step by step by adding new elements. Adding layers in this fashion allows for extensive flexibility and customization of plots.</p>
+<p>To build a ggplot, we will use the following basic template that can be used for different types of plots:</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">ggplot<span class="token punctuation">(</span>data <span class="token operator">=</span> <span class="token operator">&lt;</span>DATA<span class="token operator">&gt;</span><span class="token punctuation">,</span> mapping <span class="token operator">=</span> aes<span class="token punctuation">(</span><span class="token operator">&lt;</span>MAPPINGS<span class="token operator">&gt;</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">+</span>  <span class="token operator">&lt;</span>GEOM_FUNCTION<span class="token operator">&gt;</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+</pre><ul>
+<li>use the <code>ggplot()</code> function and bind the plot to a specific data frame usingm the <code>data</code> argument</li>
+</ul>
+<pre data-role="codeBlock" data-info="r" class="language-r">ggplot<span class="token punctuation">(</span>data <span class="token operator">=</span> interviews_plotting<span class="token punctuation">)</span>
+</pre><ul>
+<li>define a mapping (using the aesthetic (<code>aes</code>) function), by selecting the variables to be plotted and specifying how to present them in the graph, e.g. as x/y positions or characteristics such as size, shape, color, etc.</li>
+</ul>
+<pre data-role="codeBlock" data-info="r" class="language-r">ggplot<span class="token punctuation">(</span>data <span class="token operator">=</span> interviews_plotting<span class="token punctuation">,</span> aes<span class="token punctuation">(</span>x <span class="token operator">=</span> no_membrs<span class="token punctuation">,</span> y <span class="token operator">=</span> number_items<span class="token punctuation">)</span><span class="token punctuation">)</span>
+</pre><ul>
+<li>add &apos;geoms&apos; &#x2013; graphical representations of the data in the plot (points, lines, bars). <strong><code>ggplot2</code></strong> offers many different geoms; we will use some common ones today, including:</li>
+</ul>
+<ul>
+<li><code>geom_point()</code> for scatter plots, dot plots, etc.</li>
+<li><code>geom_boxplot()</code> for, well, boxplots!</li>
+<li><code>geom_line()</code> for trend lines, time series, etc.</li>
+</ul>
+<p>To add a geom to the plot use the <code>+</code> operator. Because we have two continuous variables, let&apos;s use <code>geom_point()</code> first:</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">ggplot<span class="token punctuation">(</span>data <span class="token operator">=</span> interviews_plotting<span class="token punctuation">,</span> aes<span class="token punctuation">(</span>x <span class="token operator">=</span> no_membrs<span class="token punctuation">,</span> y <span class="token operator">=</span> number_items<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">+</span>
+    geom_point<span class="token punctuation">(</span><span class="token punctuation">)</span>
+</pre><img src="./fig/rmd-04-first-ggplot-1.png" title="plot of chunk first-ggplot" alt="plot of chunk first-ggplot" width="612" style="display: block; margin: auto;">
+<p>The <code>+</code> in the <strong><code>ggplot2</code></strong> package is particularly useful because it allows you to modify existing <code>ggplot</code> objects. This means you can easily set up plot templates and conveniently explore different types of plots, so the above plot can also be generated with code like this:</p>
+<pre data-role="codeBlock" data-info="r" class="language-r"><span class="token comment"># Assign plot to a variable</span>
+interviews_plot <span class="token operator">&lt;-</span> ggplot<span class="token punctuation">(</span>data <span class="token operator">=</span> interviews_plotting<span class="token punctuation">,</span> aes<span class="token punctuation">(</span>x <span class="token operator">=</span> no_membrs<span class="token punctuation">,</span> y <span class="token operator">=</span> number_items<span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token comment"># Draw the plot</span>
+interviews_plot <span class="token operator">+</span>
+    geom_point<span class="token punctuation">(</span><span class="token punctuation">)</span>
+</pre><blockquote>
+<h2>Notes</h2>
+<ul>
+<li>Anything you put in the <code>ggplot()</code> function can be seen by any geom layers that you add (i.e., these are universal plot settings). This includes the x- and y-axis mapping you set up in <code>aes()</code>.</li>
+<li>You can also specify mappings for a given geom independently of the mapping defined globally in the <code>ggplot()</code> function.</li>
+<li>The <code>+</code> sign used to add new layers must be placed at the end of the line containing the <em>previous</em> layer. If, instead, the <code>+</code> sign is added at the beginning of the line containing the new layer, <strong><code>ggplot2</code></strong> will not add the new layer and will return an error message.</li>
+</ul>
+</blockquote>
+<pre data-role="codeBlock" data-info="r" class="language-r"><span class="token comment">## This is the correct syntax for adding layers</span>
+interviews_plot <span class="token operator">+</span>
+    geom_point<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token comment">## This will not add the new layer and will return an error message</span>
+interviews_plot
+<span class="token operator">+</span> geom_point<span class="token punctuation">(</span><span class="token punctuation">)</span>
+</pre><h2 class="mume-header" id="building-your-plots-iteratively">Building your plots iteratively</h2>
+
+<p>Building plots with <strong><code>ggplot2</code></strong> is typically an iterative process. We start by defining the dataset we&apos;ll use, lay out the axes, and choose a geom:</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">ggplot<span class="token punctuation">(</span>data <span class="token operator">=</span> interviews_plotting<span class="token punctuation">,</span> aes<span class="token punctuation">(</span>x <span class="token operator">=</span> no_membrs<span class="token punctuation">,</span> y <span class="token operator">=</span> number_items<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">+</span>
+    geom_point<span class="token punctuation">(</span><span class="token punctuation">)</span>
+</pre><img src="./fig/rmd-04-create-ggplot-object-1.png" title="plot of chunk create-ggplot-object" alt="plot of chunk create-ggplot-object" width="612" style="display: block; margin: auto;">
+<p>Then, we start modifying this plot to extract more information from it. For instance, we can add transparency (<code>alpha</code>) to avoid overplotting:</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">ggplot<span class="token punctuation">(</span>data <span class="token operator">=</span> interviews_plotting<span class="token punctuation">,</span> aes<span class="token punctuation">(</span>x <span class="token operator">=</span> no_membrs<span class="token punctuation">,</span> y <span class="token operator">=</span> number_items<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">+</span>
+    geom_point<span class="token punctuation">(</span>alpha <span class="token operator">=</span> <span class="token number">0.5</span><span class="token punctuation">)</span>
+</pre><img src="./fig/rmd-04-adding-transparency-1.png" title="plot of chunk adding-transparency" alt="plot of chunk adding-transparency" width="612" style="display: block; margin: auto;">
+<p>That only helped a little bit with the overplotting problem. We can also introduce a little bit of randomness into the position of our points using the <code>geom_jitter()</code> function.</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">ggplot<span class="token punctuation">(</span>data <span class="token operator">=</span> interviews_plotting<span class="token punctuation">,</span> aes<span class="token punctuation">(</span>x <span class="token operator">=</span> no_membrs<span class="token punctuation">,</span> y <span class="token operator">=</span> number_items<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">+</span>
+    geom_jitter<span class="token punctuation">(</span>alpha <span class="token operator">=</span> <span class="token number">0.5</span><span class="token punctuation">)</span>
+</pre><img src="./fig/rmd-04-adding-jitter-1.png" title="plot of chunk adding-jitter" alt="plot of chunk adding-jitter" width="612" style="display: block; margin: auto;">
+<p>We can also add colors for all the points:</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">ggplot<span class="token punctuation">(</span>data <span class="token operator">=</span> interviews_plotting<span class="token punctuation">,</span> aes<span class="token punctuation">(</span>x <span class="token operator">=</span> no_membrs<span class="token punctuation">,</span> y <span class="token operator">=</span> number_items<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">+</span>
+geom_jitter<span class="token punctuation">(</span>alpha <span class="token operator">=</span> <span class="token number">0.5</span><span class="token punctuation">,</span> color <span class="token operator">=</span> <span class="token string">&quot;blue&quot;</span><span class="token punctuation">)</span>
+</pre><img src="./fig/rmd-04-adding-colors-1.png" title="plot of chunk adding-colors" alt="plot of chunk adding-colors" width="612" style="display: block; margin: auto;">
+<p>Or to color each village in the plot differently, you could use a vector as an input to the argument <strong><code>color</code></strong>.  Because we are now mapping features of the data to a color, instead of setting one color for all points, the color now needs to be set inside a call to the <strong><code>aes</code></strong> function. <strong><code>ggplot2</code></strong> will provide a different color corresponding to different values in the vector. We set the value of <strong><code>alpha</code></strong> outside of the <strong><code>aes</code></strong> function call because we are using the same value for all points. Here is an example where we color by <strong><code>village</code></strong>:</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">ggplot<span class="token punctuation">(</span>data <span class="token operator">=</span> interviews_plotting<span class="token punctuation">,</span> aes<span class="token punctuation">(</span>x <span class="token operator">=</span> no_membrs<span class="token punctuation">,</span> y <span class="token operator">=</span> number_items<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">+</span>
+    geom_jitter<span class="token punctuation">(</span>aes<span class="token punctuation">(</span>color <span class="token operator">=</span> village<span class="token punctuation">)</span><span class="token punctuation">,</span> alpha <span class="token operator">=</span> <span class="token number">0.5</span><span class="token punctuation">)</span>
+</pre><img src="./fig/rmd-04-color-by-species-1.png" title="plot of chunk color-by-species" alt="plot of chunk color-by-species" width="612" style="display: block; margin: auto;">
+<p>There appears to be a positive trend between number of household members and number of items owned (from the list provided). This trend does not appear to be different by village.</p>
+<blockquote>
+<h2>Exercise</h2>
+<p>Use what you just learned to create a scatter plot of <code>rooms</code> by <code>village</code> with the <code>respondent_wall_type</code> showing in different colors. Is this a good way to show this type of data?</p>
+</blockquote>
+<details><summary><b>Solution</b>  - click me</summary>
+<blockquote>
+<h2>Solution</h2>
+</blockquote>
+<pre data-role="codeBlock" data-info="r" class="language-r">ggplot<span class="token punctuation">(</span>data <span class="token operator">=</span> interviews_plotting<span class="token punctuation">,</span> aes<span class="token punctuation">(</span>x <span class="token operator">=</span> village<span class="token punctuation">,</span> y <span class="token operator">=</span> rooms<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">+</span>
+geom_jitter<span class="token punctuation">(</span>aes<span class="token punctuation">(</span>color <span class="token operator">=</span> respondent_wall_type<span class="token punctuation">)</span><span class="token punctuation">)</span>
+</pre><img src="./fig/rmd-04-scatter-challenge-1.png" title="plot of chunk scatter-challenge" alt="plot of chunk scatter-challenge" width="612" style="display: block; margin: auto;">
+</details>
+<h2 class="mume-header" id="boxplot">Boxplot</h2>
+
+<p>We can use boxplots to visualize the distribution of rooms for each wall type:</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">ggplot<span class="token punctuation">(</span>data <span class="token operator">=</span> interviews_plotting<span class="token punctuation">,</span> aes<span class="token punctuation">(</span>x <span class="token operator">=</span> respondent_wall_type<span class="token punctuation">,</span> y <span class="token operator">=</span> rooms<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">+</span>
+    geom_boxplot<span class="token punctuation">(</span><span class="token punctuation">)</span>
+</pre><img src="./fig/rmd-04-boxplot-1.png" title="plot of chunk boxplot" alt="plot of chunk boxplot" width="612" style="display: block; margin: auto;">
+<p>By adding points to a boxplot, we can have a better idea of the number of measurements and of their distribution:</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">ggplot<span class="token punctuation">(</span>data <span class="token operator">=</span> interviews_plotting<span class="token punctuation">,</span> aes<span class="token punctuation">(</span>x <span class="token operator">=</span> respondent_wall_type<span class="token punctuation">,</span> y <span class="token operator">=</span> rooms<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">+</span>
+    geom_boxplot<span class="token punctuation">(</span>alpha <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token operator">+</span>
+    geom_jitter<span class="token punctuation">(</span>alpha <span class="token operator">=</span> <span class="token number">0.5</span><span class="token punctuation">,</span> color <span class="token operator">=</span> <span class="token string">&quot;tomato&quot;</span><span class="token punctuation">)</span>
+</pre><img src="./fig/rmd-04-boxplot-with-points-1.png" title="plot of chunk boxplot-with-points" alt="plot of chunk boxplot-with-points" width="612" style="display: block; margin: auto;">
+<p>We can see that muddaub houses and sunbrick houses tend to be smaller than burntbrick houses.</p>
+<p>Notice how the boxplot layer is behind the jitter layer? What do you need to change in the code to put the boxplot in front of the points such that it&apos;s not hidden?</p>
+<blockquote>
+<h2>Exercise</h2>
+<p>Boxplots are useful summaries, but hide the <em>shape</em> of the distribution. For example, if the distribution is bimodal, we would not see it in a boxplot. An alternative to the boxplot is the violin plot, where the shape (of the density of points) is drawn.</p>
+<ul>
+<li>Replace the box plot with a violin plot; see <code>geom_violin()</code>.</li>
+</ul>
+</blockquote>
+<details><summary><b>Solution</b>  - click me</summary>
+<blockquote>
+<h2>Solution</h2>
+</blockquote>
+<pre data-role="codeBlock" data-info="r" class="language-r">ggplot<span class="token punctuation">(</span>data <span class="token operator">=</span> interviews_plotting<span class="token punctuation">,</span> aes<span class="token punctuation">(</span>x <span class="token operator">=</span> respondent_wall_type<span class="token punctuation">,</span> y <span class="token operator">=</span> rooms<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">+</span>
+   geom_violin<span class="token punctuation">(</span>alpha <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token operator">+</span>
+   geom_jitter<span class="token punctuation">(</span>alpha <span class="token operator">=</span> <span class="token number">0.5</span><span class="token punctuation">,</span> color <span class="token operator">=</span> <span class="token string">&quot;tomato&quot;</span><span class="token punctuation">)</span>
+</pre><img src="./fig/rmd-04-violin-plot-1.png" title="plot of chunk violin-plot" alt="plot of chunk violin-plot" width="612" style="display: block; margin: auto;">
+</details>
+<blockquote>
+<p>So far, we&apos;ve looked at the distribution of room number within wall type. Try making a new plot to explore the distribution of another variable within wall type.</p>
+<ul>
+<li>Create a boxplot for <code>liv_count</code> for each wall type. Overlay the boxplot layer on a jitter layer to show actual measurements.</li>
+</ul>
+</blockquote>
+<details><summary><b>Solution</b>  - click me</summary>
+<blockquote>
+<h2>Solution</h2>
+</blockquote>
+<pre data-role="codeBlock" data-info="r" class="language-r">ggplot<span class="token punctuation">(</span>data <span class="token operator">=</span> interviews_plotting<span class="token punctuation">,</span> aes<span class="token punctuation">(</span>x <span class="token operator">=</span> respondent_wall_type<span class="token punctuation">,</span> y <span class="token operator">=</span> liv_count<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">+</span>
+  geom_boxplot<span class="token punctuation">(</span>alpha <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token operator">+</span>
+  geom_jitter<span class="token punctuation">(</span>alpha <span class="token operator">=</span> <span class="token number">0.5</span><span class="token punctuation">)</span>
+</pre><img src="./fig/rmd-04-boxplot-exercise-1.png" title="plot of chunk boxplot-exercise" alt="plot of chunk boxplot-exercise" width="612" style="display: block; margin: auto;">
+</details>
+<blockquote>
+<ul>
+<li>Add color to the data points on your boxplot according to whether the respondent is a member of an irrigation association   <code>memb_assoc</code>).</li>
+</ul>
+</blockquote>
+<details><summary><b>Solution</b>  - click me</summary>
+<blockquote>
+<h2>Solution</h2>
+</blockquote>
+<pre data-role="codeBlock" data-info="r" class="language-r">ggplot<span class="token punctuation">(</span>data <span class="token operator">=</span> interviews_plotting<span class="token punctuation">,</span> aes<span class="token punctuation">(</span>x <span class="token operator">=</span> respondent_wall_type<span class="token punctuation">,</span> y <span class="token operator">=</span> liv_count<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">+</span>
+   geom_boxplot<span class="token punctuation">(</span>alpha <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token operator">+</span>
+   geom_jitter<span class="token punctuation">(</span>aes<span class="token punctuation">(</span>alpha <span class="token operator">=</span> <span class="token number">0.5</span><span class="token punctuation">,</span> color <span class="token operator">=</span> memb_assoc<span class="token punctuation">)</span><span class="token punctuation">)</span>
+</pre><img src="./fig/rmd-04-boxplot-exercise-factor-1.png" title="plot of chunk boxplot-exercise-factor" alt="plot of chunk boxplot-exercise-factor" width="612" style="display: block; margin: auto;">
+</details>
+<h2 class="mume-header" id="barplots">Barplots</h2>
+
+<p>Barplots are also useful for visualizing categorical data. By default, <code>geom_bar</code> accepts a variable for x, and plots the number of instances each value of x (in this case, wall type) appears in the dataset.</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">ggplot<span class="token punctuation">(</span>data <span class="token operator">=</span> interviews_plotting<span class="token punctuation">,</span> aes<span class="token punctuation">(</span>x <span class="token operator">=</span> respondent_wall_type<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">+</span>
+    geom_bar<span class="token punctuation">(</span><span class="token punctuation">)</span>
+</pre><img src="./fig/rmd-04-barplot-1-1.png" title="plot of chunk barplot-1" alt="plot of chunk barplot-1" width="612" style="display: block; margin: auto;">
+<p>We can use the <code>fill</code> aesthetic for the <code>geom_bar()</code> geom to color bars by the portion of each count that is from each village.</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">ggplot<span class="token punctuation">(</span>data <span class="token operator">=</span> interviews_plotting<span class="token punctuation">,</span> aes<span class="token punctuation">(</span>x <span class="token operator">=</span> respondent_wall_type<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">+</span>
+    geom_bar<span class="token punctuation">(</span>aes<span class="token punctuation">(</span>fill <span class="token operator">=</span> village<span class="token punctuation">)</span><span class="token punctuation">)</span>
+</pre><img src="./fig/rmd-04-barplot-stack-1.png" title="plot of chunk barplot-stack" alt="plot of chunk barplot-stack" width="612" style="display: block; margin: auto;">
+<p>This creates a stacked bar chart. These are generally more difficult to read than side-by-side bars. We can separate the portions of the stacked bar that correspond to each village and put them side-by-side by using the <code>position</code> argument for <code>geom_bar()</code> and setting it to &quot;dodge&quot;.</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">ggplot<span class="token punctuation">(</span>data <span class="token operator">=</span> interviews_plotting<span class="token punctuation">,</span> aes<span class="token punctuation">(</span>x <span class="token operator">=</span> respondent_wall_type<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">+</span>
+    geom_bar<span class="token punctuation">(</span>aes<span class="token punctuation">(</span>fill <span class="token operator">=</span> village<span class="token punctuation">)</span><span class="token punctuation">,</span> position <span class="token operator">=</span> <span class="token string">&quot;dodge&quot;</span><span class="token punctuation">)</span>
+</pre><img src="./fig/rmd-04-barplot-dodge-1.png" title="plot of chunk barplot-dodge" alt="plot of chunk barplot-dodge" width="612" style="display: block; margin: auto;">
+<p>This is a nicer graphic, but we&apos;re more likely to be interested in the proportion of each housing type in each village than in the actual count of number of houses of each type (because we might have sampled different numbers of households in each village). To compare proportions, we will first create a new data frame (<code>percent_wall_type</code>) with a new column named &quot;percent&quot; representing the percent of each house type in each village. We will remove houses with cement walls, as there was only one in the dataset.</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">percent_wall_type <span class="token operator">&lt;-</span> interviews_plotting <span class="token percent-operator operator">%&gt;%</span>
+    filter<span class="token punctuation">(</span>respondent_wall_type <span class="token operator">!=</span> <span class="token string">&quot;cement&quot;</span><span class="token punctuation">)</span> <span class="token percent-operator operator">%&gt;%</span>
+    count<span class="token punctuation">(</span>village<span class="token punctuation">,</span> respondent_wall_type<span class="token punctuation">)</span> <span class="token percent-operator operator">%&gt;%</span>
+    group_by<span class="token punctuation">(</span>village<span class="token punctuation">)</span> <span class="token percent-operator operator">%&gt;%</span>
+    mutate<span class="token punctuation">(</span>percent <span class="token operator">=</span> n <span class="token operator">/</span> sum<span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token percent-operator operator">%&gt;%</span>
+    ungroup<span class="token punctuation">(</span><span class="token punctuation">)</span>
+</pre><p>Now we can use this new data frame to create our plot showing the percentage of each house type in each village.</p>
+<pre data-role="codeBlock" data-info="r" class="language-r"> ggplot<span class="token punctuation">(</span>percent_wall_type<span class="token punctuation">,</span> aes<span class="token punctuation">(</span>x <span class="token operator">=</span> village<span class="token punctuation">,</span> y <span class="token operator">=</span> percent<span class="token punctuation">,</span> fill <span class="token operator">=</span> respondent_wall_type<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">+</span>
+     geom_bar<span class="token punctuation">(</span>stat <span class="token operator">=</span> <span class="token string">&quot;identity&quot;</span><span class="token punctuation">,</span> position <span class="token operator">=</span> <span class="token string">&quot;dodge&quot;</span><span class="token punctuation">)</span>
+</pre><img src="./fig/rmd-04-barplot-wall-type-1.png" title="plot of chunk barplot-wall-type" alt="plot of chunk barplot-wall-type" width="612" style="display: block; margin: auto;">
+<blockquote>
+<h2>Exercise</h2>
+<p>Create a bar plot showing the proportion of respondents in each village who are or are not part of an irrigation association (<code>memb_assoc</code>). Include only respondents who answered that question in the calculations and plot. Which village had the lowest proportion of respondents in an irrigation association?</p>
+</blockquote>
+<details><summary><b>Solution</b>  - click me</summary>
+<blockquote>
+<h2>Solution</h2>
+</blockquote>
+<pre data-role="codeBlock" data-info="r" class="language-r">percent_memb_assoc <span class="token operator">&lt;-</span> interviews_plotting <span class="token percent-operator operator">%&gt;%</span>
+  filter<span class="token punctuation">(</span><span class="token operator">!</span>is.na<span class="token punctuation">(</span>memb_assoc<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token percent-operator operator">%&gt;%</span>
+   count<span class="token punctuation">(</span>village<span class="token punctuation">,</span> memb_assoc<span class="token punctuation">)</span> <span class="token percent-operator operator">%&gt;%</span>
+   group_by<span class="token punctuation">(</span>village<span class="token punctuation">)</span> <span class="token percent-operator operator">%&gt;%</span>
+   mutate<span class="token punctuation">(</span>percent <span class="token operator">=</span> n <span class="token operator">/</span> sum<span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token percent-operator operator">%&gt;%</span>
+   ungroup<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+ggplot<span class="token punctuation">(</span>percent_memb_assoc<span class="token punctuation">,</span> aes<span class="token punctuation">(</span>x <span class="token operator">=</span> village<span class="token punctuation">,</span> y <span class="token operator">=</span> percent<span class="token punctuation">,</span> fill <span class="token operator">=</span> memb_assoc<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">+</span>
+geom_bar<span class="token punctuation">(</span>stat <span class="token operator">=</span> <span class="token string">&quot;identity&quot;</span><span class="token punctuation">,</span> position <span class="token operator">=</span> <span class="token string">&quot;dodge&quot;</span><span class="token punctuation">)</span>
+</pre><img src="./fig/rmd-04-barplot-memb-assoc-1.png" title="plot of chunk barplot-memb-assoc" alt="plot of chunk barplot-memb-assoc" width="612" style="display: block; margin: auto;">
+<p>Ruaca had the lowest proportion of members in an irrigation association.</p>
+</details>
+<h2 class="mume-header" id="adding-labels-and-titles">Adding Labels and Titles</h2>
+
+<p>By default, the axes labels on a plot are determined by the name of the variable being plotted. However, <strong><code>ggplot2</code></strong> offers lots of customization options, like specifying the axes labels, and adding a title to the plot with  relatively few lines of code. We will add more informative x and y axis labels to our plot of proportion of house type by village and also add a title.</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">ggplot<span class="token punctuation">(</span>percent_wall_type<span class="token punctuation">,</span> aes<span class="token punctuation">(</span>x <span class="token operator">=</span> village<span class="token punctuation">,</span> y <span class="token operator">=</span> percent<span class="token punctuation">,</span> fill <span class="token operator">=</span> respondent_wall_type<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">+</span>
+    geom_bar<span class="token punctuation">(</span>stat <span class="token operator">=</span> <span class="token string">&quot;identity&quot;</span><span class="token punctuation">,</span> position <span class="token operator">=</span> <span class="token string">&quot;dodge&quot;</span><span class="token punctuation">)</span> <span class="token operator">+</span>
+    ylab<span class="token punctuation">(</span><span class="token string">&quot;Percent&quot;</span><span class="token punctuation">)</span> <span class="token operator">+</span>
+    xlab<span class="token punctuation">(</span><span class="token string">&quot;Wall Type&quot;</span><span class="token punctuation">)</span> <span class="token operator">+</span>
+    ggtitle<span class="token punctuation">(</span><span class="token string">&quot;Proportion of wall type by village&quot;</span><span class="token punctuation">)</span>
+</pre><img src="./fig/rmd-04-barplot-wall-types-labeled-1.png" title="plot of chunk barplot-wall-types-labeled" alt="plot of chunk barplot-wall-types-labeled" width="612" style="display: block; margin: auto;">
+<h2 class="mume-header" id="faceting">Faceting</h2>
+
+<p>Rather than creating a single plot with side-by-side bars for each village, we may want to create multiple plot, where each plot shows the data for a single village. This would be especially useful if we had a large number of villages that we had sampled, as a large number of side-by-side bars will become more difficult to read.</p>
+<p><strong><code>ggplot2</code></strong> has a special technique called <em>faceting</em> that allows the user to split one plot into multiple plots based on a factor included in the dataset. We will use it to split our barplot of housing type proportion by village so that each village has it&apos;s own panel in a multi-panel plot:</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">ggplot<span class="token punctuation">(</span>percent_wall_type<span class="token punctuation">,</span> aes<span class="token punctuation">(</span>x <span class="token operator">=</span> respondent_wall_type<span class="token punctuation">,</span> y <span class="token operator">=</span> percent<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">+</span>
+    geom_bar<span class="token punctuation">(</span>stat <span class="token operator">=</span> <span class="token string">&quot;identity&quot;</span><span class="token punctuation">,</span> position <span class="token operator">=</span> <span class="token string">&quot;dodge&quot;</span><span class="token punctuation">)</span> <span class="token operator">+</span>
+    ylab<span class="token punctuation">(</span><span class="token string">&quot;Percent&quot;</span><span class="token punctuation">)</span> <span class="token operator">+</span>
+    xlab<span class="token punctuation">(</span><span class="token string">&quot;Wall Type&quot;</span><span class="token punctuation">)</span> <span class="token operator">+</span>
+    ggtitle<span class="token punctuation">(</span><span class="token string">&quot;Proportion of wall type by village&quot;</span><span class="token punctuation">)</span> <span class="token operator">+</span>
+    facet_wrap<span class="token punctuation">(</span><span class="token operator">~</span> village<span class="token punctuation">)</span>
+</pre><img src="./fig/rmd-04-barplot-faceting-1.png" title="plot of chunk barplot-faceting" alt="plot of chunk barplot-faceting" width="612" style="display: block; margin: auto;">
+<p>Click the &quot;Zoom&quot; button in your RStudio plots pane to view a larger version of this plot.</p>
+<p>Usually plots with white background look more readable when printed.  We can set the background to white using the function <code>theme_bw()</code>. Additionally, you can remove the grid:</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">ggplot<span class="token punctuation">(</span>percent_wall_type<span class="token punctuation">,</span> aes<span class="token punctuation">(</span>x <span class="token operator">=</span> respondent_wall_type<span class="token punctuation">,</span> y <span class="token operator">=</span> percent<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">+</span>
+    geom_bar<span class="token punctuation">(</span>stat <span class="token operator">=</span> <span class="token string">&quot;identity&quot;</span><span class="token punctuation">,</span> position <span class="token operator">=</span> <span class="token string">&quot;dodge&quot;</span><span class="token punctuation">)</span> <span class="token operator">+</span>
+    ylab<span class="token punctuation">(</span><span class="token string">&quot;Percent&quot;</span><span class="token punctuation">)</span> <span class="token operator">+</span>
+    xlab<span class="token punctuation">(</span><span class="token string">&quot;Wall Type&quot;</span><span class="token punctuation">)</span> <span class="token operator">+</span>
+    ggtitle<span class="token punctuation">(</span><span class="token string">&quot;Proportion of wall type by village&quot;</span><span class="token punctuation">)</span> <span class="token operator">+</span>
+    facet_wrap<span class="token punctuation">(</span><span class="token operator">~</span> village<span class="token punctuation">)</span> <span class="token operator">+</span>
+    theme_bw<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span>
+    theme<span class="token punctuation">(</span>panel.grid <span class="token operator">=</span> element_blank<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+</pre><img src="./fig/rmd-04-barplot-theme-bw-1.png" title="plot of chunk barplot-theme-bw" alt="plot of chunk barplot-theme-bw" width="612" style="display: block; margin: auto;">
+<p>What if we wanted to see the proportion of respondents in each village who owned a particular item? We can calculate the percent of people in each village who own each item and then create a faceted series of bar plots where each plot is a particular item. First we need to calculate the percentage of people in each village who own each item:</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">percent_items <span class="token operator">&lt;-</span> interviews_plotting <span class="token percent-operator operator">%&gt;%</span>
+    gather<span class="token punctuation">(</span>items<span class="token punctuation">,</span> items_owned_logical<span class="token punctuation">,</span> bicycle<span class="token operator">:</span>no_listed_items<span class="token punctuation">)</span> <span class="token percent-operator operator">%&gt;%</span>
+    filter<span class="token punctuation">(</span>items_owned_logical<span class="token punctuation">)</span> <span class="token percent-operator operator">%&gt;%</span>
+    count<span class="token punctuation">(</span>items<span class="token punctuation">,</span> village<span class="token punctuation">)</span> <span class="token percent-operator operator">%&gt;%</span>
+    <span class="token comment">## add a column with the number of people in each village</span>
+    mutate<span class="token punctuation">(</span>people_in_village <span class="token operator">=</span> case_when<span class="token punctuation">(</span>village <span class="token operator">==</span> <span class="token string">&quot;Chirodzo&quot;</span> <span class="token operator">~</span> <span class="token number">39</span><span class="token punctuation">,</span>
+                                         village <span class="token operator">==</span> <span class="token string">&quot;God&quot;</span> <span class="token operator">~</span> <span class="token number">43</span><span class="token punctuation">,</span>
+                                         village <span class="token operator">==</span> <span class="token string">&quot;Ruaca&quot;</span> <span class="token operator">~</span> <span class="token number">49</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token percent-operator operator">%&gt;%</span>
+    mutate<span class="token punctuation">(</span>percent <span class="token operator">=</span> n <span class="token operator">/</span> people_in_village<span class="token punctuation">)</span>
+</pre><p>To calculate this percentage data frame, we needed to use the <code>case_when()</code> parameter within <code>mutate()</code>. In our earlier examples, we knew that each house was one and only one of the types specified. However, people can (and do) own more than one item, so we can&apos;t use the sum of the count column to give us the denominator in our percentage calculation. Instead, we need to specify the number of respondents in each village. Using this data frame, we can now create a multi-paneled bar plot.</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">ggplot<span class="token punctuation">(</span>percent_items<span class="token punctuation">,</span> aes<span class="token punctuation">(</span>x <span class="token operator">=</span> village<span class="token punctuation">,</span> y <span class="token operator">=</span> percent<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">+</span>
+    geom_bar<span class="token punctuation">(</span>stat <span class="token operator">=</span> <span class="token string">&quot;identity&quot;</span><span class="token punctuation">,</span> position <span class="token operator">=</span> <span class="token string">&quot;dodge&quot;</span><span class="token punctuation">)</span> <span class="token operator">+</span>
+    facet_wrap<span class="token punctuation">(</span><span class="token operator">~</span> items<span class="token punctuation">)</span> <span class="token operator">+</span>
+    theme_bw<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span>
+    theme<span class="token punctuation">(</span>panel.grid <span class="token operator">=</span> element_blank<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+</pre><img src="./fig/rmd-04-percent-items-barplot-1.png" title="plot of chunk percent-items-barplot" alt="plot of chunk percent-items-barplot" width="612" style="display: block; margin: auto;">
+<h2 class="mume-header" id="ggplot2-themes"><strong><code>ggplot2</code></strong> themes</h2>
+
+<p>In addition to <code>theme_bw()</code>, which changes the plot background to white, <strong><code>ggplot2</code></strong> comes with several other themes which can be useful to quickly change the look of your visualization. The complete list of themes is available at <a href="http://docs.ggplot2.org/current/ggtheme.html">http://docs.ggplot2.org/current/ggtheme.html</a>. <code>theme_minimal()</code> and <code>theme_light()</code> are popular, and <code>theme_void()</code> can be useful as a starting point to create a new hand-crafted theme.</p>
+<p>The <a href="https://jrnold.github.io/ggthemes/reference/index.html">ggthemes</a> package provides a wide variety of options (including an Excel 2003 theme). The <a href="https://www.ggplot2-exts.org"><strong><code>ggplot2</code></strong> extensions website</a> provides a list of packages that extend the capabilities of <strong><code>ggplot2</code></strong>, including additional themes.</p>
+<h2 class="mume-header" id="customization">Customization</h2>
+
+<p>Take a look at the <a href="https://www.rstudio.com/wp-content/uploads/2016/11/ggplot2-cheatsheet-2.1.pdf"><strong><code>ggplot2</code></strong> cheat sheet</a>, and think of ways you could improve the plot.</p>
+<p>Now, let&apos;s change names of axes to something more informative than &apos;village&apos; and &apos;percent&apos; and add a title to the figure:</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">ggplot<span class="token punctuation">(</span>percent_items<span class="token punctuation">,</span> aes<span class="token punctuation">(</span>x <span class="token operator">=</span> village<span class="token punctuation">,</span> y <span class="token operator">=</span> percent<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">+</span>
+    geom_bar<span class="token punctuation">(</span>stat <span class="token operator">=</span> <span class="token string">&quot;identity&quot;</span><span class="token punctuation">,</span> position <span class="token operator">=</span> <span class="token string">&quot;dodge&quot;</span><span class="token punctuation">)</span> <span class="token operator">+</span>
+    facet_wrap<span class="token punctuation">(</span><span class="token operator">~</span> items<span class="token punctuation">)</span> <span class="token operator">+</span>
+    labs<span class="token punctuation">(</span>title <span class="token operator">=</span> <span class="token string">&quot;Percent of respondents in each village who owned each item&quot;</span><span class="token punctuation">,</span>
+         x <span class="token operator">=</span> <span class="token string">&quot;Village&quot;</span><span class="token punctuation">,</span>
+         y <span class="token operator">=</span> <span class="token string">&quot;Percent of Respondents&quot;</span><span class="token punctuation">)</span> <span class="token operator">+</span>
+    theme_bw<span class="token punctuation">(</span><span class="token punctuation">)</span>
+</pre><img src="./fig/rmd-04-ggplot-customization-1.png" title="plot of chunk ggplot-customization" alt="plot of chunk ggplot-customization" width="612" style="display: block; margin: auto;">
+<p>The axes have more informative names, but their readability can be improved by increasing the font size:</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">ggplot<span class="token punctuation">(</span>percent_items<span class="token punctuation">,</span> aes<span class="token punctuation">(</span>x <span class="token operator">=</span> village<span class="token punctuation">,</span> y <span class="token operator">=</span> percent<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">+</span>
+    geom_bar<span class="token punctuation">(</span>stat <span class="token operator">=</span> <span class="token string">&quot;identity&quot;</span><span class="token punctuation">,</span> position <span class="token operator">=</span> <span class="token string">&quot;dodge&quot;</span><span class="token punctuation">)</span> <span class="token operator">+</span>
+    facet_wrap<span class="token punctuation">(</span><span class="token operator">~</span> items<span class="token punctuation">)</span> <span class="token operator">+</span>
+    labs<span class="token punctuation">(</span>title <span class="token operator">=</span> <span class="token string">&quot;Percent of respondents in each village who owned each item&quot;</span><span class="token punctuation">,</span>
+         x <span class="token operator">=</span> <span class="token string">&quot;Village&quot;</span><span class="token punctuation">,</span>
+         y <span class="token operator">=</span> <span class="token string">&quot;Percent of Respondents&quot;</span><span class="token punctuation">)</span> <span class="token operator">+</span>
+    theme_bw<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span>
+    theme<span class="token punctuation">(</span>text<span class="token operator">=</span>element_text<span class="token punctuation">(</span>size <span class="token operator">=</span> <span class="token number">16</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+</pre><img src="./fig/rmd-04-ggplot-customization-font-size-1.png" title="plot of chunk ggplot-customization-font-size" alt="plot of chunk ggplot-customization-font-size" width="612" style="display: block; margin: auto;">
+<p>Note that it is also possible to change the fonts of your plots. If you are on Windows, you may have to install the <a href="https://github.com/wch/extrafont"><strong><code>extrafont</code></strong> package</a>, and follow the instructions included in the README for this package.</p>
+<p>After our manipulations, you may notice that the values on the x-axis are still not properly readable. Let&apos;s change the orientation of the labels and adjust them vertically and horizontally so they don&apos;t overlap. You can use a 90-degree angle, or experiment to find the appropriate angle for diagonally oriented labels. With a larger font, the title also runs off. We can &quot;\n&quot; in the string for the title to insert a new line:</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">ggplot<span class="token punctuation">(</span>percent_items<span class="token punctuation">,</span> aes<span class="token punctuation">(</span>x <span class="token operator">=</span> village<span class="token punctuation">,</span> y <span class="token operator">=</span> percent<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">+</span>
+    geom_bar<span class="token punctuation">(</span>stat <span class="token operator">=</span> <span class="token string">&quot;identity&quot;</span><span class="token punctuation">,</span> position <span class="token operator">=</span> <span class="token string">&quot;dodge&quot;</span><span class="token punctuation">)</span> <span class="token operator">+</span>
+    facet_wrap<span class="token punctuation">(</span><span class="token operator">~</span> items<span class="token punctuation">)</span> <span class="token operator">+</span>
+    labs<span class="token punctuation">(</span>title <span class="token operator">=</span> <span class="token string">&quot;Percent of respondents in each village \n who owned each item&quot;</span><span class="token punctuation">,</span>
+         x <span class="token operator">=</span> <span class="token string">&quot;Village&quot;</span><span class="token punctuation">,</span>
+         y <span class="token operator">=</span> <span class="token string">&quot;Percent of Respondents&quot;</span><span class="token punctuation">)</span> <span class="token operator">+</span>
+    theme_bw<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span>
+    theme<span class="token punctuation">(</span>axis.text.x <span class="token operator">=</span> element_text<span class="token punctuation">(</span>colour <span class="token operator">=</span> <span class="token string">&quot;grey20&quot;</span><span class="token punctuation">,</span> size <span class="token operator">=</span> <span class="token number">12</span><span class="token punctuation">,</span> angle <span class="token operator">=</span> <span class="token number">45</span><span class="token punctuation">,</span> hjust <span class="token operator">=</span> <span class="token number">0.5</span><span class="token punctuation">,</span> vjust <span class="token operator">=</span> <span class="token number">0.5</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+          axis.text.y <span class="token operator">=</span> element_text<span class="token punctuation">(</span>colour <span class="token operator">=</span> <span class="token string">&quot;grey20&quot;</span><span class="token punctuation">,</span> size <span class="token operator">=</span> <span class="token number">12</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+          text <span class="token operator">=</span> element_text<span class="token punctuation">(</span>size <span class="token operator">=</span> <span class="token number">16</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+</pre><img src="./fig/rmd-04-ggplot-customization-label-orientation-1.png" title="plot of chunk ggplot-customization-label-orientation" alt="plot of chunk ggplot-customization-label-orientation" width="612" style="display: block; margin: auto;">
+<p>If you like the changes you created better than the default theme, you can save them as an object to be able to easily apply them to other plots you may create. We can also add <code>plot.title = element_text(hjust = 0.5)</code> to center the title:</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">grey_theme <span class="token operator">&lt;-</span> theme<span class="token punctuation">(</span>axis.text.x <span class="token operator">=</span> element_text<span class="token punctuation">(</span>colour <span class="token operator">=</span> <span class="token string">&quot;grey20&quot;</span><span class="token punctuation">,</span> size <span class="token operator">=</span> <span class="token number">12</span><span class="token punctuation">,</span> angle <span class="token operator">=</span> <span class="token number">45</span><span class="token punctuation">,</span> hjust <span class="token operator">=</span> <span class="token number">0.5</span><span class="token punctuation">,</span> vjust <span class="token operator">=</span> <span class="token number">0.5</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+                    axis.text.y <span class="token operator">=</span> element_text<span class="token punctuation">(</span>colour <span class="token operator">=</span> <span class="token string">&quot;grey20&quot;</span><span class="token punctuation">,</span> size <span class="token operator">=</span> <span class="token number">12</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+                    text <span class="token operator">=</span> element_text<span class="token punctuation">(</span>size <span class="token operator">=</span> <span class="token number">16</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+                    plot.title <span class="token operator">=</span> element_text<span class="token punctuation">(</span>hjust <span class="token operator">=</span> <span class="token number">0.5</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+
+ggplot<span class="token punctuation">(</span>percent_items<span class="token punctuation">,</span> aes<span class="token punctuation">(</span>x <span class="token operator">=</span> village<span class="token punctuation">,</span> y <span class="token operator">=</span> percent<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">+</span>
+    geom_bar<span class="token punctuation">(</span>stat <span class="token operator">=</span> <span class="token string">&quot;identity&quot;</span><span class="token punctuation">,</span> position <span class="token operator">=</span> <span class="token string">&quot;dodge&quot;</span><span class="token punctuation">)</span> <span class="token operator">+</span>
+    facet_wrap<span class="token punctuation">(</span><span class="token operator">~</span> items<span class="token punctuation">)</span> <span class="token operator">+</span>
+    labs<span class="token punctuation">(</span>title <span class="token operator">=</span> <span class="token string">&quot;Percent of respondents in each village \n who owned each item&quot;</span><span class="token punctuation">,</span>
+         x <span class="token operator">=</span> <span class="token string">&quot;Village&quot;</span><span class="token punctuation">,</span>
+         y <span class="token operator">=</span> <span class="token string">&quot;Percent of Respondents&quot;</span><span class="token punctuation">)</span> <span class="token operator">+</span>
+    grey_theme
+</pre><img src="./fig/rmd-04-ggplot-custom-themes-1.png" title="plot of chunk ggplot-custom-themes" alt="plot of chunk ggplot-custom-themes" width="612" style="display: block; margin: auto;">
+<p>After creating any plot, you can save it to a file in your favorite format. The Export tab in the <strong>Plot</strong> pane in RStudio will save your plots at low resolution, which will not be accepted by many journals and will not scale well for posters.</p>
+<p>Instead, use the <code>ggsave()</code> function, which allows you easily change the dimension and resolution of your plot by adjusting the appropriate arguments (<code>width</code>, <code>height</code> and <code>dpi</code>).</p>
+<p>Make sure you have the <code>fig_output/</code> folder in your working directory.</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">my_plot <span class="token operator">&lt;-</span> ggplot<span class="token punctuation">(</span>percent_items<span class="token punctuation">,</span> aes<span class="token punctuation">(</span>x <span class="token operator">=</span> village<span class="token punctuation">,</span> y <span class="token operator">=</span> percent<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">+</span>
+    geom_bar<span class="token punctuation">(</span>stat <span class="token operator">=</span> <span class="token string">&quot;identity&quot;</span><span class="token punctuation">,</span> position <span class="token operator">=</span> <span class="token string">&quot;dodge&quot;</span><span class="token punctuation">)</span> <span class="token operator">+</span>
+    facet_wrap<span class="token punctuation">(</span><span class="token operator">~</span> items<span class="token punctuation">)</span> <span class="token operator">+</span>
+    labs<span class="token punctuation">(</span>title <span class="token operator">=</span> <span class="token string">&quot;Percent of respondents in each village \n who owned each item&quot;</span><span class="token punctuation">,</span>
+         x <span class="token operator">=</span> <span class="token string">&quot;Village&quot;</span><span class="token punctuation">,</span>
+         y <span class="token operator">=</span> <span class="token string">&quot;Percent of Respondents&quot;</span><span class="token punctuation">)</span> <span class="token operator">+</span>
+    theme_bw<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span>
+    theme<span class="token punctuation">(</span>axis.text.x <span class="token operator">=</span> element_text<span class="token punctuation">(</span>colour <span class="token operator">=</span> <span class="token string">&quot;grey20&quot;</span><span class="token punctuation">,</span> size <span class="token operator">=</span> <span class="token number">12</span><span class="token punctuation">,</span> angle <span class="token operator">=</span> <span class="token number">45</span><span class="token punctuation">,</span> hjust <span class="token operator">=</span> <span class="token number">0.5</span><span class="token punctuation">,</span> vjust <span class="token operator">=</span> <span class="token number">0.5</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+          axis.text.y <span class="token operator">=</span> element_text<span class="token punctuation">(</span>colour <span class="token operator">=</span> <span class="token string">&quot;grey20&quot;</span><span class="token punctuation">,</span> size <span class="token operator">=</span> <span class="token number">12</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+          text <span class="token operator">=</span> element_text<span class="token punctuation">(</span>size <span class="token operator">=</span> <span class="token number">16</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+          plot.title <span class="token operator">=</span> element_text<span class="token punctuation">(</span>hjust <span class="token operator">=</span> <span class="token number">0.5</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+ggsave<span class="token punctuation">(</span><span class="token string">&quot;fig_output/name_of_file.png&quot;</span><span class="token punctuation">,</span> my_plot<span class="token punctuation">,</span> width <span class="token operator">=</span> <span class="token number">15</span><span class="token punctuation">,</span> height <span class="token operator">=</span> <span class="token number">10</span><span class="token punctuation">)</span>
+</pre><p>Note: The parameters <code>width</code> and <code>height</code> also determine the font size in the saved plot.</p>
+
+      </div>
+      
+      
+    
+    
+    
+    
+    
+    
+    
+    
+  
+    </body></html>

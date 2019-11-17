@@ -1,0 +1,777 @@
+<!DOCTYPE html><html><head>
+      <title>Using Data</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/katex.min.css">
+      
+      
+
+      
+      
+      
+      
+      
+      
+
+      <style>
+      /**
+ * prism.js Github theme based on GitHub's theme.
+ * @author Sam Clarke
+ */
+code[class*="language-"],
+pre[class*="language-"] {
+  color: #333;
+  background: none;
+  font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.4;
+
+  -moz-tab-size: 8;
+  -o-tab-size: 8;
+  tab-size: 8;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+/* Code blocks */
+pre[class*="language-"] {
+  padding: .8em;
+  overflow: auto;
+  /* border: 1px solid #ddd; */
+  border-radius: 3px;
+  /* background: #fff; */
+  background: #f5f5f5;
+}
+
+/* Inline code */
+:not(pre) > code[class*="language-"] {
+  padding: .1em;
+  border-radius: .3em;
+  white-space: normal;
+  background: #f5f5f5;
+}
+
+.token.comment,
+.token.blockquote {
+  color: #969896;
+}
+
+.token.cdata {
+  color: #183691;
+}
+
+.token.doctype,
+.token.punctuation,
+.token.variable,
+.token.macro.property {
+  color: #333;
+}
+
+.token.operator,
+.token.important,
+.token.keyword,
+.token.rule,
+.token.builtin {
+  color: #a71d5d;
+}
+
+.token.string,
+.token.url,
+.token.regex,
+.token.attr-value {
+  color: #183691;
+}
+
+.token.property,
+.token.number,
+.token.boolean,
+.token.entity,
+.token.atrule,
+.token.constant,
+.token.symbol,
+.token.command,
+.token.code {
+  color: #0086b3;
+}
+
+.token.tag,
+.token.selector,
+.token.prolog {
+  color: #63a35c;
+}
+
+.token.function,
+.token.namespace,
+.token.pseudo-element,
+.token.class,
+.token.class-name,
+.token.pseudo-class,
+.token.id,
+.token.url-reference .token.variable,
+.token.attr-name {
+  color: #795da3;
+}
+
+.token.entity {
+  cursor: help;
+}
+
+.token.title,
+.token.title .token.punctuation {
+  font-weight: bold;
+  color: #1d3e81;
+}
+
+.token.list {
+  color: #ed6a43;
+}
+
+.token.inserted {
+  background-color: #eaffea;
+  color: #55a532;
+}
+
+.token.deleted {
+  background-color: #ffecec;
+  color: #bd2c00;
+}
+
+.token.bold {
+  font-weight: bold;
+}
+
+.token.italic {
+  font-style: italic;
+}
+
+
+/* JSON */
+.language-json .token.property {
+  color: #183691;
+}
+
+.language-markup .token.tag .token.punctuation {
+  color: #333;
+}
+
+/* CSS */
+code.language-css,
+.language-css .token.function {
+  color: #0086b3;
+}
+
+/* YAML */
+.language-yaml .token.atrule {
+  color: #63a35c;
+}
+
+code.language-yaml {
+  color: #183691;
+}
+
+/* Ruby */
+.language-ruby .token.function {
+  color: #333;
+}
+
+/* Markdown */
+.language-markdown .token.url {
+  color: #795da3;
+}
+
+/* Makefile */
+.language-makefile .token.symbol {
+  color: #795da3;
+}
+
+.language-makefile .token.variable {
+  color: #183691;
+}
+
+.language-makefile .token.builtin {
+  color: #0086b3;
+}
+
+/* Bash */
+.language-bash .token.keyword {
+  color: #0086b3;
+}
+
+/* highlight */
+pre[data-line] {
+  position: relative;
+  padding: 1em 0 1em 3em;
+}
+pre[data-line] .line-highlight-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: transparent;
+  display: block;
+  width: 100%;
+}
+
+pre[data-line] .line-highlight {
+  position: absolute;
+  left: 0;
+  right: 0;
+  padding: inherit 0;
+  margin-top: 1em;
+  background: hsla(24, 20%, 50%,.08);
+  background: linear-gradient(to right, hsla(24, 20%, 50%,.1) 70%, hsla(24, 20%, 50%,0));
+  pointer-events: none;
+  line-height: inherit;
+  white-space: pre;
+}
+
+pre[data-line] .line-highlight:before, 
+pre[data-line] .line-highlight[data-end]:after {
+  content: attr(data-start);
+  position: absolute;
+  top: .4em;
+  left: .6em;
+  min-width: 1em;
+  padding: 0 .5em;
+  background-color: hsla(24, 20%, 50%,.4);
+  color: hsl(24, 20%, 95%);
+  font: bold 65%/1.5 sans-serif;
+  text-align: center;
+  vertical-align: .3em;
+  border-radius: 999px;
+  text-shadow: none;
+  box-shadow: 0 1px white;
+}
+
+pre[data-line] .line-highlight[data-end]:after {
+  content: attr(data-end);
+  top: auto;
+  bottom: .4em;
+}html body{font-family:"Helvetica Neue",Helvetica,"Segoe UI",Arial,freesans,sans-serif;font-size:16px;line-height:1.6;color:#333;background-color:#fff;overflow:initial;box-sizing:border-box;word-wrap:break-word}html body>:first-child{margin-top:0}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{line-height:1.2;margin-top:1em;margin-bottom:16px;color:#000}html body h1{font-size:2.25em;font-weight:300;padding-bottom:.3em}html body h2{font-size:1.75em;font-weight:400;padding-bottom:.3em}html body h3{font-size:1.5em;font-weight:500}html body h4{font-size:1.25em;font-weight:600}html body h5{font-size:1.1em;font-weight:600}html body h6{font-size:1em;font-weight:600}html body h1,html body h2,html body h3,html body h4,html body h5{font-weight:600}html body h5{font-size:1em}html body h6{color:#5c5c5c}html body strong{color:#000}html body del{color:#5c5c5c}html body a:not([href]){color:inherit;text-decoration:none}html body a{color:#08c;text-decoration:none}html body a:hover{color:#00a3f5;text-decoration:none}html body img{max-width:100%}html body>p{margin-top:0;margin-bottom:16px;word-wrap:break-word}html body>ul,html body>ol{margin-bottom:16px}html body ul,html body ol{padding-left:2em}html body ul.no-list,html body ol.no-list{padding:0;list-style-type:none}html body ul ul,html body ul ol,html body ol ol,html body ol ul{margin-top:0;margin-bottom:0}html body li{margin-bottom:0}html body li.task-list-item{list-style:none}html body li>p{margin-top:0;margin-bottom:0}html body .task-list-item-checkbox{margin:0 .2em .25em -1.8em;vertical-align:middle}html body .task-list-item-checkbox:hover{cursor:pointer}html body blockquote{margin:16px 0;font-size:inherit;padding:0 15px;color:#5c5c5c;border-left:4px solid #d6d6d6}html body blockquote>:first-child{margin-top:0}html body blockquote>:last-child{margin-bottom:0}html body hr{height:4px;margin:32px 0;background-color:#d6d6d6;border:0 none}html body table{margin:10px 0 15px 0;border-collapse:collapse;border-spacing:0;display:block;width:100%;overflow:auto;word-break:normal;word-break:keep-all}html body table th{font-weight:bold;color:#000}html body table td,html body table th{border:1px solid #d6d6d6;padding:6px 13px}html body dl{padding:0}html body dl dt{padding:0;margin-top:16px;font-size:1em;font-style:italic;font-weight:bold}html body dl dd{padding:0 16px;margin-bottom:16px}html body code{font-family:Menlo,Monaco,Consolas,'Courier New',monospace;font-size:.85em !important;color:#000;background-color:#f0f0f0;border-radius:3px;padding:.2em 0}html body code::before,html body code::after{letter-spacing:-0.2em;content:"\00a0"}html body pre>code{padding:0;margin:0;font-size:.85em !important;word-break:normal;white-space:pre;background:transparent;border:0}html body .highlight{margin-bottom:16px}html body .highlight pre,html body pre{padding:1em;overflow:auto;font-size:.85em !important;line-height:1.45;border:#d6d6d6;border-radius:3px}html body .highlight pre{margin-bottom:0;word-break:normal}html body pre code,html body pre tt{display:inline;max-width:initial;padding:0;margin:0;overflow:initial;line-height:inherit;word-wrap:normal;background-color:transparent;border:0}html body pre code:before,html body pre tt:before,html body pre code:after,html body pre tt:after{content:normal}html body p,html body blockquote,html body ul,html body ol,html body dl,html body pre{margin-top:0;margin-bottom:16px}html body kbd{color:#000;border:1px solid #d6d6d6;border-bottom:2px solid #c7c7c7;padding:2px 4px;background-color:#f0f0f0;border-radius:3px}@media print{html body{background-color:#fff}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{color:#000;page-break-after:avoid}html body blockquote{color:#5c5c5c}html body pre{page-break-inside:avoid}html body table{display:table}html body img{display:block;max-width:100%;max-height:100%}html body pre,html body code{word-wrap:break-word;white-space:pre}}.markdown-preview{width:100%;height:100%;box-sizing:border-box}.markdown-preview .pagebreak,.markdown-preview .newpage{page-break-before:always}.markdown-preview pre.line-numbers{position:relative;padding-left:3.8em;counter-reset:linenumber}.markdown-preview pre.line-numbers>code{position:relative}.markdown-preview pre.line-numbers .line-numbers-rows{position:absolute;pointer-events:none;top:1em;font-size:100%;left:0;width:3em;letter-spacing:-1px;border-right:1px solid #999;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.markdown-preview pre.line-numbers .line-numbers-rows>span{pointer-events:none;display:block;counter-increment:linenumber}.markdown-preview pre.line-numbers .line-numbers-rows>span:before{content:counter(linenumber);color:#999;display:block;padding-right:.8em;text-align:right}.markdown-preview .mathjax-exps .MathJax_Display{text-align:center !important}.markdown-preview:not([for="preview"]) .code-chunk .btn-group{display:none}.markdown-preview:not([for="preview"]) .code-chunk .status{display:none}.markdown-preview:not([for="preview"]) .code-chunk .output-div{margin-bottom:16px}.scrollbar-style::-webkit-scrollbar{width:8px}.scrollbar-style::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}.scrollbar-style::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,0.66);border:4px solid rgba(150,150,150,0.66);background-clip:content-box}html body[for="html-export"]:not([data-presentation-mode]){position:relative;width:100%;height:100%;top:0;left:0;margin:0;padding:0;overflow:auto}html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{position:relative;top:0}@media screen and (min-width:914px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{padding:2em calc(50% - 457px + 2em)}}@media screen and (max-width:914px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{font-size:14px !important;padding:1em}}@media print{html body[for="html-export"]:not([data-presentation-mode]) #sidebar-toc-btn{display:none}}html body[for="html-export"]:not([data-presentation-mode]) #sidebar-toc-btn{position:fixed;bottom:8px;left:8px;font-size:28px;cursor:pointer;color:inherit;z-index:99;width:32px;text-align:center;opacity:.4}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] #sidebar-toc-btn{opacity:1}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc{position:fixed;top:0;left:0;width:300px;height:100%;padding:32px 0 48px 0;font-size:14px;box-shadow:0 0 4px rgba(150,150,150,0.33);box-sizing:border-box;overflow:auto;background-color:inherit}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar{width:8px}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,0.66);border:4px solid rgba(150,150,150,0.66);background-clip:content-box}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc a{text-decoration:none}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc ul{padding:0 1.6em;margin-top:.8em}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc li{margin-bottom:.8em}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc ul{list-style-type:none}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{left:300px;width:calc(100% -  300px);padding:2em calc(50% - 457px -  150px);margin:0;box-sizing:border-box}@media screen and (max-width:1274px){html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{width:100%}}html body[for="html-export"]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .markdown-preview{left:50%;transform:translateX(-50%)}html body[for="html-export"]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .md-sidebar-toc{display:none}
+/* Please visit the URL below for more information: */
+/*   https://shd101wyy.github.io/markdown-preview-enhanced/#/customize-css */
+
+      </style>
+    </head>
+    <body for="html-export">
+      <div class="mume markdown-preview  ">
+      <h2 class="mume-header" id="presentation-of-the-safi-data">Presentation of the SAFI Data</h2>
+
+<p>SAFI (Studying African Farmer-Led Irrigation) is a study looking at farming and irrigation methods in Tanzania and Mozambique. The survey data was collected through interviews conducted between November 2016 and June 2017. For this workshop, we will be using a subset of the available data. For nformation about the full teaching dataset used in other lessons in this workshop, see the <a href="http://www.datacarpentry.org/socialsci-workshop/data/">dataset description</a>.</p>
+<p>You can download the subset that we will be using  at this link <a href="./data/SAFI_clean.csv">SAFI clean</a></p>
+<p>Each row holds information for a single interview respondent, and the columns represent:</p>
+<table>
+<thead>
+<tr>
+<th>column_name</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>key_id</td>
+<td>Added to provide a unique Id for each observation. (The InstanceID field does this as well but it is not as convenient to use)</td>
+</tr>
+<tr>
+<td>village</td>
+<td>Village name</td>
+</tr>
+<tr>
+<td>interview_date</td>
+<td>Date of interview</td>
+</tr>
+<tr>
+<td>no_membrs</td>
+<td>How many members in the household?</td>
+</tr>
+<tr>
+<td>years_liv</td>
+<td>How many years have you been living in this village or neighboring village?</td>
+</tr>
+<tr>
+<td>respondent_wall_type</td>
+<td>What type of walls does their house have (from list)</td>
+</tr>
+<tr>
+<td>rooms</td>
+<td>How many rooms in the main house are used for sleeping?</td>
+</tr>
+<tr>
+<td>memb_assoc</td>
+<td>Are you a member of an irrigation association?</td>
+</tr>
+<tr>
+<td>affect_conflicts</td>
+<td>Have you been affected by conflicts with other irrigators in the area?</td>
+</tr>
+<tr>
+<td>liv_count</td>
+<td>Number of livestock owned.</td>
+</tr>
+<tr>
+<td>items_owned</td>
+<td>Which of the following items are owned by the household? (list)</td>
+</tr>
+<tr>
+<td>no_meals</td>
+<td>How many meals do people in your household normally eat in a day?</td>
+</tr>
+<tr>
+<td>months_lack_food</td>
+<td>Indicate which months, In the last 12 months have you faced a situation when you did not have enough food to feed the household?</td>
+</tr>
+<tr>
+<td>instanceID</td>
+<td>Unique identifier for the form data submission</td>
+</tr>
+</tbody>
+</table>
+<p>Although this dataset has been cleaned, it still contains missing data. THe missing data is represented by the word &quot;NULL&quot; in the dataset.</p>
+<p>You are going load the data in R&apos;s memory using the function <code>read_csv()</code> from the <strong><code>readr</code></strong> package which is part of the <strong><code>tidyverse</code></strong>. So, before we can use the <code>read_csv()</code> function, we need to load the package. Also, as the missing data is encoded as &quot;NULL&quot; in the dataset, we can pass that information on to the function via the <code>na</code> argument so that the missing values will be imported as R <code>NA</code> values.</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">library<span class="token punctuation">(</span>tidyverse<span class="token punctuation">)</span>
+interviews <span class="token operator">&lt;-</span> read_csv<span class="token punctuation">(</span><span class="token string">&quot;data/SAFI_clean.csv&quot;</span><span class="token punctuation">,</span> na <span class="token operator">=</span> <span class="token string">&quot;NULL&quot;</span><span class="token punctuation">)</span>
+</pre><p>This statement doesn&apos;t produce any output because, as you might recall, assignments don&apos;t display anything. If we want to check that our data has been loaded, we can see the contents of the data frame by typing its name: <code>interviews</code>. In RStudio you will also see it appear in the &apos;Environment&apos; tab.</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">interviews
+<span class="token comment">## Try also</span>
+<span class="token comment">## View(interviews)</span>
+</pre><pre data-role="codeBlock" data-info class="language-"><code># A tibble: 131 x 14
+   key_ID village interview_date      no_membrs years_liv respondent_wall&#x2026;
+    &lt;int&gt; &lt;chr&gt;   &lt;dttm&gt;                  &lt;int&gt;     &lt;int&gt; &lt;chr&gt;           
+ 1      1 God     2016-11-17 00:00:00         3         4 muddaub         
+ 2      1 God     2016-11-17 00:00:00         7         9 muddaub         
+ 3      3 God     2016-11-17 00:00:00        10        15 burntbricks     
+ 4      4 God     2016-11-17 00:00:00         7         6 burntbricks     
+ 5      5 God     2016-11-17 00:00:00         7        40 burntbricks     
+ 6      6 God     2016-11-17 00:00:00         3         3 muddaub         
+ 7      7 God     2016-11-17 00:00:00         6        38 muddaub         
+ 8      8 Chirod&#x2026; 2016-11-16 00:00:00        12        70 burntbricks     
+ 9      9 Chirod&#x2026; 2016-11-16 00:00:00         8         6 burntbricks     
+10     10 Chirod&#x2026; 2016-12-16 00:00:00        12        23 burntbricks     
+# ... with 121 more rows, and 8 more variables: rooms &lt;int&gt;,
+#   memb_assoc &lt;chr&gt;, affect_conflicts &lt;chr&gt;, liv_count &lt;int&gt;,
+#   items_owned &lt;chr&gt;, no_meals &lt;int&gt;, months_lack_food &lt;chr&gt;,
+#   instanceID &lt;chr&gt;
+</code></pre><blockquote>
+<h2>Note</h2>
+<p><code>read_csv()</code> assumes that fields are delineated by commas, however, in several countries, the comma is used as a decimal separator and the semicolon ( ; ) is used as a field delineator. If you want to read in this type of files in R, you can use the <code>read_csv2</code> function. It behaves exactly like <code>read_csv</code> but uses different parameters for the decimal and the field separators. If you are working with another format, they can be both specified by the user. Check out the help for <code>read_csv()</code> by typing <code>?read_csv</code> to learn more. There is also the <code>read_tsv()</code> for tab-separated data files, and <code>read_delim()</code> allows you to specify more details about the structure of your file.</p>
+</blockquote>
+<h2 class="mume-header" id="what-are-data-frames">What are data frames?</h2>
+
+<p>Data frames are the <em>de facto</em> data structure for tabular data in R, Most statistical and plotting function in R will expect the data to be provided in a data frame.</p>
+<p>You can create a data frame can be created by hand, but most commonly they are generated as the output of other functions like <code>read_csv()</code> or <code>read_table()</code> <code>read_delim()</code>; in other words, when importing datasets.</p>
+<p>A data frame is the representation of data in the format of a table where the columns are vectors that all have the same length. Because columns are vectors, each column must contain a single type of data (e.g., characters, integers, factors). For example, here is a figure depicting a data frame comprising a numeric, a character, and a logical vector.</p>
+<p><img src="data:image/svg+xml;charset=utf-8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTYuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+CjxzdmcgdmVyc2lvbj0iMS4xIiBpZD0iTGF5ZXJfMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgeD0iMHB4IiB5PSIwcHgiCgkgd2lkdGg9IjQ4MHB4IiBoZWlnaHQ9IjI4MXB4IiB2aWV3Qm94PSIwIDAgNDgwIDI4MSIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgNDgwIDI4MTsiIHhtbDpzcGFjZT0icHJlc2VydmUiPgo8Zz4KCTxyZWN0IHg9IjguOTc3IiB5PSIyNi4yNzMiIHN0eWxlPSJmaWxsOm5vbmU7IiB3aWR0aD0iMTg3LjI3MyIgaGVpZ2h0PSI1OC4xODIiLz4KCTxwYXRoIGQ9Ik0xOS43ODIsNDIuNzloLTAuMTA1Yy0wLjg5OCwxLjMwNS0yLjI0MiwxLjk1Ny00LjAzMSwxLjk1N2MtMS42OCwwLTIuOTg2LTAuNTc0LTMuOTItMS43MjNzLTEuNC0yLjc4MS0xLjQtNC44OTgKCQlzMC40NjktMy43NjIsMS40MDYtNC45MzRzMi4yNDItMS43NTgsMy45MTQtMS43NThjMS43NDIsMCwzLjA3OCwwLjYzMyw0LjAwOCwxLjg5OGgwLjE1MmwtMC4wODItMC45MjZsLTAuMDQ3LTAuOTAydi01LjIyN2gxLjk0NQoJCXYxOC4yMzRIMjAuMDRMMTkuNzgyLDQyLjc5eiBNMTUuODkxLDQzLjExOGMxLjMyOCwwLDIuMjkxLTAuMzYxLDIuODg5LTEuMDg0czAuODk2LTEuODg5LDAuODk2LTMuNDk4di0wLjQxCgkJYzAtMS44Mi0wLjMwMy0zLjExOS0wLjkwOC0zLjg5NnMtMS41NzItMS4xNjYtMi45LTEuMTY2Yy0xLjE0MSwwLTIuMDE0LDAuNDQzLTIuNjE5LDEuMzNzLTAuOTA4LDIuMTM5LTAuOTA4LDMuNzU2CgkJYzAsMS42NDEsMC4zMDEsMi44NzksMC45MDIsMy43MTVTMTQuNzI3LDQzLjExOCwxNS44OTEsNDMuMTE4eiIvPgoJPHBhdGggZD0iTTMzLjY0NSw0NC41MTNsLTAuMzg3LTEuODI4aC0wLjA5NGMtMC42NDEsMC44MDUtMS4yNzksMS4zNS0xLjkxNiwxLjYzNXMtMS40MzIsMC40MjgtMi4zODUsMC40MjgKCQljLTEuMjczLDAtMi4yNzEtMC4zMjgtMi45OTQtMC45ODRzLTEuMDg0LTEuNTktMS4wODQtMi44MDFjMC0yLjU5NCwyLjA3NC0zLjk1Myw2LjIyMy00LjA3OGwyLjE4LTAuMDd2LTAuNzk3CgkJYzAtMS4wMDgtMC4yMTctMS43NTItMC42NS0yLjIzMnMtMS4xMjctMC43MjEtMi4wOC0wLjcyMWMtMS4wNywwLTIuMjgxLDAuMzI4LTMuNjMzLDAuOTg0bC0wLjU5OC0xLjQ4OAoJCWMwLjYzMy0wLjM0NCwxLjMyNi0wLjYxMywyLjA4LTAuODA5czEuNTEtMC4yOTMsMi4yNjgtMC4yOTNjMS41MzEsMCwyLjY2NiwwLjM0LDMuNDA0LDEuMDJzMS4xMDcsMS43NywxLjEwNywzLjI3djguNzY2SDMzLjY0NXoKCQkgTTI5LjI1LDQzLjE0MmMxLjIxMSwwLDIuMTYyLTAuMzMyLDIuODU0LTAuOTk2czEuMDM3LTEuNTk0LDEuMDM3LTIuNzg5di0xLjE2bC0xLjk0NSwwLjA4MmMtMS41NDcsMC4wNTUtMi42NjIsMC4yOTUtMy4zNDYsMC43MjEKCQlzLTEuMDI1LDEuMDg4LTEuMDI1LDEuOTg2YzAsMC43MDMsMC4yMTMsMS4yMzgsMC42MzksMS42MDVTMjguNDg1LDQzLjE0MiwyOS4yNSw0My4xNDJ6Ii8+Cgk8cGF0aCBkPSJNNDMuMjQzLDQzLjE0MmMwLjM0NCwwLDAuNjc2LTAuMDI1LDAuOTk2LTAuMDc2czAuNTc0LTAuMTA0LDAuNzYyLTAuMTU4djEuNDg4Yy0wLjIxMSwwLjEwMi0wLjUyMSwwLjE4Ni0wLjkzMiwwLjI1MgoJCXMtMC43NzksMC4xLTEuMTA3LDAuMWMtMi40ODQsMC0zLjcyNy0xLjMwOS0zLjcyNy0zLjkyNnYtNy42NDFoLTEuODR2LTAuOTM4bDEuODQtMC44MDlsMC44Mi0yLjc0MmgxLjEyNXYyLjk3N2gzLjcyN3YxLjUxMkg0MS4xOAoJCXY3LjU1OWMwLDAuNzczLDAuMTg0LDEuMzY3LDAuNTUxLDEuNzgxUzQyLjYwMiw0My4xNDIsNDMuMjQzLDQzLjE0MnoiLz4KCTxwYXRoIGQ9Ik01NS40NjUsNDQuNTEzbC0wLjM4Ny0xLjgyOGgtMC4wOTRjLTAuNjQxLDAuODA1LTEuMjc5LDEuMzUtMS45MTYsMS42MzVzLTEuNDMyLDAuNDI4LTIuMzg1LDAuNDI4CgkJYy0xLjI3MywwLTIuMjcxLTAuMzI4LTIuOTk0LTAuOTg0cy0xLjA4NC0xLjU5LTEuMDg0LTIuODAxYzAtMi41OTQsMi4wNzQtMy45NTMsNi4yMjMtNC4wNzhsMi4xOC0wLjA3di0wLjc5NwoJCWMwLTEuMDA4LTAuMjE3LTEuNzUyLTAuNjUtMi4yMzJzLTEuMTI3LTAuNzIxLTIuMDgtMC43MjFjLTEuMDcsMC0yLjI4MSwwLjMyOC0zLjYzMywwLjk4NGwtMC41OTgtMS40ODgKCQljMC42MzMtMC4zNDQsMS4zMjYtMC42MTMsMi4wOC0wLjgwOXMxLjUxLTAuMjkzLDIuMjY4LTAuMjkzYzEuNTMxLDAsMi42NjYsMC4zNCwzLjQwNCwxLjAyczEuMTA3LDEuNzcsMS4xMDcsMy4yN3Y4Ljc2Nkg1NS40NjV6CgkJIE01MS4wNzEsNDMuMTQyYzEuMjExLDAsMi4xNjItMC4zMzIsMi44NTQtMC45OTZzMS4wMzctMS41OTQsMS4wMzctMi43ODl2LTEuMTZsLTEuOTQ1LDAuMDgyCgkJYy0xLjU0NywwLjA1NS0yLjY2MiwwLjI5NS0zLjM0NiwwLjcyMXMtMS4wMjUsMS4wODgtMS4wMjUsMS45ODZjMCwwLjcwMywwLjIxMywxLjIzOCwwLjYzOSwxLjYwNVM1MC4zMDUsNDMuMTQyLDUxLjA3MSw0My4xNDJ6Ii8+Cgk8cGF0aCBkPSJNNzIuOTM4LDMzLjE4MWgtMy4yN3YxMS4zMzJoLTEuOTQ1VjMzLjE4MWgtMi4yOTd2LTAuODc5bDIuMjk3LTAuNzAzdi0wLjcxNWMwLTMuMTU2LDEuMzc5LTQuNzM0LDQuMTM3LTQuNzM0CgkJYzAuNjgsMCwxLjQ3NywwLjEzNywyLjM5MSwwLjQxbC0wLjUwNCwxLjU1OWMtMC43NS0wLjI0Mi0xLjM5MS0wLjM2My0xLjkyMi0wLjM2M2MtMC43MzQsMC0xLjI3NywwLjI0NC0xLjYyOSwwLjczMgoJCXMtMC41MjcsMS4yNzEtMC41MjcsMi4zNXYwLjgzMmgzLjI3VjMzLjE4MXoiLz4KCTxwYXRoIGQ9Ik04MS4xNDEsMzEuNDM1YzAuNTcsMCwxLjA4MiwwLjA0NywxLjUzNSwwLjE0MWwtMC4yNywxLjgwNWMtMC41MzEtMC4xMTctMS0wLjE3Ni0xLjQwNi0wLjE3NgoJCWMtMS4wMzksMC0xLjkyOCwwLjQyMi0yLjY2NiwxLjI2NnMtMS4xMDcsMS44OTUtMS4xMDcsMy4xNTJ2Ni44OTFoLTEuOTQ1VjMxLjY2OWgxLjYwNWwwLjIyMywyLjM3OWgwLjA5NAoJCWMwLjQ3Ny0wLjgzNiwxLjA1MS0xLjQ4LDEuNzIzLTEuOTM0UzgwLjMzNiwzMS40MzUsODEuMTQxLDMxLjQzNXoiLz4KCTxwYXRoIGQ9Ik05Mi45NzcsNDQuNTEzbC0wLjM4Ny0xLjgyOGgtMC4wOTRjLTAuNjQxLDAuODA1LTEuMjc5LDEuMzUtMS45MTYsMS42MzVzLTEuNDMyLDAuNDI4LTIuMzg1LDAuNDI4CgkJYy0xLjI3MywwLTIuMjcxLTAuMzI4LTIuOTk0LTAuOTg0cy0xLjA4NC0xLjU5LTEuMDg0LTIuODAxYzAtMi41OTQsMi4wNzQtMy45NTMsNi4yMjMtNC4wNzhsMi4xOC0wLjA3di0wLjc5NwoJCWMwLTEuMDA4LTAuMjE3LTEuNzUyLTAuNjUtMi4yMzJzLTEuMTI3LTAuNzIxLTIuMDgtMC43MjFjLTEuMDcsMC0yLjI4MSwwLjMyOC0zLjYzMywwLjk4NGwtMC41OTgtMS40ODgKCQljMC42MzMtMC4zNDQsMS4zMjYtMC42MTMsMi4wOC0wLjgwOXMxLjUxLTAuMjkzLDIuMjY4LTAuMjkzYzEuNTMxLDAsMi42NjYsMC4zNCwzLjQwNCwxLjAyczEuMTA3LDEuNzcsMS4xMDcsMy4yN3Y4Ljc2Nkg5Mi45Nzd6CgkJIE04OC41ODMsNDMuMTQyYzEuMjExLDAsMi4xNjItMC4zMzIsMi44NTQtMC45OTZzMS4wMzctMS41OTQsMS4wMzctMi43ODl2LTEuMTZsLTEuOTQ1LDAuMDgyCgkJYy0xLjU0NywwLjA1NS0yLjY2MiwwLjI5NS0zLjM0NiwwLjcyMXMtMS4wMjUsMS4wODgtMS4wMjUsMS45ODZjMCwwLjcwMywwLjIxMywxLjIzOCwwLjYzOSwxLjYwNVM4Ny44MTcsNDMuMTQyLDg4LjU4Myw0My4xNDJ6Ii8+Cgk8cGF0aCBkPSJNMTE0Ljc5Nyw0NC41MTN2LTguMzU1YzAtMS4wMjMtMC4yMTktMS43OTEtMC42NTYtMi4zMDNzLTEuMTE3LTAuNzY4LTIuMDM5LTAuNzY4Yy0xLjIxMSwwLTIuMTA1LDAuMzQ4LTIuNjg0LDEuMDQzCgkJcy0wLjg2NywxLjc2Ni0wLjg2NywzLjIxMXY3LjE3MmgtMS45NDV2LTguMzU1YzAtMS4wMjMtMC4yMTktMS43OTEtMC42NTYtMi4zMDNzLTEuMTIxLTAuNzY4LTIuMDUxLTAuNzY4CgkJYy0xLjIxOSwwLTIuMTExLDAuMzY1LTIuNjc4LDEuMDk2cy0wLjg1LDEuOTI4LTAuODUsMy41OTJ2Ni43MzhoLTEuOTQ1VjMxLjY2OWgxLjU4MmwwLjMxNiwxLjc1OGgwLjA5NAoJCWMwLjM2Ny0wLjYyNSwwLjg4NS0xLjExMywxLjU1My0xLjQ2NXMxLjQxNi0wLjUyNywyLjI0NC0wLjUyN2MyLjAwOCwwLDMuMzIsMC43MjcsMy45MzgsMi4xOGgwLjA5NAoJCWMwLjM4My0wLjY3MiwwLjkzOC0xLjIwMywxLjY2NC0xLjU5NHMxLjU1NS0wLjU4NiwyLjQ4NC0wLjU4NmMxLjQ1MywwLDIuNTQxLDAuMzczLDMuMjY0LDEuMTE5czEuMDg0LDEuOTM5LDEuMDg0LDMuNTh2OC4zNzkKCQlIMTE0Ljc5N3oiLz4KCTxwYXRoIGQ9Ik0xMjYuMTc2LDQ0Ljc0N2MtMS44OTgsMC0zLjM5Ni0wLjU3OC00LjQ5NC0xLjczNHMtMS42NDYtMi43NjItMS42NDYtNC44MTZjMC0yLjA3LDAuNTEtMy43MTUsMS41MjktNC45MzQKCQlzMi4zODktMS44MjgsNC4xMDctMS44MjhjMS42MDksMCwyLjg4MywwLjUyOSwzLjgyLDEuNTg4czEuNDA2LDIuNDU1LDEuNDA2LDQuMTg5djEuMjNoLTguODQ4YzAuMDM5LDEuNTA4LDAuNDIsMi42NTIsMS4xNDMsMy40MzQKCQlzMS43NCwxLjE3MiwzLjA1MywxLjE3MmMxLjM4MywwLDIuNzUtMC4yODksNC4xMDItMC44Njd2MS43MzRjLTAuNjg4LDAuMjk3LTEuMzM4LDAuNTEtMS45NTEsMC42MzlTMTI3LjA0Myw0NC43NDcsMTI2LjE3Niw0NC43NDcKCQl6IE0xMjUuNjQ5LDMzLjA2M2MtMS4wMzEsMC0xLjg1NCwwLjMzNi0yLjQ2NywxLjAwOHMtMC45NzUsMS42MDItMS4wODQsMi43ODloNi43MTVjMC0xLjIyNy0wLjI3My0yLjE2Ni0wLjgyLTIuODE4CgkJUzEyNi42NjUsMzMuMDYzLDEyNS42NDksMzMuMDYzeiIvPgo8L2c+CjxyZWN0IHg9IjE0NCIgeT0iMjgiIHN0eWxlPSJmaWxsOm5vbmU7c3Ryb2tlOiMwMDAwMDA7c3Ryb2tlLXdpZHRoOjQ7c3Ryb2tlLW1pdGVybGltaXQ6MTA7IiB3aWR0aD0iOTMiIGhlaWdodD0iNjgiLz4KPHJlY3QgeD0iMjQ4IiB5PSIyOCIgc3R5bGU9ImZpbGw6bm9uZTtzdHJva2U6IzI5QUJFMjtzdHJva2Utd2lkdGg6NDtzdHJva2UtbWl0ZXJsaW1pdDoxMDsiIHdpZHRoPSI5MyIgaGVpZ2h0PSI2OCIvPgo8cmVjdCB4PSIzNTAiIHk9IjI4IiBzdHlsZT0iZmlsbDpub25lO3N0cm9rZTojRkYwMDAwO3N0cm9rZS13aWR0aDo0O3N0cm9rZS1taXRlcmxpbWl0OjEwOyIgd2lkdGg9IjkzIiBoZWlnaHQ9IjY4Ii8+CjxyZWN0IHg9IjM1MCIgeT0iMTAzIiBzdHlsZT0iZmlsbDpub25lO3N0cm9rZTojRkYwMDAwO3N0cm9rZS13aWR0aDo0O3N0cm9rZS1taXRlcmxpbWl0OjEwOyIgd2lkdGg9IjkzIiBoZWlnaHQ9IjY4Ii8+CjxyZWN0IHg9IjM1MCIgeT0iMTc4IiBzdHlsZT0iZmlsbDpub25lO3N0cm9rZTojRkYwMDAwO3N0cm9rZS13aWR0aDo0O3N0cm9rZS1taXRlcmxpbWl0OjEwOyIgd2lkdGg9IjkzIiBoZWlnaHQ9IjY4Ii8+CjxyZWN0IHg9IjE0NCIgeT0iMTAzIiBzdHlsZT0iZmlsbDpub25lO3N0cm9rZTojMDAwMDAwO3N0cm9rZS13aWR0aDo0O3N0cm9rZS1taXRlcmxpbWl0OjEwOyIgd2lkdGg9IjkzIiBoZWlnaHQ9IjY4Ii8+CjxyZWN0IHg9IjI0OCIgeT0iMTAzIiBzdHlsZT0iZmlsbDpub25lO3N0cm9rZTojMjlBQkUyO3N0cm9rZS13aWR0aDo0O3N0cm9rZS1taXRlcmxpbWl0OjEwOyIgd2lkdGg9IjkzIiBoZWlnaHQ9IjY4Ii8+CjxyZWN0IHg9IjE0NCIgeT0iMTc4IiBzdHlsZT0iZmlsbDpub25lO3N0cm9rZTojMDAwMDAwO3N0cm9rZS13aWR0aDo0O3N0cm9rZS1taXRlcmxpbWl0OjEwOyIgd2lkdGg9IjkzIiBoZWlnaHQ9IjY4Ii8+CjxyZWN0IHg9IjI0OCIgeT0iMTc4IiBzdHlsZT0iZmlsbDpub25lO3N0cm9rZTojMjlBQkUyO3N0cm9rZS13aWR0aDo0O3N0cm9rZS1taXRlcmxpbWl0OjEwOyIgd2lkdGg9IjkzIiBoZWlnaHQ9IjY4Ii8+CjxnPgoJPHJlY3QgeD0iMTgxLjE2NyIgeT0iNDUuNzUiIHN0eWxlPSJmaWxsOm5vbmU7IiB3aWR0aD0iMjEiIGhlaWdodD0iMjkuNSIvPgoJPHBhdGggZD0iTTE4OS41NDUsNjMuOTloLTEuODk4VjUxLjc3OWMwLTEuMDE2LDAuMDMxLTEuOTc3LDAuMDk0LTIuODgzYy0wLjE2NCwwLjE2NC0wLjM0OCwwLjMzNi0wLjU1MSwwLjUxNgoJCXMtMS4xMzMsMC45NDEtMi43ODksMi4yODVsLTEuMDMxLTEuMzM2bDQuNTM1LTMuNTA0aDEuNjQxVjYzLjk5eiIvPgo8L2c+CjxnPgoJPHJlY3QgeD0iMzYzIiB5PSIxMjUuNSIgc3R5bGU9ImZpbGw6bm9uZTsiIHdpZHRoPSI3MiIgaGVpZ2h0PSIyNCIvPgoJPHBhdGggZD0iTTM2Ny4zNDgsMTQzLjc0aC0xLjk5MnYtMTcuMTMzaDkuNTUxdjEuNzdoLTcuNTU5djYuMjdoNy4xMDJ2MS43N2gtNy4xMDJWMTQzLjc0eiIvPgoJPHBhdGggZD0iTTM4OC41MTIsMTQzLjc0bC0yLjEzMy01LjQ0OWgtNi44NjdsLTIuMTA5LDUuNDQ5aC0yLjAxNmw2Ljc3My0xNy4yMDNoMS42NzZsNi43MzgsMTcuMjAzSDM4OC41MTJ6IE0zODUuNzU4LDEzNi40OTgKCQlsLTEuOTkyLTUuMzA5Yy0wLjI1OC0wLjY3Mi0wLjUyMy0xLjQ5Ni0wLjc5Ny0yLjQ3M2MtMC4xNzIsMC43NS0wLjQxOCwxLjU3NC0wLjczOCwyLjQ3M2wtMi4wMTYsNS4zMDlIMzg1Ljc1OHoiLz4KCTxwYXRoIGQ9Ik0zOTIuOTMsMTQzLjc0di0xNy4xMzNoMS45OTJ2MTUuMzI4aDcuNTU5djEuODA1SDM5Mi45M3oiLz4KCTxwYXRoIGQ9Ik00MTUuMDU1LDEzOS4xODFjMCwxLjUwOC0wLjU0NywyLjY4NC0xLjY0MSwzLjUyN3MtMi41NzgsMS4yNjYtNC40NTMsMS4yNjZjLTIuMDMxLDAtMy41OTQtMC4yNjItNC42ODgtMC43ODV2LTEuOTIyCgkJYzAuNzAzLDAuMjk3LDEuNDY5LDAuNTMxLDIuMjk3LDAuNzAzczEuNjQ4LDAuMjU4LDIuNDYxLDAuMjU4YzEuMzI4LDAsMi4zMjgtMC4yNTIsMy0wLjc1NnMxLjAwOC0xLjIwNSwxLjAwOC0yLjEwNAoJCWMwLTAuNTk0LTAuMTE5LTEuMDgtMC4zNTctMS40NTlzLTAuNjM3LTAuNzI5LTEuMTk1LTEuMDQ5cy0xLjQwOC0wLjY4NC0yLjU0OS0xLjA5Yy0xLjU5NC0wLjU3LTIuNzMyLTEuMjQ2LTMuNDE2LTIuMDI3CgkJcy0xLjAyNS0xLjgwMS0xLjAyNS0zLjA1OWMwLTEuMzIsMC40OTYtMi4zNzEsMS40ODgtMy4xNTJzMi4zMDUtMS4xNzIsMy45MzgtMS4xNzJjMS43MDMsMCwzLjI3LDAuMzEzLDQuNjk5LDAuOTM4TDQxNCwxMjkuMDMzCgkJYy0xLjQxNC0wLjU5NC0yLjc4OS0wLjg5MS00LjEyNS0wLjg5MWMtMS4wNTUsMC0xLjg3OSwwLjIyNy0yLjQ3MywwLjY4cy0wLjg5MSwxLjA4Mi0wLjg5MSwxLjg4N2MwLDAuNTk0LDAuMTA5LDEuMDgsMC4zMjgsMS40NTkKCQlzMC41ODgsMC43MjcsMS4xMDcsMS4wNDNzMS4zMTQsMC42NjYsMi4zODUsMS4wNDljMS43OTcsMC42NDEsMy4wMzMsMS4zMjgsMy43MDksMi4wNjNTNDE1LjA1NSwxMzguMDA5LDQxNS4wNTUsMTM5LjE4MXoiLz4KCTxwYXRoIGQ9Ik00MjguMTA5LDE0My43NGgtOS41NTF2LTE3LjEzM2g5LjU1MXYxLjc3aC03LjU1OXY1LjUyaDcuMTAydjEuNzU4aC03LjEwMnY2LjMwNWg3LjU1OVYxNDMuNzR6Ii8+CjwvZz4KPGc+Cgk8cmVjdCB4PSIzNjMiIHk9IjQ4LjUiIHN0eWxlPSJmaWxsOm5vbmU7IiB3aWR0aD0iNzIiIGhlaWdodD0iMjQiLz4KCTxwYXRoIGQ9Ik0zNzAuNjI5LDY2Ljc0aC0xLjk5MlY1MS4zNzZoLTUuNDI2di0xLjc3aDEyLjg0NHYxLjc3aC01LjQyNlY2Ni43NHoiLz4KCTxwYXRoIGQ9Ik0zODAuNjI1LDU5LjYxNXY3LjEyNWgtMS45OTJWNDkuNjA3aDQuNjk5YzIuMTAyLDAsMy42NTQsMC40MDIsNC42NTgsMS4yMDdzMS41MDYsMi4wMTYsMS41MDYsMy42MzMKCQljMCwyLjI2Ni0xLjE0OCwzLjc5Ny0zLjQ0NSw0LjU5NGw0LjY1Miw3LjY5OWgtMi4zNTVsLTQuMTQ4LTcuMTI1SDM4MC42MjV6IE0zODAuNjI1LDU3LjkwNGgyLjczYzEuNDA2LDAsMi40MzgtMC4yNzksMy4wOTQtMC44MzgKCQlzMC45ODQtMS4zOTYsMC45ODQtMi41MTRjMC0xLjEzMy0wLjMzNC0xLjk0OS0xLjAwMi0yLjQ0OXMtMS43NC0wLjc1LTMuMjE3LTAuNzVoLTIuNTlWNTcuOTA0eiIvPgoJPHBhdGggZD0iTTQwNi40MDYsNDkuNjA3djExLjA4NmMwLDEuOTUzLTAuNTksMy40ODgtMS43Nyw0LjYwNXMtMi44MDEsMS42NzYtNC44NjMsMS42NzZzLTMuNjU4LTAuNTYzLTQuNzg3LTEuNjg4CgkJcy0xLjY5My0yLjY3Mi0xLjY5My00LjY0MVY0OS42MDdoMS45OTJ2MTEuMThjMCwxLjQzLDAuMzkxLDIuNTI3LDEuMTcyLDMuMjkzczEuOTMsMS4xNDgsMy40NDUsMS4xNDgKCQljMS40NDUsMCwyLjU1OS0wLjM4NSwzLjM0LTEuMTU0czEuMTcyLTEuODczLDEuMTcyLTMuMzExVjQ5LjYwN0g0MDYuNDA2eiIvPgoJPHBhdGggZD0iTTQyMC40OTIsNjYuNzRoLTkuNTUxVjQ5LjYwN2g5LjU1MXYxLjc3aC03LjU1OXY1LjUyaDcuMTAydjEuNzU4aC03LjEwMnY2LjMwNWg3LjU1OVY2Ni43NHoiLz4KPC9nPgo8Zz4KCTxyZWN0IHg9IjM2MyIgeT0iMTk5LjUiIHN0eWxlPSJmaWxsOm5vbmU7IiB3aWR0aD0iNzIiIGhlaWdodD0iMjQiLz4KCTxwYXRoIGQ9Ik0zNzAuNjI5LDIxNy43NGgtMS45OTJ2LTE1LjM2M2gtNS40MjZ2LTEuNzdoMTIuODQ0djEuNzdoLTUuNDI2VjIxNy43NHoiLz4KCTxwYXRoIGQ9Ik0zODAuNjI1LDIxMC42MTV2Ny4xMjVoLTEuOTkydi0xNy4xMzNoNC42OTljMi4xMDIsMCwzLjY1NCwwLjQwMiw0LjY1OCwxLjIwN3MxLjUwNiwyLjAxNiwxLjUwNiwzLjYzMwoJCWMwLDIuMjY2LTEuMTQ4LDMuNzk3LTMuNDQ1LDQuNTk0bDQuNjUyLDcuNjk5aC0yLjM1NWwtNC4xNDgtNy4xMjVIMzgwLjYyNXogTTM4MC42MjUsMjA4LjkwNGgyLjczCgkJYzEuNDA2LDAsMi40MzgtMC4yNzksMy4wOTQtMC44MzhzMC45ODQtMS4zOTYsMC45ODQtMi41MTRjMC0xLjEzMy0wLjMzNC0xLjk0OS0xLjAwMi0yLjQ0OXMtMS43NC0wLjc1LTMuMjE3LTAuNzVoLTIuNTlWMjA4LjkwNHoiCgkJLz4KCTxwYXRoIGQ9Ik00MDYuNDA2LDIwMC42MDd2MTEuMDg2YzAsMS45NTMtMC41OSwzLjQ4OC0xLjc3LDQuNjA1cy0yLjgwMSwxLjY3Ni00Ljg2MywxLjY3NnMtMy42NTgtMC41NjMtNC43ODctMS42ODgKCQlzLTEuNjkzLTIuNjcyLTEuNjkzLTQuNjQxdi0xMS4wMzloMS45OTJ2MTEuMThjMCwxLjQzLDAuMzkxLDIuNTI3LDEuMTcyLDMuMjkzczEuOTMsMS4xNDgsMy40NDUsMS4xNDgKCQljMS40NDUsMCwyLjU1OS0wLjM4NSwzLjM0LTEuMTU0czEuMTcyLTEuODczLDEuMTcyLTMuMzExdi0xMS4xNTZINDA2LjQwNnoiLz4KCTxwYXRoIGQ9Ik00MjAuNDkyLDIxNy43NGgtOS41NTF2LTE3LjEzM2g5LjU1MXYxLjc3aC03LjU1OXY1LjUyaDcuMTAydjEuNzU4aC03LjEwMnY2LjMwNWg3LjU1OVYyMTcuNzR6Ii8+CjwvZz4KPGc+Cgk8cmVjdCB4PSIyNzguNSIgeT0iNDguNSIgc3R5bGU9ImZpbGw6bm9uZTsiIHdpZHRoPSIzMiIgaGVpZ2h0PSIyNCIvPgoJPHBhdGggZD0iTTI3OC45MzQsNTUuNDc4bC0wLjE0MS0wLjI1OGMwLjE3Mi0wLjcwMywwLjQ0OS0xLjU3OCwwLjgzMi0yLjYyNXMwLjc5My0yLjA0MywxLjIzLTIuOTg4aDEuNDQxCgkJYy0wLjUxNiwxLjk4NC0wLjkxOCwzLjk0MS0xLjIwNyw1Ljg3MUgyNzguOTM0eiBNMjgzLjI1OCw1NS40NzhsLTAuMTc2LTAuMjU4YzAuNDM4LTEuNjgsMS4xMzMtMy41NTEsMi4wODYtNS42MTNoMS40NDEKCQljLTAuMjM0LDAuODk4LTAuNDY3LDEuOTEyLTAuNjk3LDMuMDQxcy0wLjM5NiwyLjA3Mi0wLjQ5OCwyLjgzSDI4My4yNTh6Ii8+Cgk8cGF0aCBkPSJNMjk4LjkyNiw2Mi4xODFjMCwxLjUwOC0wLjU0NywyLjY4NC0xLjY0MSwzLjUyN3MtMi41NzgsMS4yNjYtNC40NTMsMS4yNjZjLTIuMDMxLDAtMy41OTQtMC4yNjItNC42ODgtMC43ODV2LTEuOTIyCgkJYzAuNzAzLDAuMjk3LDEuNDY5LDAuNTMxLDIuMjk3LDAuNzAzczEuNjQ4LDAuMjU4LDIuNDYxLDAuMjU4YzEuMzI4LDAsMi4zMjgtMC4yNTIsMy0wLjc1NnMxLjAwOC0xLjIwNSwxLjAwOC0yLjEwNAoJCWMwLTAuNTk0LTAuMTE5LTEuMDgtMC4zNTctMS40NTlzLTAuNjM3LTAuNzI5LTEuMTk1LTEuMDQ5cy0xLjQwOC0wLjY4NC0yLjU0OS0xLjA5Yy0xLjU5NC0wLjU3LTIuNzMyLTEuMjQ2LTMuNDE2LTIuMDI3CgkJcy0xLjAyNS0xLjgwMS0xLjAyNS0zLjA1OWMwLTEuMzIsMC40OTYtMi4zNzEsMS40ODgtMy4xNTJzMi4zMDUtMS4xNzIsMy45MzgtMS4xNzJjMS43MDMsMCwzLjI3LDAuMzEzLDQuNjk5LDAuOTM4bC0wLjYyMSwxLjczNAoJCWMtMS40MTQtMC41OTQtMi43ODktMC44OTEtNC4xMjUtMC44OTFjLTEuMDU1LDAtMS44NzksMC4yMjctMi40NzMsMC42OHMtMC44OTEsMS4wODItMC44OTEsMS44ODdjMCwwLjU5NCwwLjEwOSwxLjA4LDAuMzI4LDEuNDU5CgkJczAuNTg4LDAuNzI3LDEuMTA3LDEuMDQzczEuMzE0LDAuNjY2LDIuMzg1LDEuMDQ5YzEuNzk3LDAuNjQxLDMuMDMzLDEuMzI4LDMuNzA5LDIuMDYzUzI5OC45MjYsNjEuMDA5LDI5OC45MjYsNjIuMTgxeiIvPgoJPHBhdGggZD0iTTMwMy42OTUsNDkuNjA3bDAuMTc2LDAuMjU4Yy0wLjIwMywwLjc4MS0wLjQ5NiwxLjY4OS0wLjg3OSwyLjcyNXMtMC43ODEsMS45OTgtMS4xOTUsMi44ODloLTEuNDMKCQljMC41NDctMi4yMjcsMC45NDUtNC4xODQsMS4xOTUtNS44NzFIMzAzLjY5NXogTTMwOC4wMiw0OS42MDdsMC4xNjQsMC4yNThjLTAuMTg4LDAuNzExLTAuNDY5LDEuNTg2LTAuODQ0LDIuNjI1CgkJcy0wLjc4MSwyLjAzNS0xLjIxOSwyLjk4OGgtMS40NjVjMC4yMDMtMC43ODEsMC40MzQtMS43NzMsMC42OTEtMi45NzdzMC40MzgtMi4xNjgsMC41MzktMi44OTVIMzA4LjAyeiIvPgo8L2c+CjxnPgoJPHJlY3QgeD0iMjc3LjUiIHk9IjEyNS41IiBzdHlsZT0iZmlsbDpub25lOyIgd2lkdGg9IjMyIiBoZWlnaHQ9IjI0Ii8+Cgk8cGF0aCBkPSJNMjc3LjkzNCwxMzIuNDc4bC0wLjE0MS0wLjI1OGMwLjE3Mi0wLjcwMywwLjQ0OS0xLjU3OCwwLjgzMi0yLjYyNXMwLjc5My0yLjA0MywxLjIzLTIuOTg4aDEuNDQxCgkJYy0wLjUxNiwxLjk4NC0wLjkxOCwzLjk0MS0xLjIwNyw1Ljg3MUgyNzcuOTM0eiBNMjgyLjI1OCwxMzIuNDc4bC0wLjE3Ni0wLjI1OGMwLjQzOC0xLjY4LDEuMTMzLTMuNTUxLDIuMDg2LTUuNjEzaDEuNDQxCgkJYy0wLjIzNCwwLjg5OC0wLjQ2NywxLjkxMi0wLjY5NywzLjA0MXMtMC4zOTYsMi4wNzItMC40OTgsMi44M0gyODIuMjU4eiIvPgoJPHBhdGggZD0iTTI5OS4wMjcsMTQzLjc0bC0yLjEzMy01LjQ0OWgtNi44NjdsLTIuMTA5LDUuNDQ5aC0yLjAxNmw2Ljc3My0xNy4yMDNoMS42NzZsNi43MzgsMTcuMjAzSDI5OS4wMjd6IE0yOTYuMjczLDEzNi40OTgKCQlsLTEuOTkyLTUuMzA5Yy0wLjI1OC0wLjY3Mi0wLjUyMy0xLjQ5Ni0wLjc5Ny0yLjQ3M2MtMC4xNzIsMC43NS0wLjQxOCwxLjU3NC0wLjczOCwyLjQ3M2wtMi4wMTYsNS4zMDlIMjk2LjI3M3oiLz4KCTxwYXRoIGQ9Ik0zMDQuNzExLDEyNi42MDdsMC4xNzYsMC4yNThjLTAuMjAzLDAuNzgxLTAuNDk2LDEuNjg5LTAuODc5LDIuNzI1cy0wLjc4MSwxLjk5OC0xLjE5NSwyLjg4OWgtMS40MwoJCWMwLjU0Ny0yLjIyNywwLjk0NS00LjE4NCwxLjE5NS01Ljg3MUgzMDQuNzExeiBNMzA5LjAzNSwxMjYuNjA3bDAuMTY0LDAuMjU4Yy0wLjE4OCwwLjcxMS0wLjQ2OSwxLjU4Ni0wLjg0NCwyLjYyNQoJCXMtMC43ODEsMi4wMzUtMS4yMTksMi45ODhoLTEuNDY1YzAuMjAzLTAuNzgxLDAuNDM0LTEuNzczLDAuNjkxLTIuOTc3czAuNDM4LTIuMTY4LDAuNTM5LTIuODk1SDMwOS4wMzV6Ii8+CjwvZz4KPGc+Cgk8cmVjdCB4PSIyNzQiIHk9IjE5OS41IiBzdHlsZT0iZmlsbDpub25lOyIgd2lkdGg9IjQxIiBoZWlnaHQ9IjI0Ii8+Cgk8cGF0aCBkPSJNMjc0LjQzNCwyMDYuNDc4bC0wLjE0MS0wLjI1OGMwLjE3Mi0wLjcwMywwLjQ0OS0xLjU3OCwwLjgzMi0yLjYyNXMwLjc5My0yLjA0MywxLjIzLTIuOTg4aDEuNDQxCgkJYy0wLjUxNiwxLjk4NC0wLjkxOCwzLjk0MS0xLjIwNyw1Ljg3MUgyNzQuNDM0eiBNMjc4Ljc1OCwyMDYuNDc4bC0wLjE3Ni0wLjI1OGMwLjQzOC0xLjY4LDEuMTMzLTMuNTUxLDIuMDg2LTUuNjEzaDEuNDQxCgkJYy0wLjIzNCwwLjg5OC0wLjQ2NywxLjkxMi0wLjY5NywzLjA0MXMtMC4zOTYsMi4wNzItMC40OTgsMi44M0gyNzguNzU4eiIvPgoJPHBhdGggZD0iTTI5Ny42OTUsMjAwLjYwN3YxMS4wODZjMCwxLjk1My0wLjU5LDMuNDg4LTEuNzcsNC42MDVzLTIuODAxLDEuNjc2LTQuODYzLDEuNjc2cy0zLjY1OC0wLjU2My00Ljc4Ny0xLjY4OAoJCXMtMS42OTMtMi42NzItMS42OTMtNC42NDF2LTExLjAzOWgxLjk5MnYxMS4xOGMwLDEuNDMsMC4zOTEsMi41MjcsMS4xNzIsMy4yOTNzMS45MywxLjE0OCwzLjQ0NSwxLjE0OAoJCWMxLjQ0NSwwLDIuNTU5LTAuMzg1LDMuMzQtMS4xNTRzMS4xNzItMS44NzMsMS4xNzItMy4zMTF2LTExLjE1NkgyOTcuNjk1eiIvPgoJPHBhdGggZD0iTTMwMy40OTYsMjAwLjYwN2wwLjE3NiwwLjI1OGMtMC4yMDMsMC43ODEtMC40OTYsMS42ODktMC44NzksMi43MjVzLTAuNzgxLDEuOTk4LTEuMTk1LDIuODg5aC0xLjQzCgkJYzAuNTQ3LTIuMjI3LDAuOTQ1LTQuMTg0LDEuMTk1LTUuODcxSDMwMy40OTZ6IE0zMDcuODIsMjAwLjYwN2wwLjE2NCwwLjI1OGMtMC4xODgsMC43MTEtMC40NjksMS41ODYtMC44NDQsMi42MjUKCQlzLTAuNzgxLDIuMDM1LTEuMjE5LDIuOTg4aC0xLjQ2NWMwLjIwMy0wLjc4MSwwLjQzNC0xLjc3MywwLjY5MS0yLjk3N3MwLjQzOC0yLjE2OCwwLjUzOS0yLjg5NUgzMDcuODJ6Ii8+CjwvZz4KPGc+Cgk8cmVjdCB4PSIxODEuMTY3IiB5PSIxMjIuNzUiIHN0eWxlPSJmaWxsOm5vbmU7IiB3aWR0aD0iMjEiIGhlaWdodD0iMjkuNSIvPgoJPHBhdGggZD0iTTE4NC41MDYsMTQwLjk5bDcuMTAyLTE1LjM0aC05LjM0di0xLjc5M2gxMS40MDJ2MS41NTlsLTcuMDA4LDE1LjU3NEgxODQuNTA2eiIvPgo8L2c+CjxnPgoJPHJlY3QgeD0iMTgxLjE2NyIgeT0iMTk2Ljc1IiBzdHlsZT0iZmlsbDpub25lOyIgd2lkdGg9IjIxIiBoZWlnaHQ9IjI5LjUiLz4KCTxwYXRoIGQ9Ik0xOTIuOTU2LDIwMS44ODhjMCwxLjA5NC0wLjMwNywxLjk4OC0wLjkyLDIuNjg0cy0xLjQ4MiwxLjE2LTIuNjA3LDEuMzk1djAuMDk0YzEuMzc1LDAuMTcyLDIuMzk1LDAuNjA5LDMuMDU5LDEuMzEzCgkJczAuOTk2LDEuNjI1LDAuOTk2LDIuNzY2YzAsMS42MzMtMC41NjYsMi44ODktMS42OTksMy43NjhzLTIuNzQyLDEuMzE4LTQuODI4LDEuMzE4Yy0wLjkwNiwwLTEuNzM2LTAuMDY4LTIuNDktMC4yMDUKCQlzLTEuNDg2LTAuMzc3LTIuMTk3LTAuNzIxdi0xLjg1MmMwLjc0MiwwLjM2NywxLjUzMywwLjY0NiwyLjM3MywwLjgzOHMxLjYzNSwwLjI4NywyLjM4NSwwLjI4N2MyLjk2MSwwLDQuNDQxLTEuMTYsNC40NDEtMy40OAoJCWMwLTIuMDc4LTEuNjMzLTMuMTE3LTQuODk4LTMuMTE3aC0xLjY4OHYtMS42NzZoMS43MTFjMS4zMzYsMCwyLjM5NS0wLjI5NSwzLjE3Ni0wLjg4NXMxLjE3Mi0xLjQwOCwxLjE3Mi0yLjQ1NQoJCWMwLTAuODM2LTAuMjg3LTEuNDkyLTAuODYxLTEuOTY5cy0xLjM1NC0wLjcxNS0yLjMzOC0wLjcxNWMtMC43NSwwLTEuNDU3LDAuMTAyLTIuMTIxLDAuMzA1cy0xLjQyMiwwLjU3OC0yLjI3MywxLjEyNQoJCWwtMC45ODQtMS4zMTNjMC43MDMtMC41NTUsMS41MTQtMC45OSwyLjQzMi0xLjMwN3MxLjg4NS0wLjQ3NSwyLjktMC40NzVjMS42NjQsMCwyLjk1NywwLjM4MSwzLjg3OSwxLjE0MwoJCVMxOTIuOTU2LDIwMC41NiwxOTIuOTU2LDIwMS44ODh6Ii8+CjwvZz4KPGc+Cgk8cmVjdCB4PSIxNTUuNSIgeT0iMjUyIiBzdHlsZT0iZmlsbDpub25lOyIgd2lkdGg9IjgxLjUiIGhlaWdodD0iMjkiLz4KCTxwYXRoIGQ9Ik0xNjMuNjM5LDI2NS42OHYtNi4yMzFjMC0wLjc4NS0wLjE3OS0xLjM3MS0wLjUzNi0xLjc1OHMtMC45MTctMC41OC0xLjY3OS0wLjU4Yy0xLjAwOCwwLTEuNzQ2LDAuMjcyLTIuMjE1LDAuODE3CgkJcy0wLjcwMywxLjQ0NC0wLjcwMywyLjY5OHY1LjA1NGgtMS40NTl2LTkuNjMzaDEuMTg3bDAuMjM3LDEuMzE4aDAuMDdjMC4yOTktMC40NzUsMC43MTgtMC44NDIsMS4yNTctMS4xMDMKCQlzMS4xNC0wLjM5MSwxLjgwMi0wLjM5MWMxLjE2LDAsMi4wMzMsMC4yOCwyLjYxOSwwLjgzOXMwLjg3OSwxLjQ1NSwwLjg3OSwyLjY4NXY2LjI4NEgxNjMuNjM5eiIvPgoJPHBhdGggZD0iTTE2OS40NjYsMjU2LjA0N3Y2LjI0OWMwLDAuNzg1LDAuMTc5LDEuMzcxLDAuNTM2LDEuNzU4czAuOTE3LDAuNTgsMS42NzksMC41OGMxLjAwOCwwLDEuNzQ1LTAuMjc1LDIuMjEtMC44MjYKCQlzMC42OTktMS40NSwwLjY5OS0yLjY5OHYtNS4wNjNoMS40NTl2OS42MzNoLTEuMjA0bC0wLjIxMS0xLjI5MmgtMC4wNzljLTAuMjk5LDAuNDc1LTAuNzEzLDAuODM4LTEuMjQ0LDEuMDkKCQlzLTEuMTM1LDAuMzc4LTEuODE1LDAuMzc4Yy0xLjE3MiwwLTIuMDQ5LTAuMjc4LTIuNjMyLTAuODM1cy0wLjg3NS0xLjQ0Ny0wLjg3NS0yLjY3MnYtNi4zMDJIMTY5LjQ2NnoiLz4KCTxwYXRoIGQ9Ik0xOTEuNDIxLDI2NS42OHYtNi4yNjdjMC0wLjc2OC0wLjE2NC0xLjM0My0wLjQ5Mi0xLjcyN3MtMC44MzgtMC41NzYtMS41MjktMC41NzZjLTAuOTA4LDAtMS41NzksMC4yNjEtMi4wMTMsMC43ODIKCQlzLTAuNjUsMS4zMjQtMC42NSwyLjQwOHY1LjM3OWgtMS40NTl2LTYuMjY3YzAtMC43NjgtMC4xNjQtMS4zNDMtMC40OTItMS43MjdzLTAuODQxLTAuNTc2LTEuNTM4LTAuNTc2CgkJYy0wLjkxNCwwLTEuNTgzLDAuMjc0LTIuMDA4LDAuODIycy0wLjYzNywxLjQ0Ni0wLjYzNywyLjY5NHY1LjA1NGgtMS40NTl2LTkuNjMzaDEuMTg3bDAuMjM3LDEuMzE4aDAuMDcKCQljMC4yNzUtMC40NjksMC42NjQtMC44MzUsMS4xNjUtMS4wOTlzMS4wNjItMC4zOTYsMS42ODMtMC4zOTZjMS41MDYsMCwyLjQ5LDAuNTQ1LDIuOTUzLDEuNjM1aDAuMDcKCQljMC4yODctMC41MDQsMC43MDMtMC45MDIsMS4yNDgtMS4xOTVzMS4xNjYtMC40MzksMS44NjMtMC40MzljMS4wOSwwLDEuOTA2LDAuMjgsMi40NDgsMC44MzlzMC44MTMsMS40NTUsMC44MTMsMi42ODV2Ni4yODQKCQlIMTkxLjQyMXoiLz4KCTxwYXRoIGQ9Ik0xOTkuOTU1LDI2NS44NTVjLTEuNDI0LDAtMi41NDctMC40MzQtMy4zNzEtMS4zMDFzLTEuMjM1LTIuMDcxLTEuMjM1LTMuNjEyYzAtMS41NTMsMC4zODItMi43ODYsMS4xNDctMy43CgkJczEuNzkyLTEuMzcxLDMuMDgxLTEuMzcxYzEuMjA3LDAsMi4xNjIsMC4zOTcsMi44NjUsMS4xOTFzMS4wNTUsMS44NDEsMS4wNTUsMy4xNDJ2MC45MjNoLTYuNjM2CgkJYzAuMDI5LDEuMTMxLDAuMzE1LDEuOTg5LDAuODU3LDIuNTc1czEuMzA1LDAuODc5LDIuMjksMC44NzljMS4wMzcsMCwyLjA2My0wLjIxNywzLjA3Ni0wLjY1djEuMzAxCgkJYy0wLjUxNiwwLjIyMy0xLjAwMywwLjM4Mi0xLjQ2MywwLjQ3OVMyMDAuNjA1LDI2NS44NTUsMTk5Ljk1NSwyNjUuODU1eiBNMTk5LjU2LDI1Ny4wOTNjLTAuNzczLDAtMS4zOSwwLjI1Mi0xLjg1LDAuNzU2CgkJcy0wLjczMSwxLjIwMS0wLjgxMywyLjA5Mmg1LjAzNmMwLTAuOTItMC4yMDUtMS42MjUtMC42MTUtMi4xMTRTMjAwLjMyMSwyNTcuMDkzLDE5OS41NiwyNTcuMDkzeiIvPgoJPHBhdGggZD0iTTIxMC4zNzksMjU1Ljg3MWMwLjQyOCwwLDAuODEyLDAuMDM1LDEuMTUxLDAuMTA1bC0wLjIwMiwxLjM1NGMtMC4zOTgtMC4wODgtMC43NS0wLjEzMi0xLjA1NS0wLjEzMgoJCWMtMC43NzksMC0xLjQ0NiwwLjMxNi0yLDAuOTQ5cy0wLjgzMSwxLjQyMS0wLjgzMSwyLjM2NHY1LjE2OGgtMS40NTl2LTkuNjMzaDEuMjA0bDAuMTY3LDEuNzg0aDAuMDcKCQljMC4zNTctMC42MjcsMC43ODgtMS4xMSwxLjI5Mi0xLjQ1UzIwOS43NzUsMjU1Ljg3MSwyMTAuMzc5LDI1NS44NzF6Ii8+Cgk8cGF0aCBkPSJNMjEzLjIwOSwyNTMuNDM3YzAtMC4zMzQsMC4wODItMC41NzksMC4yNDYtMC43MzRzMC4zNjktMC4yMzMsMC42MTUtMC4yMzNjMC4yMzQsMCwwLjQzNywwLjA3OSwwLjYwNiwwLjIzNwoJCXMwLjI1NSwwLjQwMSwwLjI1NSwwLjcyOXMtMC4wODUsMC41NzMtMC4yNTUsMC43MzRzLTAuMzcyLDAuMjQyLTAuNjA2LDAuMjQyYy0wLjI0NiwwLTAuNDUxLTAuMDgxLTAuNjE1LTAuMjQyCgkJUzIxMy4yMDksMjUzLjc2NSwyMTMuMjA5LDI1My40Mzd6IE0yMTQuNzkxLDI2NS42OGgtMS40NTl2LTkuNjMzaDEuNDU5VjI2NS42OHoiLz4KCTxwYXRoIGQ9Ik0yMjEuNzM0LDI2NS44NTVjLTEuMzk1LDAtMi40NzQtMC40MjktMy4yMzktMS4yODhzLTEuMTQ3LTIuMDczLTEuMTQ3LTMuNjQzYzAtMS42MTEsMC4zODgtMi44NTYsMS4xNjUtMy43MzUKCQlzMS44ODItMS4zMTgsMy4zMTgtMS4zMThjMC40NjMsMCwwLjkyNiwwLjA1LDEuMzg5LDAuMTQ5czAuODI2LDAuMjE3LDEuMDksMC4zNTJsLTAuNDQ4LDEuMjM5CgkJYy0wLjMyMi0wLjEyOS0wLjY3NC0wLjIzNi0xLjA1NS0wLjMyMXMtMC43MTgtMC4xMjctMS4wMTEtMC4xMjdjLTEuOTU3LDAtMi45MzYsMS4yNDgtMi45MzYsMy43NDQKCQljMCwxLjE4NCwwLjIzOSwyLjA5MiwwLjcxNiwyLjcyNXMxLjE4NSwwLjk0OSwyLjEyMywwLjk0OWMwLjgwMywwLDEuNjI2LTAuMTczLDIuNDctMC41MTl2MS4yOTIKCQlDMjIzLjUyNCwyNjUuNjg4LDIyMi43MTMsMjY1Ljg1NSwyMjEuNzM0LDI2NS44NTV6Ii8+CjwvZz4KPGc+Cgk8cmVjdCB4PSIyNTUuMjUiIHk9IjI1MiIgc3R5bGU9ImZpbGw6bm9uZTsiIHdpZHRoPSI4MS41IiBoZWlnaHQ9IjI5Ii8+Cgk8cGF0aCBkPSJNMjYwLjY0NiwyNjUuODU1Yy0xLjM5NSwwLTIuNDc0LTAuNDI5LTMuMjM5LTEuMjg4cy0xLjE0Ny0yLjA3My0xLjE0Ny0zLjY0M2MwLTEuNjExLDAuMzg4LTIuODU2LDEuMTY1LTMuNzM1CgkJczEuODgyLTEuMzE4LDMuMzE4LTEuMzE4YzAuNDYzLDAsMC45MjYsMC4wNSwxLjM4OSwwLjE0OXMwLjgyNiwwLjIxNywxLjA5LDAuMzUybC0wLjQ0OCwxLjIzOQoJCWMtMC4zMjItMC4xMjktMC42NzQtMC4yMzYtMS4wNTUtMC4zMjFzLTAuNzE4LTAuMTI3LTEuMDExLTAuMTI3Yy0xLjk1NywwLTIuOTM2LDEuMjQ4LTIuOTM2LDMuNzQ0CgkJYzAsMS4xODQsMC4yMzksMi4wOTIsMC43MTYsMi43MjVzMS4xODUsMC45NDksMi4xMjMsMC45NDljMC44MDMsMCwxLjYyNi0wLjE3MywyLjQ3LTAuNTE5djEuMjkyCgkJQzI2Mi40MzcsMjY1LjY4OCwyNjEuNjI1LDI2NS44NTUsMjYwLjY0NiwyNjUuODU1eiIvPgoJPHBhdGggZD0iTTI3MS45NTgsMjY1LjY4di02LjIzMWMwLTAuNzg1LTAuMTc5LTEuMzcxLTAuNTM2LTEuNzU4cy0wLjkxNy0wLjU4LTEuNjc5LTAuNThjLTEuMDE0LDAtMS43NTMsMC4yNzUtMi4yMTksMC44MjYKCQlzLTAuNjk5LDEuNDUzLTAuNjk5LDIuNzA3djUuMDM2aC0xLjQ1OXYtMTMuNjc2aDEuNDU5djQuMTRjMCwwLjQ5OC0wLjAyMywwLjkxMS0wLjA3LDEuMjM5aDAuMDg4CgkJYzAuMjg3LTAuNDYzLDAuNjk2LTAuODI4LDEuMjI2LTEuMDk0czEuMTM1LTAuNCwxLjgxNS0wLjRjMS4xNzgsMCwyLjA2MSwwLjI4LDIuNjUsMC44MzlzMC44ODMsMS40NDksMC44ODMsMi42Njd2Ni4yODRIMjcxLjk1OHoiCgkJLz4KCTxwYXRoIGQ9Ik0yODIuMzM4LDI2NS42OGwtMC4yOS0xLjM3MWgtMC4wN2MtMC40OCwwLjYwNC0wLjk1OSwxLjAxMi0xLjQzNywxLjIyNnMtMS4wNzQsMC4zMjEtMS43ODksMC4zMjEKCQljLTAuOTU1LDAtMS43MDQtMC4yNDYtMi4yNDYtMC43MzhzLTAuODEzLTEuMTkyLTAuODEzLTIuMTAxYzAtMS45NDUsMS41NTYtMi45NjUsNC42NjctMy4wNTlsMS42MzUtMC4wNTN2LTAuNTk4CgkJYzAtMC43NTYtMC4xNjMtMS4zMTQtMC40ODgtMS42NzRzLTAuODQ1LTAuNTQxLTEuNTYtMC41NDFjLTAuODAzLDAtMS43MTEsMC4yNDYtMi43MjUsMC43MzhsLTAuNDQ4LTEuMTE2CgkJYzAuNDc1LTAuMjU4LDAuOTk1LTAuNDYsMS41Ni0wLjYwNnMxLjEzMi0wLjIyLDEuNzAxLTAuMjJjMS4xNDgsMCwyLDAuMjU1LDIuNTUzLDAuNzY1czAuODMxLDEuMzI3LDAuODMxLDIuNDUydjYuNTc0SDI4Mi4zMzh6CgkJIE0yNzkuMDQyLDI2NC42NTFjMC45MDgsMCwxLjYyMi0wLjI0OSwyLjE0LTAuNzQ3czAuNzc4LTEuMTk1LDAuNzc4LTIuMDkydi0wLjg3bC0xLjQ1OSwwLjA2MgoJCWMtMS4xNiwwLjA0MS0xLjk5NywwLjIyMS0yLjUwOSwwLjU0MXMtMC43NjksMC44MTYtMC43NjksMS40OWMwLDAuNTI3LDAuMTYsMC45MjksMC40NzksMS4yMDRTMjc4LjQ2OCwyNjQuNjUxLDI3OS4wNDIsMjY0LjY1MXoiCgkJLz4KCTxwYXRoIGQ9Ik0yOTAuODE5LDI1NS44NzFjMC40MjgsMCwwLjgxMiwwLjAzNSwxLjE1MSwwLjEwNWwtMC4yMDIsMS4zNTRjLTAuMzk4LTAuMDg4LTAuNzUtMC4xMzItMS4wNTUtMC4xMzIKCQljLTAuNzc5LDAtMS40NDYsMC4zMTYtMiwwLjk0OXMtMC44MzEsMS40MjEtMC44MzEsMi4zNjR2NS4xNjhoLTEuNDU5di05LjYzM2gxLjIwNGwwLjE2NywxLjc4NGgwLjA3CgkJYzAuMzU3LTAuNjI3LDAuNzg4LTEuMTEsMS4yOTItMS40NVMyOTAuMjE2LDI1NS44NzEsMjkwLjgxOSwyNTUuODcxeiIvPgoJPHBhdGggZD0iTTI5OS42OTYsMjY1LjY4bC0wLjI5LTEuMzcxaC0wLjA3Yy0wLjQ4LDAuNjA0LTAuOTU5LDEuMDEyLTEuNDM3LDEuMjI2cy0xLjA3NCwwLjMyMS0xLjc4OSwwLjMyMQoJCWMtMC45NTUsMC0xLjcwNC0wLjI0Ni0yLjI0Ni0wLjczOHMtMC44MTMtMS4xOTItMC44MTMtMi4xMDFjMC0xLjk0NSwxLjU1Ni0yLjk2NSw0LjY2Ny0zLjA1OWwxLjYzNS0wLjA1M3YtMC41OTgKCQljMC0wLjc1Ni0wLjE2My0xLjMxNC0wLjQ4OC0xLjY3NHMtMC44NDUtMC41NDEtMS41Ni0wLjU0MWMtMC44MDMsMC0xLjcxMSwwLjI0Ni0yLjcyNSwwLjczOGwtMC40NDgtMS4xMTYKCQljMC40NzUtMC4yNTgsMC45OTUtMC40NiwxLjU2LTAuNjA2czEuMTMyLTAuMjIsMS43MDEtMC4yMmMxLjE0OCwwLDIsMC4yNTUsMi41NTMsMC43NjVzMC44MzEsMS4zMjcsMC44MzEsMi40NTJ2Ni41NzRIMjk5LjY5NnoKCQkgTTI5Ni40LDI2NC42NTFjMC45MDgsMCwxLjYyMi0wLjI0OSwyLjE0LTAuNzQ3czAuNzc4LTEuMTk1LDAuNzc4LTIuMDkydi0wLjg3bC0xLjQ1OSwwLjA2MmMtMS4xNiwwLjA0MS0xLjk5NywwLjIyMS0yLjUwOSwwLjU0MQoJCXMtMC43NjksMC44MTYtMC43NjksMS40OWMwLDAuNTI3LDAuMTYsMC45MjksMC40NzksMS4yMDRTMjk1LjgyNiwyNjQuNjUxLDI5Ni40LDI2NC42NTF6Ii8+Cgk8cGF0aCBkPSJNMzA3LjYzMywyNjUuODU1Yy0xLjM5NSwwLTIuNDc0LTAuNDI5LTMuMjM5LTEuMjg4cy0xLjE0Ny0yLjA3My0xLjE0Ny0zLjY0M2MwLTEuNjExLDAuMzg4LTIuODU2LDEuMTY1LTMuNzM1CgkJczEuODgyLTEuMzE4LDMuMzE4LTEuMzE4YzAuNDYzLDAsMC45MjYsMC4wNSwxLjM4OSwwLjE0OXMwLjgyNiwwLjIxNywxLjA5LDAuMzUybC0wLjQ0OCwxLjIzOQoJCWMtMC4zMjItMC4xMjktMC42NzQtMC4yMzYtMS4wNTUtMC4zMjFzLTAuNzE4LTAuMTI3LTEuMDExLTAuMTI3Yy0xLjk1NywwLTIuOTM2LDEuMjQ4LTIuOTM2LDMuNzQ0CgkJYzAsMS4xODQsMC4yMzksMi4wOTIsMC43MTYsMi43MjVzMS4xODUsMC45NDksMi4xMjMsMC45NDljMC44MDMsMCwxLjYyNi0wLjE3MywyLjQ3LTAuNTE5djEuMjkyCgkJQzMwOS40MjMsMjY1LjY4OCwzMDguNjExLDI2NS44NTUsMzA3LjYzMywyNjUuODU1eiIvPgoJPHBhdGggZD0iTTMxNS40NjQsMjY0LjY1MWMwLjI1OCwwLDAuNTA3LTAuMDE5LDAuNzQ3LTAuMDU3czAuNDMxLTAuMDc4LDAuNTcxLTAuMTE5djEuMTE2Yy0wLjE1OCwwLjA3Ni0wLjM5MSwwLjEzOS0wLjY5OSwwLjE4OQoJCXMtMC41ODQsMC4wNzUtMC44MzEsMC4wNzVjLTEuODYzLDAtMi43OTUtMC45ODEtMi43OTUtMi45NDR2LTUuNzNoLTEuMzh2LTAuNzAzbDEuMzgtMC42MDZsMC42MTUtMi4wNTdoMC44NDR2Mi4yMzJoMi43OTV2MS4xMzQKCQloLTIuNzk1djUuNjY5YzAsMC41OCwwLjEzOCwxLjAyNSwwLjQxMywxLjMzNlMzMTQuOTgzLDI2NC42NTEsMzE1LjQ2NCwyNjQuNjUxeiIvPgoJPHBhdGggZD0iTTMyMi43NzYsMjY1Ljg1NWMtMS40MjQsMC0yLjU0Ny0wLjQzNC0zLjM3MS0xLjMwMXMtMS4yMzUtMi4wNzEtMS4yMzUtMy42MTJjMC0xLjU1MywwLjM4Mi0yLjc4NiwxLjE0Ny0zLjcKCQlzMS43OTItMS4zNzEsMy4wODEtMS4zNzFjMS4yMDcsMCwyLjE2MiwwLjM5NywyLjg2NSwxLjE5MXMxLjA1NSwxLjg0MSwxLjA1NSwzLjE0MnYwLjkyM2gtNi42MzYKCQljMC4wMjksMS4xMzEsMC4zMTUsMS45ODksMC44NTcsMi41NzVzMS4zMDUsMC44NzksMi4yOSwwLjg3OWMxLjAzNywwLDIuMDYzLTAuMjE3LDMuMDc2LTAuNjV2MS4zMDEKCQljLTAuNTE2LDAuMjIzLTEuMDAzLDAuMzgyLTEuNDYzLDAuNDc5UzMyMy40MjcsMjY1Ljg1NSwzMjIuNzc2LDI2NS44NTV6IE0zMjIuMzgxLDI1Ny4wOTNjLTAuNzczLDAtMS4zOSwwLjI1Mi0xLjg1LDAuNzU2CgkJcy0wLjczMSwxLjIwMS0wLjgxMywyLjA5Mmg1LjAzNmMwLTAuOTItMC4yMDUtMS42MjUtMC42MTUtMi4xMTRTMzIzLjE0MywyNTcuMDkzLDMyMi4zODEsMjU3LjA5M3oiLz4KCTxwYXRoIGQ9Ik0zMzMuMiwyNTUuODcxYzAuNDI4LDAsMC44MTIsMC4wMzUsMS4xNTEsMC4xMDVsLTAuMjAyLDEuMzU0Yy0wLjM5OC0wLjA4OC0wLjc1LTAuMTMyLTEuMDU1LTAuMTMyCgkJYy0wLjc3OSwwLTEuNDQ2LDAuMzE2LTIsMC45NDlzLTAuODMxLDEuNDIxLTAuODMxLDIuMzY0djUuMTY4aC0xLjQ1OXYtOS42MzNoMS4yMDRsMC4xNjcsMS43ODRoMC4wNwoJCWMwLjM1Ny0wLjYyNywwLjc4OC0xLjExLDEuMjkyLTEuNDVTMzMyLjU5NywyNTUuODcxLDMzMy4yLDI1NS44NzF6Ii8+CjwvZz4KPGc+Cgk8cmVjdCB4PSIzNjUiIHk9IjI1MiIgc3R5bGU9ImZpbGw6bm9uZTsiIHdpZHRoPSI4MS41IiBoZWlnaHQ9IjI5Ii8+Cgk8cGF0aCBkPSJNMzY4LjAwNiwyNjUuNjhoLTEuNDU5di0xMy42NzZoMS40NTlWMjY1LjY4eiIvPgoJPHBhdGggZD0iTTM3OS40MTQsMjYwLjg1NGMwLDEuNTctMC4zOTYsMi43OTYtMS4xODcsMy42NzhzLTEuODg0LDEuMzIzLTMuMjc4LDEuMzIzYy0wLjg2MSwwLTEuNjI2LTAuMjAyLTIuMjk0LTAuNjA2CgkJcy0xLjE4NC0wLjk4NC0xLjU0Ny0xLjc0cy0wLjU0NS0xLjY0MS0wLjU0NS0yLjY1NGMwLTEuNTcsMC4zOTMtMi43OTMsMS4xNzgtMy42NjlzMS44NzUtMS4zMTQsMy4yNy0xLjMxNAoJCWMxLjM0OCwwLDIuNDE5LDAuNDQ4LDMuMjEyLDEuMzQ1QzM3OS4wMTgsMjU4LjExMiwzNzkuNDE0LDI1OS4zMjUsMzc5LjQxNCwyNjAuODU0eiBNMzcyLjA3NSwyNjAuODU0CgkJYzAsMS4yMywwLjI0NiwyLjE2OCwwLjczOCwyLjgxM3MxLjIxNiwwLjk2NywyLjE3MSwwLjk2N3MxLjY4LTAuMzIxLDIuMTc2LTAuOTYyYzAuNDk0LTAuNjQyLDAuNzQyLTEuNTgxLDAuNzQyLTIuODE3CgkJYzAtMS4yMjUtMC4yNDgtMi4xNTUtMC43NDItMi43OTFjLTAuNDk2LTAuNjM2LTEuMjI3LTAuOTU0LTIuMTkzLTAuOTU0Yy0wLjk1NSwwLTEuNjc2LDAuMzEzLTIuMTYyLDAuOTQKCQlTMzcyLjA3NSwyNTkuNjEyLDM3Mi4wNzUsMjYwLjg1NHoiLz4KCTxwYXRoIGQ9Ik0zODkuODU1LDI1Ni4wNDd2MC45MjNsLTEuNzg0LDAuMjExYzAuMTY0LDAuMjA1LDAuMzExLDAuNDczLDAuNDM5LDAuODA0czAuMTkzLDAuNzA1LDAuMTkzLDEuMTIxCgkJYzAsMC45NDMtMC4zMjIsMS42OTYtMC45NjcsMi4yNTlzLTEuNTI5LDAuODQ0LTIuNjU0LDAuODQ0Yy0wLjI4NywwLTAuNTU3LTAuMDIzLTAuODA5LTAuMDdjLTAuNjIxLDAuMzI4LTAuOTMyLDAuNzQxLTAuOTMyLDEuMjM5CgkJYzAsMC4yNjQsMC4xMDgsMC40NTgsMC4zMjUsMC41ODRzMC41ODksMC4xODksMS4xMTYsMC4xODloMS43MDVjMS4wNDMsMCwxLjg0NSwwLjIyLDIuNDAzLDAuNjU5CgkJYzAuNTYxLDAuNDM5LDAuODQsMS4wNzgsMC44NCwxLjkxNmMwLDEuMDY2LTAuNDI4LDEuODc5LTEuMjgzLDIuNDM5cy0yLjEwNCwwLjgzOS0zLjc0NCwwLjgzOWMtMS4yNiwwLTIuMjMtMC4yMzQtMi45MTQtMC43MDMKCQljLTAuNjgyLTAuNDY5LTEuMDIzLTEuMTMxLTEuMDIzLTEuOTg2YzAtMC41ODYsMC4xODgtMS4wOTMsMC41NjMtMS41MjFzMC45MDItMC43MTgsMS41ODItMC44NwoJCWMtMC4yNDYtMC4xMTEtMC40NTMtMC4yODQtMC42MTktMC41MTljLTAuMTY4LTAuMjM0LTAuMjUxLTAuNTA3LTAuMjUxLTAuODE3YzAtMC4zNTIsMC4wOTQtMC42NTksMC4yODEtMC45MjMKCQlzMC40ODMtMC41MTksMC44ODgtMC43NjVjLTAuNDk4LTAuMjA1LTAuOTA0LTAuNTU0LTEuMjE3LTEuMDQ2Yy0wLjMxNC0wLjQ5Mi0wLjQ3MS0xLjA1NS0wLjQ3MS0xLjY4OAoJCWMwLTEuMDU1LDAuMzE2LTEuODY4LDAuOTQ5LTIuNDM5czEuNTI5LTAuODU3LDIuNjg5LTAuODU3YzAuNTA0LDAsMC45NTgsMC4wNTksMS4zNjIsMC4xNzZIMzg5Ljg1NXogTTM4Mi4xNzQsMjY3LjI5NwoJCWMwLDAuNTIxLDAuMjIsMC45MTcsMC42NTksMS4xODdzMS4wNjksMC40MDQsMS44OSwwLjQwNGMxLjIyNSwwLDIuMTMxLTAuMTgzLDIuNzIxLTAuNTQ5YzAuNTg4LTAuMzY2LDAuODgzLTAuODYzLDAuODgzLTEuNDkKCQljMC0wLjUyMS0wLjE2MS0wLjg4My0wLjQ4My0xLjA4NXMtMC45MjktMC4zMDMtMS44MTktMC4zMDNoLTEuNzQ5Yy0wLjY2MiwwLTEuMTc4LDAuMTU4LTEuNTQ3LDAuNDc1CgkJUzM4Mi4xNzQsMjY2LjcwNSwzODIuMTc0LDI2Ny4yOTd6IE0zODIuOTY1LDI1OS4xMzJjMCwwLjY3NCwwLjE5LDEuMTg0LDAuNTcxLDEuNTI5czAuOTExLDAuNTE5LDEuNTkxLDAuNTE5CgkJYzEuNDI0LDAsMi4xMzYtMC42OTEsMi4xMzYtMi4wNzRjMC0xLjQ0Ny0wLjcyMS0yLjE3MS0yLjE2Mi0yLjE3MWMtMC42ODYsMC0xLjIxMywwLjE4NS0xLjU4MiwwLjU1NAoJCVMzODIuOTY1LDI1OC40MDUsMzgyLjk2NSwyNTkuMTMyeiIvPgoJPHBhdGggZD0iTTM5MS43MSwyNTMuNDM3YzAtMC4zMzQsMC4wODItMC41NzksMC4yNDYtMC43MzRzMC4zNjktMC4yMzMsMC42MTUtMC4yMzNjMC4yMzQsMCwwLjQzNywwLjA3OSwwLjYwNiwwLjIzNwoJCXMwLjI1NSwwLjQwMSwwLjI1NSwwLjcyOXMtMC4wODUsMC41NzMtMC4yNTUsMC43MzRzLTAuMzcyLDAuMjQyLTAuNjA2LDAuMjQyYy0wLjI0NiwwLTAuNDUxLTAuMDgxLTAuNjE1LTAuMjQyCgkJUzM5MS43MSwyNTMuNzY1LDM5MS43MSwyNTMuNDM3eiBNMzkzLjI5MiwyNjUuNjhoLTEuNDU5di05LjYzM2gxLjQ1OVYyNjUuNjh6Ii8+Cgk8cGF0aCBkPSJNNDAwLjIzNSwyNjUuODU1Yy0xLjM5NSwwLTIuNDc0LTAuNDI5LTMuMjM5LTEuMjg4Yy0wLjc2NC0wLjg1OC0xLjE0Ni0yLjA3My0xLjE0Ni0zLjY0M2MwLTEuNjExLDAuMzg5LTIuODU2LDEuMTY0LTMuNzM1CgkJYzAuNzc3LTAuODc5LDEuODgzLTEuMzE4LDMuMzE4LTEuMzE4YzAuNDYzLDAsMC45MjYsMC4wNSwxLjM4OSwwLjE0OXMwLjgyNiwwLjIxNywxLjA5LDAuMzUybC0wLjQ0OCwxLjIzOQoJCWMtMC4zMjItMC4xMjktMC42NzQtMC4yMzYtMS4wNTUtMC4zMjFzLTAuNzE4LTAuMTI3LTEuMDExLTAuMTI3Yy0xLjk1NywwLTIuOTM2LDEuMjQ4LTIuOTM2LDMuNzQ0CgkJYzAsMS4xODQsMC4yMzgsMi4wOTIsMC43MTcsMi43MjVjMC40NzcsMC42MzMsMS4xODUsMC45NDksMi4xMjIsMC45NDljMC44MDMsMCwxLjYyNi0wLjE3MywyLjQ3LTAuNTE5djEuMjkyCgkJQzQwMi4wMjUsMjY1LjY4OCw0MDEuMjE0LDI2NS44NTUsNDAwLjIzNSwyNjUuODU1eiIvPgoJPHBhdGggZD0iTTQxMC44NzksMjY1LjY4bC0wLjI5LTEuMzcxaC0wLjA3Yy0wLjQ4LDAuNjA0LTAuOTYsMS4wMTItMS40MzcsMS4yMjZjLTAuNDc5LDAuMjE0LTEuMDc0LDAuMzIxLTEuNzg5LDAuMzIxCgkJYy0wLjk1NSwwLTEuNzAzLTAuMjQ2LTIuMjQ2LTAuNzM4Yy0wLjU0MS0wLjQ5Mi0wLjgxMy0xLjE5Mi0wLjgxMy0yLjEwMWMwLTEuOTQ1LDEuNTU2LTIuOTY1LDQuNjY3LTMuMDU5bDEuNjM1LTAuMDUzdi0wLjU5OAoJCWMwLTAuNzU2LTAuMTYzLTEuMzE0LTAuNDg3LTEuNjc0Yy0wLjMyNi0wLjM2LTAuODQ2LTAuNTQxLTEuNTYxLTAuNTQxYy0wLjgwMywwLTEuNzExLDAuMjQ2LTIuNzI1LDAuNzM4bC0wLjQ0OC0xLjExNgoJCWMwLjQ3NS0wLjI1OCwwLjk5NS0wLjQ2LDEuNTYtMC42MDZjMC41NjYtMC4xNDYsMS4xMzMtMC4yMiwxLjcwMS0wLjIyYzEuMTQ4LDAsMiwwLjI1NSwyLjU1MywwLjc2NQoJCWMwLjU1NSwwLjUxLDAuODMxLDEuMzI3LDAuODMxLDIuNDUydjYuNTc0SDQxMC44Nzl6IE00MDcuNTgzLDI2NC42NTFjMC45MDgsMCwxLjYyMi0wLjI0OSwyLjE0LTAuNzQ3CgkJYzAuNTItMC40OTgsMC43NzgtMS4xOTUsMC43NzgtMi4wOTJ2LTAuODdsLTEuNDU5LDAuMDYyYy0xLjE2LDAuMDQxLTEuOTk3LDAuMjIxLTIuNTA5LDAuNTQxYy0wLjUxNCwwLjMxOS0wLjc3LDAuODE2LTAuNzcsMS40OQoJCWMwLDAuNTI3LDAuMTYsMC45MjksMC40NzksMS4yMDRDNDA2LjU2MywyNjQuNTE0LDQwNy4wMDksMjY0LjY1MSw0MDcuNTgzLDI2NC42NTF6Ii8+Cgk8cGF0aCBkPSJNNDE2LjQyNSwyNjUuNjhoLTEuNDU5di0xMy42NzZoMS40NTlWMjY1LjY4eiIvPgo8L2c+Cjwvc3ZnPgo=" alt="Data frame"></p>
+<p>When using <code>read_csv()</code>, the data frame created is of class <code>tbl_df</code> (called &quot;tibble&quot;). The type of data included in each column is listed in an abbreviated fashion below the column names. For instance, here <code>key_ID</code> is a column of integers (abbreviated <code>&lt;int&gt;</code>), <code>village</code> is a column of characters (<code>&lt;chr&gt;</code>) and the <code>interview_date</code> is a column in the &quot;date and time&quot; format (<code>&lt;dttm&gt;</code>).</p>
+<h2 class="mume-header" id="inspecting-data-frames">Inspecting data frames</h2>
+
+<p>When calling a <code>tbl_df</code> object (like <code>interviews</code> here), there is already a lot of information about our data frame being displayed such as the number of rows, the number of columns, the names of the columns, and as we just saw the class of data stored in each column. However, there are functions to extract this information from data frames.  Here is a non-exhaustive list of some of these functions. Let&apos;s try them out!</p>
+<ul>
+<li>
+<p>Size:</p>
+</li>
+<li>
+<p><code>dim(interviews)</code> - returns a vector with the number of rows in the first element, and the number of columns as the second element (the <strong>dim</strong>ensions of the object)</p>
+</li>
+<li>
+<p><code>nrow(interviews)</code> - returns the number of rows</p>
+</li>
+<li>
+<p><code>ncol(interviews)</code> - returns the number of columns</p>
+</li>
+<li>
+<p>Content:</p>
+</li>
+<li>
+<p><code>head(interviews)</code> - shows the first 6 rows</p>
+</li>
+<li>
+<p><code>tail(interviews)</code> - shows the last 6 rows</p>
+</li>
+<li>
+<p>Names:</p>
+</li>
+<li>
+<p><code>names(interviews)</code> - returns the column names (synonym of <code>colnames()</code> for<br>
+<code>data.frame</code> objects)</p>
+</li>
+<li>
+<p>Summary:</p>
+</li>
+<li>
+<p><code>str(interviews)</code> - structure of the object and information about the class,<br>
+length and content of each column</p>
+</li>
+<li>
+<p><code>summary(interviews)</code> - summary statistics for each column</p>
+</li>
+</ul>
+<p>Note: most of these functions are &quot;generic&quot;, they can be used on other types of objects besides data frames.</p>
+<pre data-role="codeBlock" data-info="r" class="language-r"><span class="token comment"># Size:</span>
+
+dim<span class="token punctuation">(</span>interviews<span class="token punctuation">)</span>
+<span class="token comment"># returns a vector with the number of rows in the first element, and the number of columns as the second element (the dimensions of the object)</span>
+
+nrow<span class="token punctuation">(</span>interviews<span class="token punctuation">)</span> 
+<span class="token comment"># - returns the number of rows</span>
+
+ncol<span class="token punctuation">(</span>interviews<span class="token punctuation">)</span>
+<span class="token comment"># - returns the number of columns</span>
+
+<span class="token comment"># Content:</span>
+
+head<span class="token punctuation">(</span>interviews<span class="token punctuation">)</span> 
+<span class="token comment"># - shows the first 6 rows</span>
+
+tail<span class="token punctuation">(</span>interviews<span class="token punctuation">)</span><span class="token comment">#</span>
+<span class="token comment"># - shows the last 6 rows</span>
+
+<span class="token comment"># Names:</span>
+
+names<span class="token punctuation">(</span>interviews<span class="token punctuation">)</span>
+<span class="token comment"># - returns the column names (synonym of colnames() for data.frame objects)</span>
+
+<span class="token comment"># Summary:</span>
+
+str<span class="token punctuation">(</span>interviews<span class="token punctuation">)</span>
+<span class="token comment"># - structure of the object and information about the class, length and content of each column</span>
+
+summary<span class="token punctuation">(</span>interviews<span class="token punctuation">)</span>
+<span class="token comment"># - summary statistics for each column</span>
+</pre><h2 class="mume-header" id="indexing-and-subsetting-data-frames">Indexing and subsetting data frames</h2>
+
+<p>Our interviews data frame has rows and columns (it has 2 dimensions), if we want to extract some specific data from it, we need to specify the &quot;coordinates&quot; we want from it. Row numbers come first, followed by column numbers. However, note that different ways of specifying these coordinates lead to results with different classes.</p>
+<pre data-role="codeBlock" data-info="r" class="language-r"><span class="token comment">## first element in the first column of the data frame (as a vector)</span>
+interviews<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">]</span>
+</pre><pre data-role="codeBlock" data-info class="language-"><code># A tibble: 1 x 1
+  key_ID
+   &lt;int&gt;
+1      1
+</code></pre><pre data-role="codeBlock" data-info="r" class="language-r"><span class="token comment">## first element in the 6th column (as a vector)</span>
+interviews<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">]</span>
+</pre><pre data-role="codeBlock" data-info class="language-"><code># A tibble: 1 x 1
+  respondent_wall_type
+  &lt;chr&gt;               
+1 muddaub             
+</code></pre><pre data-role="codeBlock" data-info="r" class="language-r"><span class="token comment">## first column of the data frame (as a vector)</span>
+interviews<span class="token punctuation">[</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">]</span>
+</pre><pre data-role="codeBlock" data-info class="language-"><code># A tibble: 131 x 1
+   key_ID
+    &lt;int&gt;
+ 1      1
+ 2      1
+ 3      3
+ 4      4
+ 5      5
+ 6      6
+ 7      7
+ 8      8
+ 9      9
+10     10
+# ... with 121 more rows
+</code></pre><pre data-role="codeBlock" data-info="r" class="language-r"><span class="token comment">## first column of the data frame (as a data.frame)</span>
+interviews<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span>
+</pre><pre data-role="codeBlock" data-info class="language-"><code># A tibble: 131 x 1
+   key_ID
+    &lt;int&gt;
+ 1      1
+ 2      1
+ 3      3
+ 4      4
+ 5      5
+ 6      6
+ 7      7
+ 8      8
+ 9      9
+10     10
+# ... with 121 more rows
+</code></pre><pre data-role="codeBlock" data-info="r" class="language-r"><span class="token comment">## first three elements in the 7th column (as a vector)</span>
+interviews<span class="token punctuation">[</span><span class="token number">1</span><span class="token operator">:</span><span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">7</span><span class="token punctuation">]</span>
+</pre><pre data-role="codeBlock" data-info class="language-"><code># A tibble: 3 x 1
+  rooms
+  &lt;int&gt;
+1     1
+2     1
+3     1
+</code></pre><pre data-role="codeBlock" data-info="r" class="language-r"><span class="token comment">## the 3rd row of the data frame (as a data.frame)</span>
+interviews<span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">,</span> <span class="token punctuation">]</span>
+</pre><pre data-role="codeBlock" data-info class="language-"><code># A tibble: 1 x 14
+  key_ID village interview_date      no_membrs years_liv respondent_wall&#x2026;
+   &lt;int&gt; &lt;chr&gt;   &lt;dttm&gt;                  &lt;int&gt;     &lt;int&gt; &lt;chr&gt;           
+1      3 God     2016-11-17 00:00:00        10        15 burntbricks     
+# ... with 8 more variables: rooms &lt;int&gt;, memb_assoc &lt;chr&gt;,
+#   affect_conflicts &lt;chr&gt;, liv_count &lt;int&gt;, items_owned &lt;chr&gt;,
+#   no_meals &lt;int&gt;, months_lack_food &lt;chr&gt;, instanceID &lt;chr&gt;
+</code></pre><pre data-role="codeBlock" data-info="r" class="language-r"><span class="token comment">## equivalent to head_interviews &lt;- head(interviews)</span>
+head_interviews <span class="token operator">&lt;-</span> interviews<span class="token punctuation">[</span><span class="token number">1</span><span class="token operator">:</span><span class="token number">6</span><span class="token punctuation">,</span> <span class="token punctuation">]</span>
+</pre><p><code>:</code> is a special function that creates numeric vectors of integers in increasing or decreasing order, test <code>1:10</code> and <code>10:1</code> for instance.</p>
+<p>You can also exclude certain indices of a data frame using the &quot;<code>-</code>&quot; sign:</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">interviews<span class="token punctuation">[</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span>          <span class="token comment"># The whole data frame, except the first column</span>
+</pre><pre data-role="codeBlock" data-info class="language-"><code># A tibble: 131 x 13
+   village interview_date      no_membrs years_liv respondent_wall&#x2026; rooms
+   &lt;chr&gt;   &lt;dttm&gt;                  &lt;int&gt;     &lt;int&gt; &lt;chr&gt;            &lt;int&gt;
+ 1 God     2016-11-17 00:00:00         3         4 muddaub              1
+ 2 God     2016-11-17 00:00:00         7         9 muddaub              1
+ 3 God     2016-11-17 00:00:00        10        15 burntbricks          1
+ 4 God     2016-11-17 00:00:00         7         6 burntbricks          1
+ 5 God     2016-11-17 00:00:00         7        40 burntbricks          1
+ 6 God     2016-11-17 00:00:00         3         3 muddaub              1
+ 7 God     2016-11-17 00:00:00         6        38 muddaub              1
+ 8 Chirod&#x2026; 2016-11-16 00:00:00        12        70 burntbricks          3
+ 9 Chirod&#x2026; 2016-11-16 00:00:00         8         6 burntbricks          1
+10 Chirod&#x2026; 2016-12-16 00:00:00        12        23 burntbricks          5
+# ... with 121 more rows, and 7 more variables: memb_assoc &lt;chr&gt;,
+#   affect_conflicts &lt;chr&gt;, liv_count &lt;int&gt;, items_owned &lt;chr&gt;,
+#   no_meals &lt;int&gt;, months_lack_food &lt;chr&gt;, instanceID &lt;chr&gt;
+</code></pre><pre data-role="codeBlock" data-info="r" class="language-r">interviews<span class="token punctuation">[</span><span class="token operator">-</span>c<span class="token punctuation">(</span><span class="token number">7</span><span class="token operator">:</span><span class="token number">131</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">]</span>   <span class="token comment"># Equivalent to head(interviews)</span>
+</pre><pre data-role="codeBlock" data-info class="language-"><code># A tibble: 6 x 14
+  key_ID village interview_date      no_membrs years_liv respondent_wall&#x2026;
+   &lt;int&gt; &lt;chr&gt;   &lt;dttm&gt;                  &lt;int&gt;     &lt;int&gt; &lt;chr&gt;           
+1      1 God     2016-11-17 00:00:00         3         4 muddaub         
+2      1 God     2016-11-17 00:00:00         7         9 muddaub         
+3      3 God     2016-11-17 00:00:00        10        15 burntbricks     
+4      4 God     2016-11-17 00:00:00         7         6 burntbricks     
+5      5 God     2016-11-17 00:00:00         7        40 burntbricks     
+6      6 God     2016-11-17 00:00:00         3         3 muddaub         
+# ... with 8 more variables: rooms &lt;int&gt;, memb_assoc &lt;chr&gt;,
+#   affect_conflicts &lt;chr&gt;, liv_count &lt;int&gt;, items_owned &lt;chr&gt;,
+#   no_meals &lt;int&gt;, months_lack_food &lt;chr&gt;, instanceID &lt;chr&gt;
+</code></pre><p>So far we have been accessing the rows and columns of our data frame by explicitly referring to index numbers of the columns ands rows.</p>
+<p>It is more usual that we will want to refer to columns by their names.</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">interviews<span class="token punctuation">[</span><span class="token string">&quot;village&quot;</span><span class="token punctuation">]</span>       <span class="token comment"># Result is a data frame</span>
+interviews<span class="token punctuation">[</span><span class="token punctuation">,</span> <span class="token string">&quot;village&quot;</span><span class="token punctuation">]</span>     <span class="token comment"># Result is a data frame</span>
+interviews<span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token string">&quot;village&quot;</span><span class="token punctuation">]</span><span class="token punctuation">]</span>     <span class="token comment"># Result is a vector</span>
+interviews<span class="token operator">$</span>village          <span class="token comment"># Result is a vector</span>
+</pre><p>In RStudio, you can use the autocompletion feature to get the full and correct names of the columns.</p>
+<blockquote>
+<h2>Exercise</h2>
+<ol>
+<li>
+<p>Create a data frame (<code>interviews_100</code>) containing only the data in<br>
+row 100 of the <code>interviews</code> dataset.</p>
+</li>
+<li>
+<p>Notice how <code>nrow()</code> gave you the number of rows in a data frame?</p>
+<ul>
+<li>Use that number to pull out just that last row in the data frame.</li>
+<li>Compare that with what you see as the last row using <code>tail()</code> to make<br>
+sure it&apos;s meeting expectations.</li>
+<li>Pull out that last row using <code>nrow()</code> instead of the row number.</li>
+<li>Create a new data frame (<code>interviews_last</code>) from that last row.</li>
+</ul>
+</li>
+<li>
+<p>Use <code>nrow()</code> to extract the row that is in the middle of the data frame.<br>
+Store the content of this row in an object named <code>interviews_middle</code>.</p>
+</li>
+<li>
+<p>Combine <code>nrow()</code> with the <code>-</code> notation above to reproduce the behavior of<br>
+<code>head(interviews)</code>, keeping just the first through 6th rows of the interviews<br>
+dataset.</p>
+</li>
+</ol>
+</blockquote>
+<details><summary><b>Solution</b>  - click me</summary>
+<blockquote>
+<h2>Solution</h2>
+</blockquote>
+<pre data-role="codeBlock" data-info="r" class="language-r"><span class="token comment">## 1.</span>
+interviews_100 <span class="token operator">&lt;-</span> interviews<span class="token punctuation">[</span><span class="token number">100</span><span class="token punctuation">,</span> <span class="token punctuation">]</span>
+<span class="token comment">## 2.</span>
+<span class="token comment"># Saving `n_rows` to improve readability and reduce duplication</span>
+n_rows <span class="token operator">&lt;-</span> nrow<span class="token punctuation">(</span>interviews<span class="token punctuation">)</span>
+interviews_last <span class="token operator">&lt;-</span> interviews<span class="token punctuation">[</span>n_rows<span class="token punctuation">,</span> <span class="token punctuation">]</span>
+<span class="token comment">## 3.</span>
+interviews_middle <span class="token operator">&lt;-</span> interviews<span class="token punctuation">[</span>n_rows <span class="token operator">/</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token punctuation">]</span>
+<span class="token comment">## 4.</span>
+interviews_head <span class="token operator">&lt;-</span> interviews<span class="token punctuation">[</span><span class="token operator">-</span><span class="token punctuation">(</span><span class="token number">7</span><span class="token operator">:</span>n_rows<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">]</span>
+</pre></details>
+<h2 class="mume-header" id="factors">Factors</h2>
+
+<p>R has a special data class, called factor, to deal with categorical data that you may encounter when creating plots or doing statistical analyses. Factors are very useful and actually contribute to making R particularly well suited to working with data. So we are going to spend a little time introducing them.</p>
+<p>Factors represent categorical data. They are stored as integers associated with labels and they can be ordered or unordered. While factors look (and often behave) like character vectors, they are actually treated as integer vectors by R. So you need to be very careful when treating them as strings.</p>
+<p>Once created, factors can only contain a pre-defined set of values, known as <em>levels</em>. By default, R always sorts levels in alphabetical order. For instance, if you have a factor with 2 levels:</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">respondent_floor_type <span class="token operator">&lt;-</span> factor<span class="token punctuation">(</span>c<span class="token punctuation">(</span><span class="token string">&quot;earth&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;cement&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;cement&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;earth&quot;</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+</pre><p>R will assign <code>1</code> to the level <code>&quot;cement&quot;</code> and <code>2</code> to the level <code>&quot;earth&quot;</code> (because <code>c</code> comes before <code>e</code>, even though the first element in this vector is <code>&quot;earth&quot;</code>). You can see this by using the function <code>levels()</code> and you can find the number of levels using <code>nlevels()</code>:</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">levels<span class="token punctuation">(</span>respondent_floor_type<span class="token punctuation">)</span>
+</pre><pre data-role="codeBlock" data-info class="language-"><code>[1] &quot;cement&quot; &quot;earth&quot; 
+</code></pre><pre data-role="codeBlock" data-info="r" class="language-r">nlevels<span class="token punctuation">(</span>respondent_floor_type<span class="token punctuation">)</span>
+</pre><pre data-role="codeBlock" data-info class="language-"><code>[1] 2
+</code></pre><p>Sometimes, the order of the factors does not matter, other times you might want to specify the order because it is meaningful (e.g., &quot;low&quot;, &quot;medium&quot;, &quot;high&quot;), it improves your visualization, or it is required by a particular type of analysis. Here, one way to reorder our levels in the <code>respondent_floor_type</code> vector would be:</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">respondent_floor_type <span class="token comment"># current order</span>
+</pre><pre data-role="codeBlock" data-info class="language-"><code>[1] earth  cement cement earth 
+Levels: cement earth
+</code></pre><pre data-role="codeBlock" data-info="r" class="language-r">respondent_floor_type <span class="token operator">&lt;-</span> factor<span class="token punctuation">(</span>respondent_floor_type<span class="token punctuation">,</span> levels <span class="token operator">=</span> c<span class="token punctuation">(</span><span class="token string">&quot;earth&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;cement&quot;</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+respondent_floor_type            <span class="token comment"># after re-ordering</span>
+</pre><pre data-role="codeBlock" data-info class="language-"><code>[1] earth  cement cement earth 
+Levels: earth cement
+</code></pre><p>In R&apos;s memory, these factors are represented by integers (1, 2), but are more informative than integers because factors are self describing: <code>&quot;cement&quot;</code>, <code>&quot;earth&quot;</code> is more descriptive than <code>1</code>, and <code>2</code>. Which one is &quot;earth&quot;? You wouldn&apos;t be able to tell just from the integer data. Factors, on the other hand, have this information built in. It is particularly helpful when there are many levels. It also makes renaming levels easier. Let&apos;s say we made a mistake and need to  recode &quot;cement&quot; to &quot;brick&quot;.</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">levels<span class="token punctuation">(</span>respondent_floor_type<span class="token punctuation">)</span>
+</pre><pre data-role="codeBlock" data-info class="language-"><code>[1] &quot;earth&quot;  &quot;cement&quot;
+</code></pre><pre data-role="codeBlock" data-info="r" class="language-r">levels<span class="token punctuation">(</span>respondent_floor_type<span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span> <span class="token operator">&lt;-</span> <span class="token string">&quot;brick&quot;</span>
+levels<span class="token punctuation">(</span>respondent_floor_type<span class="token punctuation">)</span>
+</pre><pre data-role="codeBlock" data-info class="language-"><code>[1] &quot;earth&quot; &quot;brick&quot;
+</code></pre><pre data-role="codeBlock" data-info="r" class="language-r">respondent_floor_type
+</pre><pre data-role="codeBlock" data-info class="language-"><code>[1] earth brick brick earth
+Levels: earth brick
+</code></pre><h3 class="mume-header" id="converting-factors">Converting factors</h3>
+
+<p>If you need to convert a factor to a character vector, you use<br>
+<code>as.character(x)</code>.</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">as.character<span class="token punctuation">(</span>respondent_floor_type<span class="token punctuation">)</span>
+</pre><pre data-role="codeBlock" data-info class="language-"><code>[1] &quot;earth&quot; &quot;brick&quot; &quot;brick&quot; &quot;earth&quot;
+</code></pre><p>Converting factors where the levels appear as numbers (such as concentration levels, or years) to a numeric vector is a little trickier. The <code>as.numeric()</code> function returns the index values of the factor, not its levels, so it will result in an entirely new (and unwanted in this case) set of numbers. One method to avoid this is to convert factors to characters, and then to numbers. Another method is to use the <code>levels()</code> function. Compare:</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">year_fct <span class="token operator">&lt;-</span> factor<span class="token punctuation">(</span>c<span class="token punctuation">(</span><span class="token number">1990</span><span class="token punctuation">,</span> <span class="token number">1983</span><span class="token punctuation">,</span> <span class="token number">1977</span><span class="token punctuation">,</span> <span class="token number">1998</span><span class="token punctuation">,</span> <span class="token number">1990</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+as.numeric<span class="token punctuation">(</span>year_fct<span class="token punctuation">)</span>                     <span class="token comment"># Wrong! And there is no warning...</span>
+</pre><pre data-role="codeBlock" data-info class="language-"><code>[1] 3 2 1 4 3
+</code></pre><pre data-role="codeBlock" data-info="r" class="language-r">as.numeric<span class="token punctuation">(</span>as.character<span class="token punctuation">(</span>year_fct<span class="token punctuation">)</span><span class="token punctuation">)</span>       <span class="token comment"># Works...</span>
+</pre><pre data-role="codeBlock" data-info class="language-"><code>[1] 1990 1983 1977 1998 1990
+</code></pre><pre data-role="codeBlock" data-info="r" class="language-r">as.numeric<span class="token punctuation">(</span>levels<span class="token punctuation">(</span>year_fct<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">[</span>year_fct<span class="token punctuation">]</span>   <span class="token comment"># The recommended way.</span>
+</pre><pre data-role="codeBlock" data-info class="language-"><code>[1] 1990 1983 1977 1998 1990
+</code></pre><p>Notice that in the recommended <code>levels()</code> approach, three important steps occur:</p>
+<ul>
+<li>We obtain all the factor levels using <code>levels(year_fct)</code></li>
+<li>We convert these levels to numeric values using <code>as.numeric(levels(year_fct))</code></li>
+<li>We then access these numeric values using the underlying integers of the vector <code>year_fct</code> inside the square brackets</li>
+</ul>
+<h3 class="mume-header" id="renaming-factors">Renaming factors</h3>
+
+<p>When your data is stored as a factor, you can use the <code>plot()</code> function to get a quick glance at the number of observations represented by each factor level. Let&apos;s extract the <code>memb_assoc</code> column from our data frame, convert it into a factor, and use it to look at the number of interview respondents who were or were not members of an irrigation association:</p>
+<pre data-role="codeBlock" data-info="r" class="language-r"><span class="token comment">## create a vector from the data frame column &quot;memb_assoc&quot;</span>
+memb_assoc <span class="token operator">&lt;-</span> interviews<span class="token operator">$</span>memb_assoc
+<span class="token comment">## convert it into a factor</span>
+memb_assoc <span class="token operator">&lt;-</span> as.factor<span class="token punctuation">(</span>memb_assoc<span class="token punctuation">)</span>
+<span class="token comment">## let&apos;s see what it looks like</span>
+memb_assoc
+</pre><pre data-role="codeBlock" data-info class="language-"><code>  [1] &lt;NA&gt; yes  &lt;NA&gt; &lt;NA&gt; &lt;NA&gt; &lt;NA&gt; no   yes  no   no   &lt;NA&gt; yes  no   &lt;NA&gt;
+ [15] yes  &lt;NA&gt; &lt;NA&gt; &lt;NA&gt; &lt;NA&gt; &lt;NA&gt; no   &lt;NA&gt; &lt;NA&gt; no   no   no   &lt;NA&gt; no  
+ [29] yes  &lt;NA&gt; &lt;NA&gt; yes  no   yes  yes  yes  &lt;NA&gt; yes  &lt;NA&gt; yes  &lt;NA&gt; no  
+ [43] no   &lt;NA&gt; no   no   yes  &lt;NA&gt; &lt;NA&gt; yes  &lt;NA&gt; no   yes  no   &lt;NA&gt; yes 
+ [57] no   no   &lt;NA&gt; no   yes  &lt;NA&gt; &lt;NA&gt; &lt;NA&gt; no   yes  no   no   no   no  
+ [71] yes  &lt;NA&gt; no   yes  &lt;NA&gt; &lt;NA&gt; yes  no   no   yes  no   no   yes  no  
+ [85] yes  no   no   &lt;NA&gt; yes  yes  yes  yes  yes  no   no   no   no   yes 
+ [99] no   no  
+ [ reached getOption(&quot;max.print&quot;) -- omitted 31 entries ]
+Levels: no yes
+</code></pre><pre data-role="codeBlock" data-info="r" class="language-r"><span class="token comment"># bar plot of the number of interview respondents who were</span>
+<span class="token comment"># members of irrigation association:</span>
+plot<span class="token punctuation">(</span>memb_assoc<span class="token punctuation">)</span>
+</pre><img src="./fig/rmd-02-factor-plot-default-order-1.png" title="plot of chunk factor-plot-default-order" alt="plot of chunk factor-plot-default-order" width="612" style="display: block; margin: auto;">
+<p>Looking at the plot compared to the output of the vector, we can see that in<br>
+addition to &quot;no&quot;s and &quot;yes&quot;s, there are about some respondents for which the<br>
+information about whether they were part of an irrigation association hasn&apos;t<br>
+been recorded, and encoded as missing data. They do not appear on the plot.<br>
+Let&apos;s encode them differently so they can counted and visualized in our plot.</p>
+<pre data-role="codeBlock" data-info="r" class="language-r"><span class="token comment">## Let&apos;s recreate the vector from the data frame column &quot;memb_assoc&quot;</span>
+memb_assoc <span class="token operator">&lt;-</span> interviews<span class="token operator">$</span>memb_assoc
+<span class="token comment">## replace the missing data with &quot;undetermined&quot;</span>
+memb_assoc<span class="token punctuation">[</span>is.na<span class="token punctuation">(</span>memb_assoc<span class="token punctuation">)</span><span class="token punctuation">]</span> <span class="token operator">&lt;-</span> <span class="token string">&quot;undetermined&quot;</span>
+<span class="token comment">## convert it into a factor</span>
+memb_assoc <span class="token operator">&lt;-</span> as.factor<span class="token punctuation">(</span>memb_assoc<span class="token punctuation">)</span>
+<span class="token comment">## let&apos;s see what it looks like</span>
+memb_assoc
+</pre><pre data-role="codeBlock" data-info class="language-"><code>  [1] undetermined yes          undetermined undetermined undetermined
+  [6] undetermined no           yes          no           no          
+ [11] undetermined yes          no           undetermined yes         
+ [16] undetermined undetermined undetermined undetermined undetermined
+ [21] no           undetermined undetermined no           no          
+ [26] no           undetermined no           yes          undetermined
+ [31] undetermined yes          no           yes          yes         
+ [36] yes          undetermined yes          undetermined yes         
+ [41] undetermined no           no           undetermined no          
+ [46] no           yes          undetermined undetermined yes         
+ [51] undetermined no           yes          no           undetermined
+ [56] yes          no           no           undetermined no          
+ [61] yes          undetermined undetermined undetermined no          
+ [66] yes          no           no           no           no          
+ [71] yes          undetermined no           yes          undetermined
+ [76] undetermined yes          no           no           yes         
+ [81] no           no           yes          no           yes         
+ [86] no           no           undetermined yes          yes         
+ [91] yes          yes          yes          no           no          
+ [96] no           no           yes          no           no          
+ [ reached getOption(&quot;max.print&quot;) -- omitted 31 entries ]
+Levels: no undetermined yes
+</code></pre><pre data-role="codeBlock" data-info="r" class="language-r"><span class="token comment">## bar plot of the number of interview respondents who were</span>
+<span class="token comment">## members of irrigation association:</span>
+plot<span class="token punctuation">(</span>memb_assoc<span class="token punctuation">)</span>
+</pre><img src="./fig/rmd-02-factor-plot-reorder-1.png" title="plot of chunk factor-plot-reorder" alt="plot of chunk factor-plot-reorder" width="612" style="display: block; margin: auto;">
+<blockquote>
+<h2>Exercise</h2>
+<ul>
+<li>
+<p>Rename the levels of the factor to have the first letter in uppercase:<br>
+&quot;No&quot;,&quot;Undetermined&quot;, and &quot;Yes&quot;.</p>
+</li>
+<li>
+<p>Now that we have renamed the factor level to &quot;Undetermined&quot;, can you<br>
+recreate the barplot such that &quot;Undetermined&quot; is last (after &quot;Yes&quot;)?</p>
+</li>
+</ul>
+</blockquote>
+<details><summary><b>Solution</b>  - click me</summary>
+<blockquote>
+<blockquote>
+<h2>Solution</h2>
+</blockquote>
+</blockquote>
+<pre data-role="codeBlock" data-info="R" class="language-r">levels<span class="token punctuation">(</span>memb_assoc<span class="token punctuation">)</span> <span class="token operator">&lt;-</span> c<span class="token punctuation">(</span><span class="token string">&quot;No&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;Undetermined&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;Yes&quot;</span><span class="token punctuation">)</span>
+memb_assoc <span class="token operator">&lt;-</span> factor<span class="token punctuation">(</span>memb_assoc<span class="token punctuation">,</span> levels <span class="token operator">=</span> c<span class="token punctuation">(</span><span class="token string">&quot;No&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;Yes&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;Undetermined&quot;</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+plot<span class="token punctuation">(</span>memb_assoc<span class="token punctuation">)</span>
+</pre><img src="./fig/rmd-02-factor-plot-exercise-1.png" title="plot of chunk factor-plot-exercise" alt="plot of chunk factor-plot-exercise" width="612" style="display: block; margin: auto;">
+</details>
+<h2 class="mume-header" id="formatting-dates">Formatting Dates</h2>
+
+<p>One of the most common issues that new (and experienced!) R users have is converting date and time information into a variable that is appropriate and usable during analyses. In our dataset, we have a column <code>interview_date</code> which contains information about the year, month, and day that the interview was conducted. Let&apos;s convert those dates into three separate columns.</p>
+<pre data-role="codeBlock" data-info="R" class="language-r">str<span class="token punctuation">(</span>interviews<span class="token punctuation">)</span>
+</pre><p>We are going to use the package <strong><code>lubridate</code></strong> (which is part of the <strong><code>tidyverse</code></strong> package; learn more <a href="https://www.tidyverse.org/">here</a>) to work with dates. <strong><code>lubridate</code></strong> gets installed as part as the <strong><code>tidyverse</code></strong> installation. When you load  the <strong><code>tidyverse</code></strong> (<code>library(tidyverse)</code>), the core packages (the packages used in most data analyses) get loaded. <strong><code>lubridate</code></strong> however does not belong to the core tidyverse, so you have to load  explicitly with <code>library(lubridate)</code></p>
+<p>Start by loading the required package:</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">library<span class="token punctuation">(</span>lubridate<span class="token punctuation">)</span>
+</pre><p>The lubridate function <code>ymd()</code> takes a vector representing year, month, and day, and converts it to a <code>Date</code> vector. <code>Date</code> is a class of data recognized by R as being a date and can be manipulated as such. The argument that the function requires is flexible, but, as a best practice, is a character vector formatted as &quot;YYYY-MM-DD&quot;.</p>
+<p>Let&apos;s extract our <code>interview_date</code> column and inspect the structure:</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">dates <span class="token operator">&lt;-</span> interviews<span class="token operator">$</span>interview_date
+str<span class="token punctuation">(</span>dates<span class="token punctuation">)</span>
+</pre><pre data-role="codeBlock" data-info class="language-"><code> POSIXct[1:131], format: &quot;2016-11-17&quot; &quot;2016-11-17&quot; &quot;2016-11-17&quot; &quot;2016-11-17&quot; &quot;2016-11-17&quot; ...
+</code></pre><p>When we imported the data in R, <code>read_csv()</code> recognized that this column contained date information. We can now use the <code>day()</code>, <code>month()</code> and  <code>year()</code> functions to extract this information from the date, and create new columns in our data frame to store it:</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">interviews<span class="token operator">$</span>day <span class="token operator">&lt;-</span> day<span class="token punctuation">(</span>dates<span class="token punctuation">)</span>
+interviews<span class="token operator">$</span>month <span class="token operator">&lt;-</span> month<span class="token punctuation">(</span>dates<span class="token punctuation">)</span>
+interviews<span class="token operator">$</span>year <span class="token operator">&lt;-</span> year<span class="token punctuation">(</span>dates<span class="token punctuation">)</span>
+interviews
+</pre><pre data-role="codeBlock" data-info class="language-"><code># A tibble: 131 x 17
+   key_ID village interview_date      no_membrs years_liv respondent_wall&#x2026;
+    &lt;int&gt; &lt;chr&gt;   &lt;dttm&gt;                  &lt;int&gt;     &lt;int&gt; &lt;chr&gt;           
+ 1      1 God     2016-11-17 00:00:00         3         4 muddaub         
+ 2      1 God     2016-11-17 00:00:00         7         9 muddaub         
+ 3      3 God     2016-11-17 00:00:00        10        15 burntbricks     
+ 4      4 God     2016-11-17 00:00:00         7         6 burntbricks     
+ 5      5 God     2016-11-17 00:00:00         7        40 burntbricks     
+ 6      6 God     2016-11-17 00:00:00         3         3 muddaub         
+ 7      7 God     2016-11-17 00:00:00         6        38 muddaub         
+ 8      8 Chirod&#x2026; 2016-11-16 00:00:00        12        70 burntbricks     
+ 9      9 Chirod&#x2026; 2016-11-16 00:00:00         8         6 burntbricks     
+10     10 Chirod&#x2026; 2016-12-16 00:00:00        12        23 burntbricks     
+# ... with 121 more rows, and 11 more variables: rooms &lt;int&gt;,
+#   memb_assoc &lt;chr&gt;, affect_conflicts &lt;chr&gt;, liv_count &lt;int&gt;,
+#   items_owned &lt;chr&gt;, no_meals &lt;int&gt;, months_lack_food &lt;chr&gt;,
+#   instanceID &lt;chr&gt;, day &lt;int&gt;, month &lt;dbl&gt;, year &lt;dbl&gt;
+</code></pre><p>Notice the three new columns at the end of our data frame.</p>
+
+      </div>
+      
+      
+    
+    
+    
+    
+    
+    
+    
+    
+  
+    </body></html>

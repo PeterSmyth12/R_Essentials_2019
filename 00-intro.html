@@ -1,0 +1,358 @@
+<!DOCTYPE html><html><head>
+      <title>An Introduction to R</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/katex.min.css">
+      
+      
+
+      
+      
+      
+      
+      
+      
+      
+
+      <style>
+      /**
+ * prism.js Github theme based on GitHub's theme.
+ * @author Sam Clarke
+ */
+code[class*="language-"],
+pre[class*="language-"] {
+  color: #333;
+  background: none;
+  font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.4;
+
+  -moz-tab-size: 8;
+  -o-tab-size: 8;
+  tab-size: 8;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+/* Code blocks */
+pre[class*="language-"] {
+  padding: .8em;
+  overflow: auto;
+  /* border: 1px solid #ddd; */
+  border-radius: 3px;
+  /* background: #fff; */
+  background: #f5f5f5;
+}
+
+/* Inline code */
+:not(pre) > code[class*="language-"] {
+  padding: .1em;
+  border-radius: .3em;
+  white-space: normal;
+  background: #f5f5f5;
+}
+
+.token.comment,
+.token.blockquote {
+  color: #969896;
+}
+
+.token.cdata {
+  color: #183691;
+}
+
+.token.doctype,
+.token.punctuation,
+.token.variable,
+.token.macro.property {
+  color: #333;
+}
+
+.token.operator,
+.token.important,
+.token.keyword,
+.token.rule,
+.token.builtin {
+  color: #a71d5d;
+}
+
+.token.string,
+.token.url,
+.token.regex,
+.token.attr-value {
+  color: #183691;
+}
+
+.token.property,
+.token.number,
+.token.boolean,
+.token.entity,
+.token.atrule,
+.token.constant,
+.token.symbol,
+.token.command,
+.token.code {
+  color: #0086b3;
+}
+
+.token.tag,
+.token.selector,
+.token.prolog {
+  color: #63a35c;
+}
+
+.token.function,
+.token.namespace,
+.token.pseudo-element,
+.token.class,
+.token.class-name,
+.token.pseudo-class,
+.token.id,
+.token.url-reference .token.variable,
+.token.attr-name {
+  color: #795da3;
+}
+
+.token.entity {
+  cursor: help;
+}
+
+.token.title,
+.token.title .token.punctuation {
+  font-weight: bold;
+  color: #1d3e81;
+}
+
+.token.list {
+  color: #ed6a43;
+}
+
+.token.inserted {
+  background-color: #eaffea;
+  color: #55a532;
+}
+
+.token.deleted {
+  background-color: #ffecec;
+  color: #bd2c00;
+}
+
+.token.bold {
+  font-weight: bold;
+}
+
+.token.italic {
+  font-style: italic;
+}
+
+
+/* JSON */
+.language-json .token.property {
+  color: #183691;
+}
+
+.language-markup .token.tag .token.punctuation {
+  color: #333;
+}
+
+/* CSS */
+code.language-css,
+.language-css .token.function {
+  color: #0086b3;
+}
+
+/* YAML */
+.language-yaml .token.atrule {
+  color: #63a35c;
+}
+
+code.language-yaml {
+  color: #183691;
+}
+
+/* Ruby */
+.language-ruby .token.function {
+  color: #333;
+}
+
+/* Markdown */
+.language-markdown .token.url {
+  color: #795da3;
+}
+
+/* Makefile */
+.language-makefile .token.symbol {
+  color: #795da3;
+}
+
+.language-makefile .token.variable {
+  color: #183691;
+}
+
+.language-makefile .token.builtin {
+  color: #0086b3;
+}
+
+/* Bash */
+.language-bash .token.keyword {
+  color: #0086b3;
+}
+
+/* highlight */
+pre[data-line] {
+  position: relative;
+  padding: 1em 0 1em 3em;
+}
+pre[data-line] .line-highlight-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: transparent;
+  display: block;
+  width: 100%;
+}
+
+pre[data-line] .line-highlight {
+  position: absolute;
+  left: 0;
+  right: 0;
+  padding: inherit 0;
+  margin-top: 1em;
+  background: hsla(24, 20%, 50%,.08);
+  background: linear-gradient(to right, hsla(24, 20%, 50%,.1) 70%, hsla(24, 20%, 50%,0));
+  pointer-events: none;
+  line-height: inherit;
+  white-space: pre;
+}
+
+pre[data-line] .line-highlight:before, 
+pre[data-line] .line-highlight[data-end]:after {
+  content: attr(data-start);
+  position: absolute;
+  top: .4em;
+  left: .6em;
+  min-width: 1em;
+  padding: 0 .5em;
+  background-color: hsla(24, 20%, 50%,.4);
+  color: hsl(24, 20%, 95%);
+  font: bold 65%/1.5 sans-serif;
+  text-align: center;
+  vertical-align: .3em;
+  border-radius: 999px;
+  text-shadow: none;
+  box-shadow: 0 1px white;
+}
+
+pre[data-line] .line-highlight[data-end]:after {
+  content: attr(data-end);
+  top: auto;
+  bottom: .4em;
+}html body{font-family:"Helvetica Neue",Helvetica,"Segoe UI",Arial,freesans,sans-serif;font-size:16px;line-height:1.6;color:#333;background-color:#fff;overflow:initial;box-sizing:border-box;word-wrap:break-word}html body>:first-child{margin-top:0}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{line-height:1.2;margin-top:1em;margin-bottom:16px;color:#000}html body h1{font-size:2.25em;font-weight:300;padding-bottom:.3em}html body h2{font-size:1.75em;font-weight:400;padding-bottom:.3em}html body h3{font-size:1.5em;font-weight:500}html body h4{font-size:1.25em;font-weight:600}html body h5{font-size:1.1em;font-weight:600}html body h6{font-size:1em;font-weight:600}html body h1,html body h2,html body h3,html body h4,html body h5{font-weight:600}html body h5{font-size:1em}html body h6{color:#5c5c5c}html body strong{color:#000}html body del{color:#5c5c5c}html body a:not([href]){color:inherit;text-decoration:none}html body a{color:#08c;text-decoration:none}html body a:hover{color:#00a3f5;text-decoration:none}html body img{max-width:100%}html body>p{margin-top:0;margin-bottom:16px;word-wrap:break-word}html body>ul,html body>ol{margin-bottom:16px}html body ul,html body ol{padding-left:2em}html body ul.no-list,html body ol.no-list{padding:0;list-style-type:none}html body ul ul,html body ul ol,html body ol ol,html body ol ul{margin-top:0;margin-bottom:0}html body li{margin-bottom:0}html body li.task-list-item{list-style:none}html body li>p{margin-top:0;margin-bottom:0}html body .task-list-item-checkbox{margin:0 .2em .25em -1.8em;vertical-align:middle}html body .task-list-item-checkbox:hover{cursor:pointer}html body blockquote{margin:16px 0;font-size:inherit;padding:0 15px;color:#5c5c5c;border-left:4px solid #d6d6d6}html body blockquote>:first-child{margin-top:0}html body blockquote>:last-child{margin-bottom:0}html body hr{height:4px;margin:32px 0;background-color:#d6d6d6;border:0 none}html body table{margin:10px 0 15px 0;border-collapse:collapse;border-spacing:0;display:block;width:100%;overflow:auto;word-break:normal;word-break:keep-all}html body table th{font-weight:bold;color:#000}html body table td,html body table th{border:1px solid #d6d6d6;padding:6px 13px}html body dl{padding:0}html body dl dt{padding:0;margin-top:16px;font-size:1em;font-style:italic;font-weight:bold}html body dl dd{padding:0 16px;margin-bottom:16px}html body code{font-family:Menlo,Monaco,Consolas,'Courier New',monospace;font-size:.85em !important;color:#000;background-color:#f0f0f0;border-radius:3px;padding:.2em 0}html body code::before,html body code::after{letter-spacing:-0.2em;content:"\00a0"}html body pre>code{padding:0;margin:0;font-size:.85em !important;word-break:normal;white-space:pre;background:transparent;border:0}html body .highlight{margin-bottom:16px}html body .highlight pre,html body pre{padding:1em;overflow:auto;font-size:.85em !important;line-height:1.45;border:#d6d6d6;border-radius:3px}html body .highlight pre{margin-bottom:0;word-break:normal}html body pre code,html body pre tt{display:inline;max-width:initial;padding:0;margin:0;overflow:initial;line-height:inherit;word-wrap:normal;background-color:transparent;border:0}html body pre code:before,html body pre tt:before,html body pre code:after,html body pre tt:after{content:normal}html body p,html body blockquote,html body ul,html body ol,html body dl,html body pre{margin-top:0;margin-bottom:16px}html body kbd{color:#000;border:1px solid #d6d6d6;border-bottom:2px solid #c7c7c7;padding:2px 4px;background-color:#f0f0f0;border-radius:3px}@media print{html body{background-color:#fff}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{color:#000;page-break-after:avoid}html body blockquote{color:#5c5c5c}html body pre{page-break-inside:avoid}html body table{display:table}html body img{display:block;max-width:100%;max-height:100%}html body pre,html body code{word-wrap:break-word;white-space:pre}}.markdown-preview{width:100%;height:100%;box-sizing:border-box}.markdown-preview .pagebreak,.markdown-preview .newpage{page-break-before:always}.markdown-preview pre.line-numbers{position:relative;padding-left:3.8em;counter-reset:linenumber}.markdown-preview pre.line-numbers>code{position:relative}.markdown-preview pre.line-numbers .line-numbers-rows{position:absolute;pointer-events:none;top:1em;font-size:100%;left:0;width:3em;letter-spacing:-1px;border-right:1px solid #999;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.markdown-preview pre.line-numbers .line-numbers-rows>span{pointer-events:none;display:block;counter-increment:linenumber}.markdown-preview pre.line-numbers .line-numbers-rows>span:before{content:counter(linenumber);color:#999;display:block;padding-right:.8em;text-align:right}.markdown-preview .mathjax-exps .MathJax_Display{text-align:center !important}.markdown-preview:not([for="preview"]) .code-chunk .btn-group{display:none}.markdown-preview:not([for="preview"]) .code-chunk .status{display:none}.markdown-preview:not([for="preview"]) .code-chunk .output-div{margin-bottom:16px}.scrollbar-style::-webkit-scrollbar{width:8px}.scrollbar-style::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}.scrollbar-style::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,0.66);border:4px solid rgba(150,150,150,0.66);background-clip:content-box}html body[for="html-export"]:not([data-presentation-mode]){position:relative;width:100%;height:100%;top:0;left:0;margin:0;padding:0;overflow:auto}html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{position:relative;top:0}@media screen and (min-width:914px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{padding:2em calc(50% - 457px + 2em)}}@media screen and (max-width:914px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{font-size:14px !important;padding:1em}}@media print{html body[for="html-export"]:not([data-presentation-mode]) #sidebar-toc-btn{display:none}}html body[for="html-export"]:not([data-presentation-mode]) #sidebar-toc-btn{position:fixed;bottom:8px;left:8px;font-size:28px;cursor:pointer;color:inherit;z-index:99;width:32px;text-align:center;opacity:.4}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] #sidebar-toc-btn{opacity:1}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc{position:fixed;top:0;left:0;width:300px;height:100%;padding:32px 0 48px 0;font-size:14px;box-shadow:0 0 4px rgba(150,150,150,0.33);box-sizing:border-box;overflow:auto;background-color:inherit}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar{width:8px}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,0.66);border:4px solid rgba(150,150,150,0.66);background-clip:content-box}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc a{text-decoration:none}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc ul{padding:0 1.6em;margin-top:.8em}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc li{margin-bottom:.8em}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc ul{list-style-type:none}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{left:300px;width:calc(100% -  300px);padding:2em calc(50% - 457px -  150px);margin:0;box-sizing:border-box}@media screen and (max-width:1274px){html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{width:100%}}html body[for="html-export"]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .markdown-preview{left:50%;transform:translateX(-50%)}html body[for="html-export"]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .md-sidebar-toc{display:none}
+/* Please visit the URL below for more information: */
+/*   https://shd101wyy.github.io/markdown-preview-enhanced/#/customize-css */
+
+      </style>
+    </head>
+    <body for="html-export">
+      <div class="mume markdown-preview  ">
+      <h1 class="mume-header" id="an-introduction-to-r">An Introduction to R</h1>
+
+<h2 class="mume-header" id="installing-r-and-rstudio">Installing R and RStudio</h2>
+
+<p>If you do not have R and RStudio on your machine, instructions for installing them can be found at the <a href="https://datacarpentry.org/r-socialsci/setup.html">Data Carpentry site</a></p>
+<h2 class="mume-header" id="r-and-rstudio">R and RStudio</h2>
+
+<p>R is an open source programming language originally designed and implemented by statisticians primarily for statistical analysis. It includes high quality graphics capabilities and tools for data analysis and reading and writing data to/from files.</p>
+<p>Because R is open source and is supported by a large community of developers and users there is a very large selection of third-party add-on packages which are freely available to extend R&apos;s native capabilities.</p>
+<p>R is a scripted language. Rather than pointing and clicking in a graphical environment you write code statements to ask R to do something for you. This has the advantage of providing a record of what was done and allows for peer review of the work undertaken.</p>
+<p>Having this written record, something which is increasingly required as part of a publication submission, is also an aid when seeking help with problems.</p>
+<p>There are many online resources such as <a href="https://stackoverflow.com/questions/tagged/r">stackoverflow</a> and the <a href="https://community.rstudio.com/">RStudio Community</a> which will allow you to seek help from peers. Questions which are backed up with <a href="https://www.tidyverse.org/help/">short, reproducible code snippets</a> are more likely to attract knowledgeable responses.</p>
+<p>To make it easier to interact with R, we will use RStudio. RStudio is the most popular IDE (Integrated Development Interface), to work  with R. An IDE is software that provide tools to make it easier to program.</p>
+<h2 class="mume-header" id="a-tour-of-rstudio">A tour of RStudio</h2>
+
+<p><a href="https://www.rstudio.com/">RStudio</a>, which is an open source (free to use) Integrated Development Environment (IDE) for working with R.</p>
+<p><img src="./fig/R_00_Rstudio_01.png" alt="RStudio_startup"></p>
+<p>RStudio is divided into 4 &quot;Panes&quot;: the <strong>Source</strong> for your scripts and documents (top-left, in the default layout), the R <strong>Console</strong> (bottom-left), your <strong>Environment/History</strong> (top-right), and your <strong>Files/Plots/Packages/Help/Viewer</strong> (bottom-right). The placement of these panes and their content can be customized (see menu, Tools -&gt; Global Options -&gt; Pane Layout).</p>
+<p>We will use RStudio IDE to write code, navigate the files on our computer, inspect the variables we are going to create, and visualize the plots we will generate. RStudio can also be used for other things (e.g., version control, developing packages, writing Shiny apps) that we will not cover during the workshop.</p>
+<p>One of the advantages of using RStudio is that all the information you need to write code is available in a single window. Additionally, with many shortcuts, autocompletion, and highlighting for the major file types you use while developing in R, RStudio will make typing easier and less error-prone.</p>
+<h2 class="mume-header" id="setting-up-a-new-project">Setting up a new project</h2>
+
+<p>It is good practice to keep all of the files and folders associated with a project in a single folder, called the <strong>working directory</strong>. Typically you might want to create seperate sub-folders for the scripts (program code), data and outputs of your project.<br>
+Each project you create will have its own working directory. Working this way makes it a lot easier to move your project around on your computer and share it with others without worrying about whether or not the underlying scripts will still work.</p>
+<p>RStudio provides a helpful set of tools to do this through its &quot;Projects&quot; interface, which not only creates a working directory for you but also remembers its location (allowing you to quickly navigate to it) and optionally preserves custom settings and open files to make it easier to resume work after a break. Below, we will go through the steps for creating an &quot;R Project&quot; for this course.</p>
+<h3 class="mume-header" id="create-a-new-project">Create a new project</h3>
+
+<ul>
+<li>Under the <code>File</code> menu, click on <code>New project</code>, choose <code>New directory</code>, then   <code>New project</code></li>
+<li>Enter a name for this new folder (or &quot;directory&quot;), and choose a convenient   location for it. This will be your <strong>working directory</strong> for the rest of the   day (e.g., <code>~/data-carpentry</code>)</li>
+<li>Click on <code>Create project</code></li>
+<li>Create a new file where we will type our scripts. Go to File &gt; New File &gt; R   script. Click the save icon on your toolbar and save your script as   &quot;<code>script.R</code>&quot;.</li>
+</ul>
+<h3 class="mume-header" id="getting-the-data-we-are-going-to-use">Getting the data we are going to use</h3>
+
+<p>In this workshop we will be using the SAFI_clean dataset. You can download this from the link on the contents page.</p>
+<p>R does have a download function as shown here. Here we are specifying the version of the dataset which resides of figshare.</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">download.file<span class="token punctuation">(</span><span class="token string">&quot;https://ndownloader.figshare.com/files/11492171&quot;</span><span class="token punctuation">,</span>
+              <span class="token string">&quot;data/SAFI_clean.csv&quot;</span><span class="token punctuation">,</span> mode <span class="token operator">=</span> <span class="token string">&quot;wb&quot;</span><span class="token punctuation">)</span>
+</pre><p>Alternatively you can use RStudio.</p>
+<h2 class="mume-header" id="interacting-with-r">Interacting with R</h2>
+
+<p>The basis of programming is that we write down instructions for the computer to follow, and then we tell the computer to follow those instructions. We write, or <em>code</em>, instructions in R because it is a common language that both the computer and we can understand. We call the instructions <em>commands</em> and we tell the computer to follow the instructions by <em>executing</em> (also called <em>running</em>) those commands.</p>
+<p>There are two main ways of interacting with R: by using the console or by using script files (plain text files that contain your code). The console pane (in RStudio, the bottom left panel) is the place where commands written in the R language can be typed and executed immediately by the computer. It is also where the results will be shown for commands that have been executed. You can type commands directly into the console and press <kbd>Enter</kbd> to execute those commands, but they will be forgotten when you close the session.</p>
+<p>Because we want our code and workflow to be reproducible, it is better to type the commands we want in the script editor, and save the script. This way, there is a complete record of what we did, and anyone (including our future selves!) can easily replicate the results on their computer.</p>
+<p>RStudio allows you to execute commands directly from the script editor by using the <kbd>Ctrl</kbd> + <kbd>Enter</kbd> shortcut (on Macs, <kbd>Cmd</kbd> + <kbd>Return</kbd> will work, too). The command on the current line in the script (indicated by the cursor) or all of the commands in the currently selected text will be sent to the console and executed when you press <kbd>Ctrl</kbd> + <kbd>Enter</kbd>. You can find other keyboard shortcuts  in this <a href="https://github.com/rstudio/cheatsheets/raw/master/rstudio-ide.pdf">RStudio cheatsheet about the RStudio IDE</a>.</p>
+<p>At some point in your analysis you may want to check the content of a variable or the structure of an object, without necessarily keeping a record of it in your script. You can type these commands and execute them directly in the console.  RStudio provides the <kbd>Ctrl</kbd> + <kbd>1</kbd> and <kbd>Ctrl</kbd> + <kbd>2</kbd> shortcuts allow you to jump between the script and the console panes.</p>
+<p>If R is ready to accept commands, the R console shows a <code>&gt;</code> prompt. If it receives a command (by typing, copy-pasting or sent from the script editor using <kbd>Ctrl</kbd> + <kbd>Enter</kbd>), R will try to execute it, and when ready, will show the results and come back with a new <code>&gt;</code> prompt to wait for new commands.</p>
+<p>If R is still waiting for you to enter more data because it isn&apos;t complete yet, the console will show a <code>+</code> prompt. It means that you haven&apos;t finished entering a complete command. This is because you have not &apos;closed&apos; a parenthesis or quotation, i.e. you don&apos;t have the same number of left-parentheses as right-parentheses, or the same number of opening and closing quotation marks. When this happens, and you thought you finished typing your command, click inside the console window and press <kbd>Esc</kbd>; this will cancel the incomplete command and return you to the <code>&gt;</code> prompt.</p>
+<h2 class="mume-header" id="installing-additional-packages-using-the-packages-tab">Installing additional packages using the packages tab</h2>
+
+<p>In addition to the core R installation there are in excess of 10,000 additional packages which can be used to extend the functionality of R. Many of these have been written by R users and have been made available in central repositories, like the one hosted at CRAN for anyone to download and install into their own R environment. In the course of this lesson we will be making use of several of these packages such as &apos;ggplot2&apos; and &apos;dplyr&apos;.</p>
+<p>Additional packages can be installed from the &#x2018;packages&#x2019; tab. On the packages tab click the &#x2018;Install&#x2019; icon and start typing the name of the package you want in the text box. As you type packages matching your starting characters will be displayed in a drop down list from where it can be selected.</p>
+<p><img src="./fig/R_00_Rstudio_03.png" alt="Install Packages Window"></p>
+<p>At the bottom of the Install Packages window is a check box for &#x2018;Install&#x2019; dependencies. This is ticked by default, which is usually what you want. Packages can (and do) make use of functionality built into other packages, so for the functionality contained in the package you are installing to work properly, there may be other packages which have to be installed with them. The &#x2018;Install dependencies&#x2019; option makes sure that this happens.</p>
+<blockquote>
+<h2>Exercise</h2>
+<p>Use the install option from the packages tab to install the &#x2018;tidyverse&#x2019; package.</p>
+</blockquote>
+ <details><summary><b>Solution</b>  - click me</summary>
+<blockquote>
+<blockquote>
+<h2>Solution</h2>
+<p>From the packages tab, click &#x2018;Install&#x2019; from the toolbar and type &#x2018;tidyverse&#x2019; into the textbox then click &#x2018;install&#x2019;<br>
+The &#x2018;tidyverse&#x2019; package is really a package of packages, including &apos;ggplot2&apos; and &apos;dplyr&apos;, both of which require other packages to run correctly. All of these packages will be installed automatically.<br>
+Depending on what packages have previously been installed in your R environment, the install of &#x2018;tidyverse&#x2019; could be very quick or could take several minutes.<br>
+As the install proceeds messages relating to the progress will be written to the console. You will be able to see all of the packages which are actually being installed.</p>
+</blockquote>
+</blockquote>
+</details>
+<br>
+<p>Because the install process accesses the CRAN repository, you will need an Internet connection to install packages in this way.</p>
+<p>It is also possible to install packages from other repositories as well as Github or the local file system, but we won&#x2019;t be looking at these options in this lesson.</p>
+<h2 class="mume-header" id="installing-additional-packages-using-r-code">Installing additional packages using R code</h2>
+
+<p>If you were watching the console window when you starting the install of &#x2018;tidyverse&#x2019; you may have noticed that before the start of the installation messages, the line</p>
+<pre data-role="codeBlock" data-info="r" class="language-r">install.packages<span class="token punctuation">(</span><span class="token string">&quot;tidyverse&quot;</span><span class="token punctuation">)</span>
+</pre><p>was written to the console.</p>
+<p>You could also have installed the <strong><code>tidyverse</code></strong> packages by running this command directly at the R terminal.</p>
+
+      </div>
+      
+      
+    
+    
+    
+    
+    
+    
+    
+    
+  
+    </body></html>
